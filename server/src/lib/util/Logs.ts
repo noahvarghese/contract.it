@@ -4,11 +4,11 @@ dotenv.config();
 
 export enum LogLevels {
     EVENT = 0,
-    ERROR = 1,
-    WARN = 2,
-    DEBUG = 3,
-    LOG = 4,
-    MESSAGE = 5,
+    SQL = 1,
+    ERROR = 2,
+    WARN = 3,
+    DEBUG = 4,
+    LOG = 5,
 }
 
 interface LogData {
@@ -38,6 +38,11 @@ export default class Logs {
                     prefix: "[ EVENT ]: ",
                     consoleFunction: console.log,
                 });
+            case LogLevels.SQL:
+                return createLogData({
+                    prefix: "[ SQL ]: ",
+                    consoleFunction: console.log,
+                });
             case LogLevels.ERROR:
                 return createLogData({
                     prefix: "[ ERROR ]: ",
@@ -57,11 +62,6 @@ export default class Logs {
                 return createLogData({
                     prefix: "[ LOG ]: ",
                     consoleFunction: console.log,
-                });
-            case LogLevels.MESSAGE:
-                return createLogData({
-                    prefix: "[ MESSAGE ]: ",
-                    consoleFunction: console.info,
                 });
             default:
                 throw new Error(

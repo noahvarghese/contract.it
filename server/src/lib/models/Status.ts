@@ -1,20 +1,31 @@
+import { DataTypes } from "sequelize";
 import {
-    Entity,
-    PrimaryGeneratedColumn,
+    Model,
     Column,
-    BaseEntity,
-    OneToMany,
-} from "typeorm";
-import Job from "./Job";
+    Table,
+    CreatedAt,
+    UpdatedAt,
+    DeletedAt,
+} from "sequelize-typescript";
 
-@Entity({ name: "statuses" })
-export default class Status extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number | undefined;
-    @Column()
-    file: string | undefined;
-    @Column()
-    text: string | undefined;
-    @OneToMany(() => Job, (job) => job.status)
-    jobs: Job[] | undefined;
+interface StatusAttributes {
+    file: string;
+    text: string;
+}
+
+// @Table({ tableName: "statuses" })
+@Table
+export default class Status
+    extends Model<StatusAttributes>
+    implements StatusAttributes {
+    @Column(DataTypes.STRING)
+    file!: string;
+    @Column(DataTypes.STRING)
+    text!: string;
+    @CreatedAt
+    createdOn: Date;
+    @UpdatedAt
+    updateOn: Date;
+    @DeletedAt
+    deletedOn: Date;
 }

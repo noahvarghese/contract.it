@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS contract_it;
 CREATE DATABASE contract_it;
-USE contract_it;
+USE contract_it; 
 
 CREATE TABLE statuses (
     id INT NOT NULL AUTO_INCREMENT,

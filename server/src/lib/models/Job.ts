@@ -1,40 +1,58 @@
+import { Stats } from "fs";
+import { DataTypes, Optional } from "sequelize";
 import {
-    Entity,
-    PrimaryGeneratedColumn,
+    BelongsTo,
     Column,
-    BaseEntity,
-    OneToMany,
-    ManyToOne,
-} from "typeorm";
+    CreatedAt,
+    DeletedAt,
+    ForeignKey,
+    HasOne,
+    Model,
+    Table,
+    UpdatedAt,
+} from "sequelize-typescript";
 import Status from "./Status";
-import Image from "./Image";
 
-@Entity({ name: "jobs" })
-export default class Job extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number | undefined;
-    @Column()
-    first_name: string | undefined;
-    @Column()
-    last_name: string | undefined;
-    @Column()
-    email: string | undefined;
-    @Column()
-    phone: string | undefined;
-    @Column()
-    address: string | undefined;
-    @Column()
-    city: string | undefined;
-    @Column()
-    province: string | undefined;
-    @Column()
-    country: string | undefined;
-    @Column()
-    created_on: Date | undefined;
-    @Column()
-    updated_on: Date | undefined;
-    @ManyToOne(() => Status, (status) => status.jobs)
-    status: Status | undefined;
-    @OneToMany(() => Image, (image) => image.job)
-    images: Image[] | undefined;
+interface JobAttributes {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    province: string;
+    country: string;
+    createdOn: Date;
+    updateOn: Date;
+    deletedOn: Date;
+}
+
+@Table
+export default class Job extends Model<JobAttributes> implements JobAttributes {
+    @Column(DataTypes.STRING)
+    first_name!: string;
+    @Column(DataTypes.STRING)
+    last_name!: string;
+    @Column(DataTypes.STRING)
+    email!: string;
+    @Column(DataTypes.STRING)
+    phone!: string;
+    @Column(DataTypes.STRING)
+    address!: string;
+    @Column(DataTypes.STRING)
+    city!: string;
+    @Column(DataTypes.STRING)
+    province!: string;
+    @Column(DataTypes.STRING)
+    country!: string;
+    @CreatedAt
+    createdOn: Date;
+    @UpdatedAt
+    updateOn: Date;
+    @DeletedAt
+    deletedOn: Date;
+    @ForeignKey(() => Status)
+    status_id: number;
+    @BelongsTo(() => Status)
+    status: Status;
 }

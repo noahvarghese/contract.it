@@ -1,21 +1,41 @@
+import { DataTypes, Optional } from "sequelize";
 import {
-    Entity,
-    PrimaryGeneratedColumn,
+    Model,
+    Table,
     Column,
-    BaseEntity,
-    OneToMany,
-    ManyToOne,
-} from "typeorm";
+    AutoIncrement,
+    HasOne,
+    PrimaryKey,
+    ForeignKey,
+    CreatedAt,
+    UpdatedAt,
+    DeletedAt,
+    BelongsTo,
+} from "sequelize-typescript";
 import Job from "./Job";
 
-@Entity({ name: "images" })
-export default class Image extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number | undefined;
-    @Column()
-    file: string | undefined;
-    @Column()
-    text: string | undefined;
-    @ManyToOne(() => Job, (job) => job.images)
-    job: Job | undefined;
+interface ImageAttributes {
+    file: string;
+    text: string;
+}
+
+// @Table({ tableName: "images" })
+@Table
+export default class Image
+    extends Model<ImageAttributes>
+    implements ImageAttributes {
+    @Column(DataTypes.STRING)
+    file: string;
+    @Column(DataTypes.STRING)
+    text: string;
+    @ForeignKey(() => Job)
+    job_id: number;
+    @CreatedAt
+    createdOn: Date;
+    @UpdatedAt
+    updateOn: Date;
+    @DeletedAt
+    deletedOn: Date;
+    @BelongsTo(() => Job)
+    job: Job;
 }

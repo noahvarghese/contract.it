@@ -3,8 +3,10 @@ import fileUpload from "express-fileupload";
 import cors from "cors";
 import config from "./lib/config";
 import router from "./lib/routes";
-import authMiddleware from "./lib/middleware";
+// import authMiddleware from "./lib/middleware";
 import Logs, { LogLevels } from "./lib/util/Logs";
+import sequelize from "./lib/config/database";
+import Job from "./lib/models/Job";
 
 const app = express();
 
@@ -15,9 +17,17 @@ const app = express();
 
     app.use(fileUpload({ createParentPath: true }));
 
-    app.use(authMiddleware);
+    // app.use(authMiddleware);
 
     app.use("/", router);
+
+    try {
+        await sequelize.authenticate();
+        Logs.addLog("Database connected.", LogLevels.EVENT);
+    } catch (_) {
+        Logs.addLog("Error connecting to database.", LogLevels.ERROR);
+        return;
+    }
 
     app.listen(config.port, () => {
         Logs.addLog(`Server started on port: ${config.port}`, LogLevels.EVENT);
