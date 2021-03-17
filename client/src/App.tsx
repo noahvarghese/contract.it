@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+// import cx from 'classnames';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [toggle, setToggle] = React.useState<boolean>(false);
+    console.log("toggle", toggle);
+
+    const buttonClasses = toggle
+        ? "bg-red-500 hover:bg-red-500"
+        : "bg-blue-500 hover:bg-blue-500";
+    return (
+        <div className="bg-gray-200 flex items-center justify-center h-screen">
+            <button
+                className={`p-3 rounded-sm ${buttonClasses}`}
+                onClick={() => setToggle(!toggle)}
+            >
+                Toggle
+            </button>
+        </div>
+    );
 }
 
 export default App;
