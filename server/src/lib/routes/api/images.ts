@@ -35,6 +35,12 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
     const ImageManager = getRepository(Image);
     if (req.files) {
+        if (!req.body.job_id) {
+            res.status(400);
+            res.send({ message: "No Job linked." });
+            return;
+        }
+
         let file: UploadedFile;
 
         if (Array.isArray(req.files.image)) {
@@ -59,17 +65,22 @@ router.post("/", async (req: Request, res: Response) => {
                 return;
             } catch (_) {
                 Logs.addLog("Error creating Image.", LogLevels.ERROR);
-                res.sendStatus(500);
+                res.status(500);
+                res.send({ message: "Error uploading image." });
                 return;
             }
+        } else {
+            res.status(400);
+            res.send({ message: "No image found." });
         }
     }
 
-    res.sendStatus(400);
+    res.sendStatus(500);
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
     const ImageManager = getRepository(Image);
+
     const image: Image = (
         await ImageManager.find({
             where: { id: req.params.id },
@@ -77,6 +88,12 @@ router.put("/:id", async (req: Request, res: Response) => {
     )[0];
 
     if (image) {
+        if (!req.body.job_id) {
+            res.status(400);
+            res.send({ message: "No Job linked." });
+            return;
+        }
+
         let filePath;
 
         if (req.files) {
@@ -122,7 +139,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
         res.sendStatus(200);
         return;
     } else {
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 });
 
