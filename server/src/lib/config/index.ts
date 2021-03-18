@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
 
 const dev: boolean = JSON.parse(process.env.DEV!);

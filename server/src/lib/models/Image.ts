@@ -1,41 +1,33 @@
-import { DataTypes, Optional } from "sequelize";
 import {
-    Model,
-    Table,
+    Entity,
+    PrimaryGeneratedColumn,
     Column,
-    AutoIncrement,
-    HasOne,
-    PrimaryKey,
-    ForeignKey,
-    CreatedAt,
-    UpdatedAt,
-    DeletedAt,
-    BelongsTo,
-} from "sequelize-typescript";
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+    ManyToOne,
+} from "typeorm";
 import Job from "./Job";
 
-interface ImageAttributes {
+export interface ImageAttributes {
     file: string;
     text: string;
 }
 
-// @Table({ tableName: "images" })
-@Table
-export default class Image
-    extends Model<ImageAttributes>
-    implements ImageAttributes {
-    @Column(DataTypes.STRING)
-    file: string;
-    @Column(DataTypes.STRING)
-    text: string;
-    @ForeignKey(() => Job)
-    job_id: number;
-    @CreatedAt
-    createdOn: Date;
-    @UpdatedAt
-    updateOn: Date;
-    @DeletedAt
-    deletedOn: Date;
-    @BelongsTo(() => Job)
-    job: Job;
+@Entity()
+export default class Image implements ImageAttributes {
+    @PrimaryGeneratedColumn()
+    public id!: number;
+    @Column()
+    public file!: string;
+    @Column()
+    public text!: string;
+    @CreateDateColumn()
+    public readonly createdOn!: Date;
+    @UpdateDateColumn()
+    public readonly updateOn!: Date;
+    @DeleteDateColumn()
+    public readonly deletedOn!: Date;
+    @ManyToOne(() => Job, (job) => job.images)
+    public job!: Job;
 }

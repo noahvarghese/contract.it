@@ -1,13 +1,13 @@
 // tslint:disable: no-console
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
 
 export enum LogLevels {
     EVENT = 0,
-    SQL = 1,
-    ERROR = 2,
-    WARN = 3,
-    DEBUG = 4,
+    ERROR = 1,
+    WARN = 2,
+    DEBUG = 3,
+    SQL = 4,
     LOG = 5,
 }
 
@@ -29,7 +29,7 @@ const createLogData = <T extends Partial<LogData>>(
 };
 
 export default class Logs {
-    static logLevel: LogLevels = Number(process.env.LOG_LEVEL!);
+    static logLevel: LogLevels = Number(process.env.LOG_LEVEL!) as LogLevels;
 
     private static getLogData = (logLevel: LogLevels): LogData => {
         switch (logLevel) {

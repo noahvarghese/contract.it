@@ -1,10 +1,12 @@
-import express, { Request, Response } from "express";
+import { Router } from "express";
+import StatusesRouter from "./statuses";
+import JobsRouter from "./jobs";
+import ImagesRouter from "./images";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", (_: Request, res: Response) => {
-    res.send("HIII");
-});
+router.use("/images", ImagesRouter);
+router.use("/jobs", JobsRouter);
+router.use("/statuses", StatusesRouter);
 
-router.post("/signUp", (req, res) => {});
 export default router;

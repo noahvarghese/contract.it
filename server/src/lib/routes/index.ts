@@ -1,20 +1,20 @@
-import express, { Request, Response } from "express";
+import { Router, Request, Response, static as expressStatic } from "express";
 import path from "path";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import devRouter from "./dev";
 import apiRouter from "./api";
 
 dotenv.config();
 const dev: boolean = JSON.parse(process.env.DEV!);
 
-const router = express.Router();
+const router = Router();
 
 if (dev) {
     // redirect root requests to vue
     router.use("/", devRouter);
 } else {
     const viewsPath = path.join(__dirname, "../../..", "views");
-    router.use(express.static(viewsPath));
+    router.use(expressStatic(viewsPath));
 
     router.all("/", (_: Request, res: Response) => {
         res.sendFile(path.join(viewsPath, "index.html"));
