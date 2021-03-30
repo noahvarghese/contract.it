@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import ArrowIcon from "../assets/img/arrow.png";
 import "../assets/css/FilterDisplay.css";
 
 const FilerDisplay = () => {
+    const showFilters = (e: MouseEvent<HTMLButtonElement>) => {
+        e.currentTarget.classList.toggle("show");
+    }
     return (
         <div id="FilterDisplay">
             <h3>
                 <span>Filters / Statuses</span>
                 <span>
-                    <button id="filterToggle">
+                    <button id="filterToggle" onClick={showFilters}>
                         <img src={ArrowIcon} alt="arrow" />
                     </button>
                 </span>

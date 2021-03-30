@@ -27,6 +27,12 @@ button#filterToggle {
 }
 
 button#filterToggle > img {
-    transform: rotate(180deg);
+    transform: rotate(-180deg);
+    width: 20px;
+    transition: transform 0.3s ease-in;
+}
+
+button#filterToggle.show > img {
+    transform: rotate(0deg);
     width: 20px;
 }
