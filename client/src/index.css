@@ -1,14 +1,20 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto:wght@300;400;700&display=swap");
 
+:root {
+    --text-color: #777777;
+    --primary-btn: #FEA800;
+    --secondary-btn: #006573;
+    --tertiary-btn: #878B8C;
+    --last-btn: #3D9B4F;
+}
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-        "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: Roboto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -45,11 +51,17 @@ h6 {
 p,
 li,
 a,
+input,
 span {
+    font-size: 1.25rem;
     font-family: Roboto;
     font-weight: 300;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-family: Roboto;
+    font-size: 1.25rem;
 }

@@ -6,6 +6,9 @@ const NavBar = () => {
     return (
         <div id="Nav">
             <SearchBar />
+            <button type="button" id="create">
+                Create
+            </button>
         </div>
     )
 }

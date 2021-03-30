@@ -30,7 +30,7 @@ const SearchBar = () => {
     return (
         <div id="Search">
             <div id="SearchBar">
-                <input type="text" id="search" name="search" placeholder="Search" onChange={searchChanged} />
+                <input type="text" id="search" name="search" placeholder="Search" onChange={searchChanged} aria-labelledby="Search"/>
                 <button id="cancelIcon">
                     <img src={CancelIcon} alt="Cancel" />
                 </button>
