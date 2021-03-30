@@ -6,6 +6,7 @@
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
+    z-index: 1;
 }
 
 #SearchBar {
@@ -53,6 +54,6 @@
     padding-right: 1rem;
 }
 
-button > img {
+button.search > img {
     width: 35px;
 }

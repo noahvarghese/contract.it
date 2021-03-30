@@ -31,10 +31,10 @@ const SearchBar = () => {
         <div id="Search">
             <div id="SearchBar">
                 <input type="text" id="search" name="search" placeholder="Search" onChange={searchChanged} aria-labelledby="Search"/>
-                <button id="cancelIcon">
+                <button className="search" id="cancelIcon">
                     <img src={CancelIcon} alt="Cancel" />
                 </button>
-                <button id="searchIcon">
+                <button className="search" id="searchIcon">
                     {/* <img src={permalink + "/static/assets/img/search.png"} alt="Magnifying glass" /> */}
                     <img src={SearchIcon} alt="Magnifying glass" />
                 </button>
