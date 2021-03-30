@@ -1,5 +1,8 @@
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import permalink from "../lib/permalink";
+import SearchIcon from "../assets/img/search.png";
+import CancelIcon from "../assets/img/cancel.png";
+import "../assets/css/Search.css";
 
 const SearchBar = () => {
     const [results, setResults] = useState<any[] | null>(null);
@@ -28,8 +31,12 @@ const SearchBar = () => {
         <div id="Search">
             <div id="SearchBar">
                 <input type="text" id="search" name="search" placeholder="Search" onChange={searchChanged} />
+                <button id="cancelIcon">
+                    <img src={CancelIcon} alt="Cancel" />
+                </button>
                 <button id="searchIcon">
-                    <img src={permalink + "/static/assets/img/search.png"} alt="Magnifying glass" />
+                    {/* <img src={permalink + "/static/assets/img/search.png"} alt="Magnifying glass" /> */}
+                    <img src={SearchIcon} alt="Magnifying glass" />
                 </button>
             </div>
             <div id="searchResults">{results}</div>

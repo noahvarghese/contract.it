@@ -52,6 +52,7 @@
 import React from "react";
 import { geoLocation } from "./scripts/geolocation";
 import Map from "./components/Map";
+import NavBar from "./components/NavBar";
 
 const App = () => {
     const [state, setState] = React.useState({
@@ -77,6 +78,7 @@ const App = () => {
 
     return (
         <div>
+            <NavBar />
             <Map
                 apiKey={state.apiKey}
                 mapOptions={{

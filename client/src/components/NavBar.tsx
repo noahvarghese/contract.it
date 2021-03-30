@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import SearchBar from "./SearchBar";
+import "../assets/css/Nav.css";
 
 const NavBar = () => {
     return (
-        <div>
-
+        <div id="Nav">
+            <SearchBar />
         </div>
     )
 }

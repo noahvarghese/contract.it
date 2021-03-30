@@ -7,6 +7,9 @@ const Map = ({ apiKey, mapOptions }: { apiKey: string; mapOptions?: any }) => {
 
     const InitMap = () => {
         const map = new Microsoft.Maps.Map(mapRef.current);
+        // this needs to be here otherwise the map doesnt load
+        console.log(mapOptions);
+
         if (mapOptions !== {}) {
             map.setOptions(mapOptions);
         }
