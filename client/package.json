@@ -13,6 +13,7 @@
         "classnames": "^2.2.6",
         "css": "^2.2.4",
         "react": "^17.0.1",
+        "react-bingmaps": "^3.6.1",
         "react-dom": "^17.0.1",
         "react-scripts": "4.0.3",
         "tailwind": "^4.0.0",
