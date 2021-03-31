@@ -16,7 +16,13 @@ const FilerDisplay = () => {
                     </button>
                 </span>
             </h3>
-            <div id="filters"></div>
+            <div id="filters">
+                <div id="crudFilter">
+                    <button id="crudFilterBtn">
+                        Add / Edit
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

@@ -4,6 +4,9 @@
     max-width: 75%;
     width: 15rem;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-between;
     justify-self: center;
     align-self: center;
     border-radius: 10px;
@@ -12,6 +15,7 @@
     grid-column: 1;
     grid-row: 3;
     z-index: 1;
+    overflow: hidden;
 }
 
 #FilterDisplay > h3 {
@@ -19,7 +23,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    align-self: unset;
+    justify-self: flex-end;
+    gap: 0 1rem;
 }
 
 button#filterToggle {
@@ -35,4 +42,9 @@ button#filterToggle > img {
 button#filterToggle.show > img {
     transform: rotate(0deg);
     width: 20px;
+}
+
+#filters {
+    display: none;
+    height: 0;
 }

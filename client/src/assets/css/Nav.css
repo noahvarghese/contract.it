@@ -20,4 +20,9 @@ button#create {
     border-radius: 10px;
     height: 100%;
     justify-self: center;
+    transition: box-shadow 0.1s ease-in;
+}
+
+button#create:active {
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.8);
 }
