@@ -84,7 +84,29 @@ const App = () => {
                     center: [state.latitude, state.longitude],
                     credentials: state.apiKey,
                     clientWidth: "100%",
-                    showDashboard: false
+                    showDashboard: false,
+                    customMapStyle: {
+                        elements: {
+                            area: { fillColor: "#FAF3E5" },
+                            water: { fillColor: "#9CEFF7" },
+                            tollRoad: {
+                                fillColor: "#ffffff",
+                                strokeColor: "#ffffff",
+                            },
+                            arterialRoad: {
+                                fillColor: "#ffffff",
+                                strokeColor: "#ffffff",
+                            },
+                            road: {
+                                fillColor: "#ffffff",
+                                strokeColor: "#ffffff",
+                            },
+                            street: {
+                                fillColor: "#ffffff",
+                                strokeColor: "#ffffff",
+                            },
+                        },
+                    },
                 }}
             />
             <ControlsOverlay />
