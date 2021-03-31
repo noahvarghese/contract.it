@@ -106,6 +106,9 @@ const App = () => {
                                 strokeColor: "#ffffff",
                             },
                         },
+                        settings: {
+                            landColor: "#FAF3E5",
+                        },
                     },
                 }}
             />
