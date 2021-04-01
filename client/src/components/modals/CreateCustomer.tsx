@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from "react-redux";
 import { State } from "../../store/types/state";
 import { FilterOptions } from "../../store/types/filters";
-import Input from "../Input";
+import Input from "../elements/Input";
 import "../../assets/css/Create.css";
 import { ModalOptions } from '../../store/types/modals';
 import { SetModals } from '../../store/actions';
+import "../../assets/css/modal.css";
 
 interface CreateProps {
     filters: FilterOptions[];
@@ -22,7 +23,7 @@ const CreateModal: React.FC<CreateProps> = ({ filters, modals, setCreateModal })
     };
 
     return (
-        <div id="Create" className="card">
+        <div id="Create" className="card modal">
             <div className="headerContainer">
                 <h1>Create</h1>
             </div>

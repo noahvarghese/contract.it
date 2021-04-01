@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react'
-import permalink from "../lib/permalink";
-import SearchIcon from "../assets/img/search.png";
-import CancelIcon from "../assets/img/cancel.png";
-import "../assets/css/Search.css";
+import permalink from "../../lib/permalink";
+import SearchIcon from "../../assets/img/search.png";
+import CancelIcon from "../../assets/img/cancel.png";
+import "../../assets/css/Search.css";
 
 const SearchBar = () => {
     const [results, setResults] = useState<any[] | null>(null);

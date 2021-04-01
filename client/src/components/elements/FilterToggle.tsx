@@ -1,12 +1,12 @@
 import React from 'react';
-import { FilterOptions } from "../store/types/filters";
-import "../assets/css/Filter.css";
+import { FilterOptions } from "../../store/types/filters";
+import "../../assets/css/Filter.css";
 
 interface FilterProps {
     filter: FilterOptions;
 }
 
-const Filter: React.FC<FilterProps> = ({ filter }) => {
+const FilterToggle: React.FC<FilterProps> = ({ filter }) => {
     return (
         <div className="Filter">
             <div className="imageContainer">
@@ -18,4 +18,4 @@ const Filter: React.FC<FilterProps> = ({ filter }) => {
     )
 }
 
-export default Filter
+export default FilterToggle

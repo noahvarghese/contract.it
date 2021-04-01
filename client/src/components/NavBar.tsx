@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { State } from "../store/types/state";
 import { ModalOptions } from "../store/types/modals";
-import SearchBar from "./SearchBar";
+import SearchBar from "./cards/SearchBar";
 import "../assets/css/Nav.css";
 import { SetModals } from '../store/actions';
 

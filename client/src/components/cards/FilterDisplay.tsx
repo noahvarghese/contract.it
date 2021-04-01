@@ -1,12 +1,12 @@
 import React, { MouseEvent } from "react";
-import Filter from "./Filter";
 import { connect } from "react-redux";
-import { State } from "../store/types/state";
-import { FilterOptions } from "../store/types/filters";
-import ArrowIcon from "../assets/img/arrow.png";
-import "../assets/css/FilterDisplay.css";
-import { ModalOptions } from "../store/types/modals";
-import { SetModals } from "../store/actions";
+import { State } from "../../store/types/state";
+import { FilterOptions } from "../../store/types/filters";
+import { ModalOptions } from "../../store/types/modals";
+import { SetModals } from "../../store/actions";
+import FilterToggle from "../elements/FilterToggle";
+import ArrowIcon from "../../assets/img/arrow.png";
+import "../../assets/css/FilterDisplay.css";
 
 interface FilterDisplayProps {
     filters: FilterOptions[];
@@ -41,7 +41,7 @@ const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters, modals, setModal
                 <button id="crudFilterBtn" onClick={showModals}>Add / Edit</button>
                 <div id="filterContainer">
                     {filters.map((filter, index) => (
-                        <Filter filter={filter} key={index + 1} data-id={index + 1} />
+                        <FilterToggle filter={filter} key={index + 1} data-id={index + 1} />
                     ))}
                 </div>
             </div>

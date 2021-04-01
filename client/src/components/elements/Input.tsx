@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/css/Input.css";
+import "../../assets/css/Input.css";
 
 interface InputProps {
     id: string;
@@ -10,14 +10,13 @@ interface InputProps {
     //   changeValue: (newValue: number) => void;
 }
 
-const Input = ({
-    //   changeValue,
+const Input: React.FC<InputProps> = ({
     id,
     name,
     type,
     currentValue,
     list
-}: InputProps) => {
+}) => {
     return (
         <div className="inputContainer">
             <input
