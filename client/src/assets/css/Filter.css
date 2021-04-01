@@ -4,7 +4,33 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    padding: 1rem 0;
 }
-.Filter, .Filter * {
+/* .Filter,
+.Filter * {
+    margin: 0;
+} */
+
+.Filter span {
+    width: max-content;
+}
+
+.Filter .imgContainer {
+    width: 35px;
+}
+
+.Filter .content {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0 3rem;
+}
+
+.Filter input {
+    width: 10%;
+    align-items: center;
+    justify-content: flex-end;
     margin: 0;
 }

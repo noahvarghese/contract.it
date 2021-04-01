@@ -37,7 +37,7 @@ const CreateModal: React.FC<CreateProps> = ({ filters, modals, setCreateModal })
                 <datalist id="filters">
                     {
                         filters.map((filter) => (
-                            <option value={filter.label} />
+                            <option value={filter.label} key={filter.id} />
                         ))
                     }
                 </datalist>

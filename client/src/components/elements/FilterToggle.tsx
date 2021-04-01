@@ -9,10 +9,12 @@ interface FilterProps {
 const FilterToggle: React.FC<FilterProps> = ({ filter }) => {
     return (
         <div className="Filter">
-            <div className="imageContainer">
-                <img src={filter.image} alt={filter.label} />
+            <div className="content">
+                <div className="imgContainer">
+                    <img src={filter.image} alt={filter.label} />
+                </div>
+                <span>{filter.label}</span>
             </div>
-            <h4>{filter.label}</h4>
             <input type="checkbox" className="filterCheckbox" defaultChecked={filter.checked} />
         </div>
     )
