@@ -1,0 +1,40 @@
+input[type="file"] {
+    display: none;
+}
+
+#fileInputLabel > span {
+    font-weight: bold;
+    color: #777777;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#fileInputLabel > span:last-of-type {
+    color: #86a6ff;
+}
+
+#dragAndDrop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem 0;
+    width: 100%;
+    margin-top: 2rem;
+    border: 2px dashed #777777;
+    padding: 2rem 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+label > span.label {
+    margin-left: 1rem;
+    font-family: Roboto;
+    font-weight: 300;
+    font-size: 1.25rem;
+}
+
+.labelContainer {
+    margin-top: 4rem;
+}

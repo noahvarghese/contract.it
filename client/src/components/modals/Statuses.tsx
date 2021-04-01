@@ -23,6 +23,14 @@ const Statuses: React.FC<StatusProps> = ({ filters, modals, setModals }) => {
         })
     }
 
+    const showCreateStatusModal = () => {
+        setModals({
+            ...modals,
+            showStatuses: false,
+            showCreateStatus: true
+        })
+    }
+
     return (
         <div id="Statuses" className="card modal">
             <div className="headerContainer">
@@ -39,7 +47,7 @@ const Statuses: React.FC<StatusProps> = ({ filters, modals, setModals }) => {
                 <button type="reset" className="btn" onClick={hideModal}>
                     Cancel
                     </button>
-                <button type="submit" className="btn">
+                <button type="submit" className="btn" onClick={showCreateStatusModal}>
                     Create
                     </button>
             </div>

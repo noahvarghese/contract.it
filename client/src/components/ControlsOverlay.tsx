@@ -8,6 +8,7 @@ import Blocker from "./modals/Blocker";
 import "../assets/css/ControlsOverlay.css";
 import { ModalOptions } from '../store/types/modals';
 import Statuses from './modals/Statuses';
+import CreateStatus from "./modals/CreateStatus";
 
 interface ControlsProps {
     modals: ModalOptions;
@@ -25,31 +26,29 @@ const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
         }
     }
 
+    let elements;
+
+    if (showMap) {
+        elements = <><NavBar /><FilterDisplay /></>;
+    } else {
+        if (modals.showCreateCustomer) {
+            elements = <><Blocker /><CreateCustomerModal /></>;
+        }
+        else if (modals.showStatuses) {
+            elements = <><Blocker /><Statuses /></>;
+        }
+        else if (modals.showCreateStatus) {
+            elements = <><Blocker /><CreateStatus /></>
+        }
+        else {
+            elements = <Blocker />;
+        }
+    }
+
 
     return (
         <div id="ControlsOverlay">
-
-            { showMap ?
-                (
-                    <>
-                        <NavBar />
-                        <FilterDisplay />
-                    </>
-                )
-                :
-                (
-                    <>
-                        <Blocker />
-                        {
-                            modals.showCreateCustomer ?
-                                (
-                                    <CreateCustomerModal />
-                                ) : (modals.showStatuses ? (<><Statuses /></>) : "")
-                        }
-                    </>
-                )
-            }
-
+            { elements}
         </div>
     )
 }
