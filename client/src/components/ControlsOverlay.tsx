@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { State } from "../store/types/state"
 import NavBar from "./NavBar";
 import FilterDisplay from "./FilterDisplay";
-import CreateModal from "./Modals/Create";
+import CreateCustomerModal from "./Modals/CreateCustomer";
 import Blocker from "./Modals/Blocker";
 import "../assets/css/ControlsOverlay.css";
 import { ModalOptions } from '../store/types/modals';
@@ -30,18 +30,23 @@ const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
     return (
         <div id="ControlsOverlay">
 
-            { showMap ? (
-                <>
-                    <NavBar />
-                    <FilterDisplay />
-                </>
-            )
-                :
-
+            { showMap ?
                 (
                     <>
-                        <CreateModal />
+                        <NavBar />
+                        <FilterDisplay />
+                    </>
+                )
+                :
+                (
+                    <>
                         <Blocker />
+                        {
+                            modals.showCreateCustomer ?
+                                (
+                                    <CreateCustomerModal />
+                                ) : (modals.showStatuses ? (<div>HII</div>) : "")
+                        }
                     </>
                 )
             }

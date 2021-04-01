@@ -14,7 +14,7 @@ interface NavProps {
 const NavBar: React.FC<NavProps> = ({ modals, setCreateModal }) => {
 
     const showCreateModal = () => {
-        setCreateModal({ ...modals, showCreate: true });
+        setCreateModal({ ...modals, showCreateCustomer: true });
     };
 
     return (

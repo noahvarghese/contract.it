@@ -17,7 +17,7 @@ const CreateModal: React.FC<CreateProps> = ({ filters, modals, setCreateModal })
     const hideCreate = () => {
         setCreateModal({
             ...modals,
-            showCreate: false
+            showCreateCustomer: false
         })
     };
 

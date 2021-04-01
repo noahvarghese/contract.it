@@ -5,16 +5,28 @@ import { State } from "../store/types/state";
 import { FilterOptions } from "../store/types/filters";
 import ArrowIcon from "../assets/img/arrow.png";
 import "../assets/css/FilterDisplay.css";
+import { ModalOptions } from "../store/types/modals";
+import { SetModals } from "../store/actions";
 
 interface FilterDisplayProps {
     filters: FilterOptions[];
+    modals: ModalOptions;
+    setModals: (modals: ModalOptions) => any;
 }
 
-const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
+const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters, modals, setModals }) => {
     const showFilters = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
         document.getElementById("filterToggle")!.classList.toggle("show");
         document.getElementById("filters")!.classList.toggle("show");
     };
+
+    const showModals = () => {
+        setModals({
+            ...modals,
+            showStatuses: true
+        })
+    }
+
     return (
         <div id="FilterDisplay" className="card">
             <h3 onClick={showFilters}>
@@ -26,7 +38,7 @@ const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
                 </span>
             </h3>
             <div id="filters">
-                <button id="crudFilterBtn">Add / Edit</button>
+                <button id="crudFilterBtn" onClick={showModals}>Add / Edit</button>
                 <div id="filterContainer">
                     {filters.map((filter, index) => (
                         <Filter filter={filter} key={index + 1} data-id={index + 1} />
@@ -38,8 +50,11 @@ const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
 };
 
 export default connect(
-    ({ filters }: State) => ({
+    ({ filters, modals }: State) => ({
         filters: filters,
+        modals: modals
     }),
-    (_) => ({})
+    (dispatch) => ({
+        setModals: (modals: ModalOptions) => dispatch(SetModals(modals))
+    })
 )(FilterDisplay);
