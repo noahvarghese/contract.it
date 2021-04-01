@@ -101,16 +101,16 @@ router.put("/:id", async (req: Request, res: Response) => {
 
             filePath = path.join(rootPath, file.name);
 
-            if (status.file.includes(file.name) === false) {
-                fs.unlinkSync(path.join(parentPath, status.file));
+            if (status.image.includes(file.name) === false) {
+                fs.unlinkSync(path.join(parentPath, status.image));
             }
 
             file.mv(path.join(basePath, file.name));
         }
 
         const newImageProperties = {
-            text: req.body.text === status.text ? status.text : req.body.text,
-            file: filePath ? filePath : status.file,
+            label: req.body.text === status.label ? status.label : req.body.text,
+            image: filePath ? filePath : status.image,
         };
 
         const result = await StatusManager.update(

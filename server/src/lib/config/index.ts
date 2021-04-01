@@ -1,8 +1,10 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const dev: boolean = JSON.parse(process.env.DEV!);
-const test: boolean = JSON.parse(process.env.TEST!);
+export const dev: boolean = JSON.parse(process.env.DEV!);
+export const test: boolean = JSON.parse(process.env.TEST!);
+export const devPermalink: string = "http://localhost:3000";
+
 let permalink: string;
 let port: number = 4000;
 

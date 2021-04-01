@@ -3,6 +3,7 @@ import path from "path";
 import * as dotenv from "dotenv";
 import devRouter from "./dev";
 import apiRouter from "./api";
+import assetsRouter from "./assets";
 
 dotenv.config();
 const dev: boolean = JSON.parse(process.env.DEV!);
@@ -22,5 +23,6 @@ if (dev) {
 }
 
 router.use("/api", apiRouter);
+router.use("/assets", assetsRouter);
 
 export default router;

@@ -2,7 +2,7 @@ import * as express from "express";
 import { createConnection } from "typeorm";
 import * as fileUpload from "express-fileupload";
 import * as cors from "cors";
-import config from "./lib/config";
+import config, { dev, devPermalink } from "./lib/config";
 import router from "./lib/routes";
 // import authMiddleware from "./lib/middleware";
 import Logs, { LogLevels } from "./lib/util/Logs";
@@ -24,7 +24,7 @@ const app = express();
     app.disable("x-powered-by");
 
     /* only allow access from current url */
-    app.use(cors({ origin: config.permalink }));
+    app.use(cors({ origin: dev ? devPermalink : config.permalink }));
 
     /* Allow file upload */
     app.use(fileUpload({ createParentPath: true }));

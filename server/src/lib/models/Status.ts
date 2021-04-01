@@ -11,8 +11,8 @@ import {
 import Job from "./Job";
 
 interface StatusAttributes {
-    file: string;
-    text: string;
+    image: string;
+    label: string;
 }
 
 @Entity()
@@ -20,9 +20,9 @@ export default class Status implements StatusAttributes {
     @PrimaryGeneratedColumn()
     public id!: number;
     @Column()
-    public file!: string;
+    public image!: string;
     @Column()
-    public text!: string;
+    public label!: string;
     @CreateDateColumn()
     public readonly createdOn!: Date;
     @UpdateDateColumn()

@@ -20,7 +20,7 @@ const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
             <h3 onClick={showFilters}>
                 <span>Filters / Statuses</span>
                 <span>
-                    <button id="filterToggle" onClick={showFilters}>
+                    <button id="filterToggle">
                         <img src={ArrowIcon} alt="arrow" />
                     </button>
                 </span>
@@ -29,7 +29,7 @@ const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
                 <button id="crudFilterBtn">Add / Edit</button>
                 <div id="filterContainer">
                     {filters.map((filter, index) => (
-                        <Filter filter={filter} key={index + 1} />
+                        <Filter filter={filter} key={index + 1} data-id={index + 1} />
                     ))}
                 </div>
             </div>
