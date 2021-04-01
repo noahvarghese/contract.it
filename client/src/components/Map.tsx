@@ -1,35 +1,36 @@
 import React from "react";
+import { connect } from "react-redux";
 import { LoadBingApi, Microsoft } from "../lib/maps";
-// import { sleep } from "../lib/sleep";
+import { State } from "../store/types/state";
+import { MapOptions } from "../store/types/map";
 import "../assets/css/Map.css";
 
-const Map = ({ apiKey, mapOptions }: { apiKey: string; mapOptions?: any }) => {
-    const [mapRef, setMapRef] = React.useState(null);
-    // const mapRef = React.createRef<HTMLDivElement>();
+const Map: React.FC<MapOptions> = (mapOptions) => {
+    // We only care about the setter
+    // As we want to force a page refresh once the ref is valid
+    const setMapRef = React.useState(null)[1];
 
     const mapRefChange = React.useCallback(
         async (node) => {
-            console.log(node);
-
             setMapRef(node);
             if (node !== null) {
-                await LoadBingApi(apiKey);
+                await LoadBingApi(mapOptions.credentials);
 
                 try {
                     const map = new Microsoft.Maps.Map(node);
-                    if (mapOptions !== {}) {
-                        map.setOptions(mapOptions);
-                    }
+                    map.setOptions(mapOptions);
                 } catch (e) {
-                    console.log(e);
+                    console.error(e);
                 }
             }
         },
-        []
-        // [apiKey, mapOptions, mapRef]
+        [mapOptions, setMapRef]
     );
 
     return <div id="Map" ref={mapRefChange}></div>;
 };
 
-export default Map;
+export default connect(
+    ({ mapOptions }: State) => mapOptions,
+    (_) => ({})
+)(Map);

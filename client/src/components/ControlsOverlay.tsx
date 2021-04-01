@@ -8,7 +8,7 @@ const ControlsOverlay = () => {
         <div id="ControlsOverlay">
             <NavBar />
             <FilterDisplay />
-            
+             
         </div>
     )
 }
