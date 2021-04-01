@@ -13,8 +13,6 @@ interface ControlsProps {
 }
 
 const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
-    let display;
-
     let showMap = true;
 
     const keys = Object.keys(modals);
