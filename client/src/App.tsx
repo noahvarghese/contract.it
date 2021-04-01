@@ -50,7 +50,7 @@
 // export default App;
 
 import React from "react";
-import { geoLocation } from "./scripts/geolocation";
+import { geoLocation } from "./lib/geolocation";
 import Map from "./components/Map";
 import ControlsOverlay from "./components/ControlsOverlay";
 

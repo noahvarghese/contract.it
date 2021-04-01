@@ -1,25 +1,35 @@
 import React from "react";
-import { LoadBingApi, Microsoft } from "../scripts/maps";
+import { LoadBingApi, Microsoft } from "../lib/maps";
+// import { sleep } from "../lib/sleep";
 import "../assets/css/Map.css";
 
 const Map = ({ apiKey, mapOptions }: { apiKey: string; mapOptions?: any }) => {
-    const mapRef = React.createRef<HTMLDivElement>();
+    const [mapRef, setMapRef] = React.useState(null);
+    // const mapRef = React.createRef<HTMLDivElement>();
 
-    const InitMap = () => {
-        const map = new Microsoft.Maps.Map(mapRef.current);
-        // this needs to be here otherwise the map doesnt load
-        console.log(mapOptions);
+    const mapRefChange = React.useCallback(
+        async (node) => {
+            console.log(node);
 
-        if (mapOptions !== {}) {
-            map.setOptions(mapOptions);
-        }
-    };
+            setMapRef(node);
+            if (node !== null) {
+                await LoadBingApi(apiKey);
 
-    React.useEffect(() => {
-        LoadBingApi(apiKey).then(() => InitMap());
-    }, [apiKey]);
+                try {
+                    const map = new Microsoft.Maps.Map(node);
+                    if (mapOptions !== {}) {
+                        map.setOptions(mapOptions);
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        },
+        []
+        // [apiKey, mapOptions, mapRef]
+    );
 
-    return <div id="Map" ref={mapRef}></div>;
+    return <div id="Map" ref={mapRefChange}></div>;
 };
 
 export default Map;
