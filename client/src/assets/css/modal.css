@@ -10,12 +10,21 @@
 }
 
 .modal h1 {
-    width: 45%;
+    position: relative;
+    width: max-content;
     text-align: left;
-    border-bottom: 3px solid var(--primary-btn);
     margin: 0;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
+}
+
+.modal h1::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: calc(100% + 3rem);
+    content: " ";
+    border-bottom: 3px solid var(--primary-btn);
 }
 
 .btnContainer {

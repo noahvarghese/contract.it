@@ -25,7 +25,7 @@ const CreateModal: React.FC<CreateProps> = ({ filters, modals, setCreateModal })
     return (
         <div id="Create" className="card modal">
             <div className="headerContainer">
-                <h1>Create</h1>
+                <h1>Create Customer</h1>
             </div>
             <form>
                 <Input id="CustomerName" name="Customer Name" type="string" currentValue={undefined} />

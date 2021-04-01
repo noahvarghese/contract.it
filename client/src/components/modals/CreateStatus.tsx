@@ -23,7 +23,7 @@ const CreateStatus: React.FC<CreateStatusProps> = ({ modals, setModals }) => {
     return (
         <div className="card modal" id="CreateStatus">
             <div className="headerContainer">
-                <h1>Create</h1>
+                <h1>Create Status</h1>
             </div>
             <Input id="statusLabel" name="Status" type="string" currentValue={undefined} />
             <div className="labelContainer">
