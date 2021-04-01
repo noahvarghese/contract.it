@@ -1,25 +1,23 @@
 #FilterDisplay {
     background-color: white;
-    height: 3rem;
+    min-height: 3rem;
+    height: min-content;
+    padding: 0 2rem;
     max-width: 75%;
     width: 15rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-content: space-between;
+    align-content: center;
     justify-self: center;
-    align-self: center;
+    align-self: flex-end;
+    margin-bottom: 2rem;
     border-radius: 10px;
     box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
-    padding: 0 1rem;
     grid-column: 1;
     grid-row: 3;
     z-index: 1;
     overflow: hidden;
-}
-
-#FilterDisplay:active {
-    box-shadow: 1px 2px 4px rgba(0,0,0,0.8);
 }
 
 #FilterDisplay > h3 {
@@ -27,10 +25,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    align-self: unset;
-    justify-self: flex-end;
-    gap: 0 1rem;
+    justify-content: space-between;
+    margin: 0;
+    padding: 1rem 0;
+    cursor: pointer;
 }
 
 button#filterToggle {
@@ -51,4 +49,31 @@ button#filterToggle.show > img {
 #filters {
     display: none;
     height: 0;
+    margin: 0 0 2rem 0;
+}
+
+#filters.show {
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    gap: 1rem 0;
+}
+
+#filters button {
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--secondary-btn);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
+    height: 2.25rem;
+    display: block;
+}
+
+#filters button:active {
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.8);
+}
+
+#filterContainer {
+    display: block;
 }

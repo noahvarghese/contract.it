@@ -1,14 +1,23 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent } from "react";
+import Filter from "./Filter";
+import { connect } from "react-redux";
+import { State } from "../store/types/state";
+import { FilterOptions } from "../store/types/filters";
 import ArrowIcon from "../assets/img/arrow.png";
 import "../assets/css/FilterDisplay.css";
 
-const FilerDisplay = () => {
-    const showFilters = (e: MouseEvent<HTMLButtonElement>) => {
-        e.currentTarget.classList.toggle("show");
-    }
+interface FilterDisplayProps {
+    filters: FilterOptions[];
+}
+
+const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
+    const showFilters = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
+        document.getElementById("filterToggle")!.classList.toggle("show");
+        document.getElementById("filters")!.classList.toggle("show");
+    };
     return (
         <div id="FilterDisplay">
-            <h3>
+            <h3 onClick={showFilters}>
                 <span>Filters / Statuses</span>
                 <span>
                     <button id="filterToggle" onClick={showFilters}>
@@ -17,14 +26,20 @@ const FilerDisplay = () => {
                 </span>
             </h3>
             <div id="filters">
-                <div id="crudFilter">
-                    <button id="crudFilterBtn">
-                        Add / Edit
-                    </button>
+                <button id="crudFilterBtn">Add / Edit</button>
+                <div id="filterContainer">
+                    {filters.map((filter, index) => (
+                        <Filter filter={filter} key={index + 1} />
+                    ))}
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default FilerDisplay
+export default connect(
+    ({ filters }: State) => ({
+        filters: filters,
+    }),
+    (_) => ({})
+)(FilterDisplay);
