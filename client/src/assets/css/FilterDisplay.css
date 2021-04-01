@@ -1,5 +1,4 @@
 #FilterDisplay {
-    background-color: white;
     min-height: 3rem;
     height: min-content;
     padding: 0 2rem;
@@ -13,11 +12,8 @@
     align-self: flex-end;
     margin-bottom: 2rem;
     border-radius: 10px;
-    box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
     grid-column: 1;
     grid-row: 3;
-    z-index: 1;
-    overflow: hidden;
 }
 
 #FilterDisplay > h3 {
@@ -65,13 +61,13 @@ button#filterToggle.show > img {
     background-color: var(--secondary-btn);
     color: white;
     border-radius: 10px;
-    box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.5);
     height: 2.25rem;
     display: block;
 }
 
 #filters button:active {
-    box-shadow: 1px 2px 4px rgba(0,0,0,0.8);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 #filterContainer {

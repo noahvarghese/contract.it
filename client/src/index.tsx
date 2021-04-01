@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./assets/css/index.css";
+import "./assets/css/card.css";
+import "./assets/css/fade.css";
+import "./assets/css/button.css";
 // import "./tailwind.output.css";
 import App from "./App";
 import { Provider } from "react-redux";

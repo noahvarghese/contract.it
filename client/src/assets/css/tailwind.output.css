@@ -6,10 +6,10 @@
 
 :root {
   --text-color: #777777;
-  --primary-btn: #FEA800;
+  --primary-btn: #fea800;
   --secondary-btn: #006573;
-  --tertiary-btn: #878B8C;
-  --last-btn: #3D9B4F;
+  --tertiary-btn: #878b8c;
+  --last-btn: #3d9b4f;
 }
 
 body {

@@ -1,6 +1,7 @@
 import { CustomAction } from "../reducers";
-import { SET_LOCATION, SET_FILTERS } from "../types/actions";
+import { SET_LOCATION, SET_FILTERS, SET_MODALS } from "../types/actions";
 import { FilterOptions } from "../types/filters";
+import { ModalOptions } from "../types/modals";
 
 export const SetLocation = (location: { latitude: number; longitude: number; }): CustomAction => {
     return {
@@ -15,4 +16,11 @@ export const SetFilters = (filters: FilterOptions[]): CustomAction => {
         payload: filters
     }
 };
+
+export const SetModals = (modals: ModalOptions): CustomAction => {
+    return {
+        type: SET_MODALS,
+        payload: modals
+    }
+}
 

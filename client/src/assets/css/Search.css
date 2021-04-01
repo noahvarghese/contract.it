@@ -1,17 +1,8 @@
 #Search {
-    background-color: white;
     width: 100%;
     grid-column-start: 2;
     height: 3rem;
     border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
-    z-index: 1;
-    transition: box-shadow 0.1s ease-in;
-}
-
-#Search:focus-within {
-    box-shadow: 1px 2px 4px rgba(0,0,0,0.8);
 }
 
 #SearchBar {
@@ -36,7 +27,8 @@
     opacity: 1;
 }
 
-#searchIcon, #cancelIcon {
+#searchIcon,
+#cancelIcon {
     display: inline-flex;
     flex-direction: row;
     align-items: center;

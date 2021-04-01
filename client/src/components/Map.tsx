@@ -6,13 +6,24 @@ import { InitialMapState, MapOptions } from "../store/types/map";
 import { geoLocation } from "../lib/geolocation";
 import { SetLocation } from "../store/actions";
 import "../assets/css/Map.css";
+import { ModalOptions } from "../store/types/modals";
 
 interface MapProps {
     mapOptions: MapOptions;
+    modals: ModalOptions;
     setLocation: (location: { latitude: number; longitude: number; }) => any;
 }
 
-const Map: React.FC<MapProps> = ({ setLocation, mapOptions }) => {
+const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
+    const classNames = [];
+
+    for (const key of Object.keys(modals)) {
+        if (modals[key as keyof ModalOptions] === true) {
+            classNames.push("blur");
+            break;
+        }
+    }
+
     // We only care about the setter
     // As we want to force a page refresh once the ref is valid
     const setMapRef = React.useState(null)[1];
@@ -45,11 +56,11 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions }) => {
         [mapOptions, setMapRef, setLocation]
     );
 
-    return <div id="Map" ref={mapRefChange}></div>;
+    return <div id="Map" ref={mapRefChange} className={classNames.join(", ")}></div>;
 };
 
 export default connect(
-    ({ mapOptions }: State) => ({ mapOptions }),
+    ({ mapOptions, modals }: State) => ({ mapOptions, modals }),
     (dispatch) => ({
         setLocation: (location: { latitude: number; longitude: number; }) => dispatch(SetLocation(location))
     })

@@ -5,4 +5,9 @@
     top: 0;
     left: 0;
     z-index: 0;
+    transition: filter 0.3s ease-in;
+}
+
+.blur {
+    filter: blur(2px);
 }

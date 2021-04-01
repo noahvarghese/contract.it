@@ -16,7 +16,7 @@ const FilterDisplay: React.FC<FilterDisplayProps> = ({ filters }) => {
         document.getElementById("filters")!.classList.toggle("show");
     };
     return (
-        <div id="FilterDisplay">
+        <div id="FilterDisplay" className="card">
             <h3 onClick={showFilters}>
                 <span>Filters / Statuses</span>
                 <span>

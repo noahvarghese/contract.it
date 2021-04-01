@@ -1,0 +1,27 @@
+#Create {
+    grid-row: 1 / span 3;
+    grid-column: 2;
+    justify-self: center;
+    align-self: center;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 95%;
+    width: 30rem;
+}
+
+#Create h1 {
+    width: 45%;
+    text-align: left;
+    border-bottom: 3px solid var(--primary-btn);
+    margin: 0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btnContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
