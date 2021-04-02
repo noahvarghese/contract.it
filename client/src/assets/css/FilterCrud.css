@@ -1,7 +1,7 @@
 .FilterCrud {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    width: 100%;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
@@ -18,10 +18,10 @@
 }
 
 .FilterCrud .imgContainer {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
-    padding-left: 1rem;
+    justify-content: center; */
+    /* padding-left: 1rem; */
     width: 35px;
 }
 
@@ -66,4 +66,8 @@
 
 .FilterCrud:hover {
     background-color: rgba(119, 119, 119, 0.05);
+}
+
+.imgContainer img {
+    max-width: 100%;
 }

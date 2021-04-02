@@ -1,6 +1,7 @@
 import React from 'react';
 import { FilterOptions } from "../../store/types/filters";
 import "../../assets/css/Filter.css";
+// import "../../assets/css/FilterCrud.css";
 
 interface FilterProps {
     filter: FilterOptions;

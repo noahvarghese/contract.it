@@ -1,24 +1,28 @@
 import { statusImageLink } from "../../lib/permalink";
 
-export interface FilterOptions {
+export interface StatusOptions {
     id: number | undefined;
     label: string | undefined;
     image: string | undefined;
-    checked: boolean;
+    createdOn: Date | undefined;
+    updatedOn: Date | undefined;
+    deletedOn: Date | undefined;
 }
 
-export const EmptyFilter = (): FilterOptions => ({
+export const EmptyStatus = (): StatusOptions => ({
     id: undefined,
     label: undefined,
     image: undefined,
-    checked: true
+    createdOn: undefined,
+    updatedOn: undefined,
+    deletedOn: undefined
 });
 
-export const FilterBuilder = (options?: any): FilterOptions => {
+export const StatusBuilder = (options?: any): StatusOptions => {
     if (options !== undefined) {
         if (options.image !== undefined && options.image.split("/").length === 0) {
             options.image = statusImageLink(options.image);
         }
     }
-    return Object.assign(EmptyFilter(), options);
-}
+    return Object.assign(EmptyStatus(), options);
+};

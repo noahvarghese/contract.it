@@ -4,15 +4,19 @@ import ControlsOverlay from "./components/ControlsOverlay";
 import { connect } from "react-redux";
 import { SetFilters } from "./store/actions/index";
 import { State } from "./store/types/state";
-import { FilterOptions } from "./store/types/filters";
+import { FilterBuilder, FilterOptions } from "./store/types/filters";
 import { statusApiLink, statusImageLink } from "./lib/permalink";
+import { StatusBuilder, StatusOptions } from "./store/types/statuses";
+import { SetStatuses } from "./store/actions";
+import { CustomAction } from "./store/reducers";
 
 interface AppProps {
     filters: FilterOptions[],
-    setFilters: (filters: FilterOptions[]) => any;
+    setFilters: (filters: FilterOptions[]) => CustomAction;
+    setStatuses: (statuses: StatusOptions[]) => CustomAction;
 }
 
-const App: React.FC<AppProps> = ({ filters, setFilters }) => {
+const App: React.FC<AppProps> = ({ filters, setFilters, setStatuses }) => {
     React.useEffect(() => {
         // console.log(filters)
         if (filters.length === 0) {
@@ -21,13 +25,14 @@ const App: React.FC<AppProps> = ({ filters, setFilters }) => {
                     const data = await res.json();
 
                     if (Array.isArray(data)) {
-                        const newFilters = data.map((filter: FilterOptions) => ({
-                            id: filter.id,
-                            label: filter.label,
-                            image: statusImageLink(filter.image),
-                            checked: false
-                        }));
-                        setFilters(newFilters);
+                        const statuses = data.map((status: StatusOptions) => {
+                            status.image = statusImageLink(status.image!);
+                            return StatusBuilder(status);
+                        });
+                        setStatuses(statuses);
+                        setFilters(
+                            statuses.map((status) => FilterBuilder(status))
+                        );
                     }
                 }
                 else {
@@ -51,6 +56,7 @@ export default connect(
         filters
     }),
     (dispatch) => ({
-        setFilters: (filters: FilterOptions[]) => dispatch(SetFilters(filters))
+        setFilters: (filters: FilterOptions[]) => dispatch(SetFilters(filters)),
+        setStatuses: (statuses: StatusOptions[]) => dispatch(SetStatuses(statuses))
     })
 )(App);

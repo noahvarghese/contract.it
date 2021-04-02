@@ -46,7 +46,7 @@ const CreateStatus: React.FC<CreateStatusProps> = ({ modals, setModals }) => {
                     </button>
                 <button type="submit" className="btn">
                     Create
-                    </button>
+                </button>
             </div>
         </div>
     );

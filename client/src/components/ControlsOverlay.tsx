@@ -9,6 +9,7 @@ import "../assets/css/ControlsOverlay.css";
 import { ModalOptions } from '../store/types/modals';
 import Statuses from './modals/Statuses';
 import CreateStatus from "./modals/CreateStatus";
+import DeleteStatus from "./modals/DeleteStatus";
 
 interface ControlsProps {
     modals: ModalOptions;
@@ -39,6 +40,9 @@ const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
         }
         else if (modals.showCreateStatus) {
             elements = <><Blocker /><CreateStatus /></>
+        }
+        else if (modals.showDeleteStatus) {
+            elements = <><Blocker /><DeleteStatus /></>
         }
         else {
             elements = <Blocker />;
