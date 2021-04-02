@@ -39,7 +39,6 @@ button#filterToggle > img {
 
 button#filterToggle.show > img {
     transform: rotate(0deg);
-    width: 20px;
 }
 
 #filters {
