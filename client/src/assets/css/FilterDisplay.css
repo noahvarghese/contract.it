@@ -1,6 +1,6 @@
 #FilterDisplay {
     min-height: 3rem;
-    height: min-content;
+    height: auto;
     padding: 0 2rem;
     max-width: 75%;
     width: 15rem;
@@ -43,15 +43,18 @@ button#filterToggle.show > img {
 }
 
 #filters {
-    display: none;
-    height: 0;
-    margin: 0 0 2rem 0;
+    visibility: 0;
+    max-height: 0;
+    height: auto;
+    transition: all 0.5s ease-in-out;
 }
 
 #filters.show {
+    margin: 0 0 2rem 0;
     display: flex;
+    visibility: visible;
     flex-direction: column;
-    height: max-content;
+    max-height: 100vh;
     gap: 1rem 0;
 }
 
