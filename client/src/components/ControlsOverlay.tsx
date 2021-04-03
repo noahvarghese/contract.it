@@ -10,6 +10,7 @@ import { ModalOptions } from '../store/types/modals';
 import Statuses from './modals/Statuses';
 import CreateStatus from "./modals/CreateStatus";
 import DeleteStatus from "./modals/DeleteStatus";
+import UpdateStatus from './modals/UpdateStatus';
 
 interface ControlsProps {
     modals: ModalOptions;
@@ -39,10 +40,13 @@ const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
             elements = <><Blocker /><Statuses /></>;
         }
         else if (modals.showCreateStatus) {
-            elements = <><Blocker /><CreateStatus /></>
+            elements = <><Blocker /><CreateStatus /></>;
         }
         else if (modals.showDeleteStatus) {
-            elements = <><Blocker /><DeleteStatus /></>
+            elements = <><Blocker /><DeleteStatus /></>;
+        }
+        else if (modals.showUpdateStatus) {
+            elements = <><Blocker /><UpdateStatus /></>;
         }
         else {
             elements = <Blocker />;

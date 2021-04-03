@@ -8,7 +8,8 @@ export const SetDeleteStatus = (state: State, status: StatusOptions): State => {
             showCreateCustomer: false,
             showCreateStatus: false,
             showStatuses: false,
-            showDeleteStatus: true
+            showDeleteStatus: true,
+            showUpdateStatus: false
         },
         current: {
             ...state.current,
@@ -16,6 +17,23 @@ export const SetDeleteStatus = (state: State, status: StatusOptions): State => {
         }
     }
 };
+
+export const SetUpdateStatus = (state: State, status: StatusOptions): State => {
+    return {
+        ...state,
+        modals: {
+            showCreateCustomer: false,
+            showCreateStatus: false,
+            showStatuses: false,
+            showDeleteStatus: false,
+            showUpdateStatus: true
+        },
+        current: {
+            ...state.current,
+            status
+        }
+    }
+}
 
 export const SetStatuses = (state: State, statuses: StatusOptions[]): State => {
     return {

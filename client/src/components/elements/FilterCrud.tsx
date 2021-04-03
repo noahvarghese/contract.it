@@ -7,18 +7,24 @@ import Edit from "../../assets/img/edit.png";
 import "../../assets/css/FilterCrud.css";
 import { CustomAction } from '../../store/reducers';
 import { StatusBuilder, StatusOptions } from '../../store/types/statuses';
-import { SetDeleteStatus } from '../../store/actions';
+import { SetDeleteStatus, SetUpdateStatus } from '../../store/actions';
 
 interface FilterCrudProps {
     filter: FilterOptions;
     ShowDelete: (status: StatusOptions) => CustomAction;
+    ShowUpdate: (status: StatusOptions) => CustomAction;
 }
 
-const FilterCrud: React.FC<FilterCrudProps> = ({ filter, ShowDelete }) => {
+const FilterCrud: React.FC<FilterCrudProps> = ({ filter, ShowDelete, ShowUpdate }) => {
     const showDelete = () => {
         const id = filter.id;
         ShowDelete(StatusBuilder({ id }));
     };
+
+    const showUpdate = () => {
+        const id = filter.id;
+        ShowUpdate(StatusBuilder({ id }));
+    }
 
     return (
         <div className="FilterCrud" data-id={filter.id}>
@@ -29,7 +35,7 @@ const FilterCrud: React.FC<FilterCrudProps> = ({ filter, ShowDelete }) => {
                 <span>{filter.label}</span>
             </div>
             <div className="btnContainer">
-                <button type="button">
+                <button type="button" onClick={showUpdate}>
                     <img src={Edit} alt="edit" />
                 </button>
                 <button type="button" onClick={showDelete}>
@@ -44,5 +50,8 @@ export default connect(
     ({ current: { status } }: State) => ({
         status
     }),
-    (dispatch) => ({ ShowDelete: (status: StatusOptions): CustomAction => dispatch(SetDeleteStatus(status)) })
+    (dispatch) => ({
+        ShowDelete: (status: StatusOptions): CustomAction => dispatch(SetDeleteStatus(status)),
+        ShowUpdate: (status: StatusOptions): CustomAction => dispatch(SetUpdateStatus(status))
+    })
 )(FilterCrud);

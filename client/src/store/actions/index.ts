@@ -1,5 +1,5 @@
 import { CustomAction } from "../reducers";
-import { SET_LOCATION, SET_FILTERS, SET_MODALS, SHOW_DELETE_STATUS, SET_STATUSES } from "../types/actions";
+import { SET_LOCATION, SET_FILTERS, SET_MODALS, SHOW_DELETE_STATUS, SET_STATUSES, SHOW_UPDATE_STATUS } from "../types/actions";
 import { FilterOptions } from "../types/filters";
 import { ModalOptions } from "../types/modals";
 import { StatusOptions } from "../types/statuses";
@@ -28,6 +28,13 @@ export const SetModals = (modals: ModalOptions): CustomAction => {
 export const SetDeleteStatus = (status: StatusOptions): CustomAction => {
     return {
         type: SHOW_DELETE_STATUS,
+        payload: status
+    }
+}
+
+export const SetUpdateStatus = (status: StatusOptions): CustomAction => {
+    return {
+        type: SHOW_UPDATE_STATUS,
         payload: status
     }
 }

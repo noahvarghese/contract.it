@@ -3,6 +3,7 @@ export interface ModalOptions {
     showCreateStatus: boolean;
     showDeleteStatus: boolean;
     showStatuses: boolean;
+    showUpdateStatus: boolean;
 }
 
 export const InitialModalOptions: ModalOptions = {
@@ -10,4 +11,5 @@ export const InitialModalOptions: ModalOptions = {
     showCreateStatus: false,
     showDeleteStatus: false,
     showStatuses: false,
+    showUpdateStatus: false
 }

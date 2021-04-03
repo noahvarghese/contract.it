@@ -11,12 +11,11 @@ import "../../assets/css/DeleteStatus.css";
 interface DeleteProps {
     status: StatusOptions;
     statuses: StatusOptions[];
-    modals: ModalOptions;
     setDeleteStatus: (status: StatusOptions) => CustomAction;
     setModals: (modals: ModalOptions) => CustomAction
 }
 
-const DeleteStatus: React.FC<DeleteProps> = ({ modals, status, statuses, setModals, setDeleteStatus }) => {
+const DeleteStatus: React.FC<DeleteProps> = ({ status, statuses, setModals, setDeleteStatus }) => {
     if (status.label === undefined) {
         status = statuses.find((st) => st.id === status.id)!;
     }
@@ -27,7 +26,8 @@ const DeleteStatus: React.FC<DeleteProps> = ({ modals, status, statuses, setModa
             showCreateCustomer: false,
             showCreateStatus: false,
             showDeleteStatus: false,
-            showStatuses: false
+            showStatuses: false,
+            showUpdateStatus: false
         })
     }
 
@@ -58,7 +58,7 @@ const DeleteStatus: React.FC<DeleteProps> = ({ modals, status, statuses, setModa
 }
 
 export default connect(
-    ({ current: { status }, statuses, modals }: State) => ({ status, statuses, modals }),
+    ({ current: { status }, statuses }: State) => ({ status, statuses }),
     (dispatch) => ({
         setDeleteStatus: (status: StatusOptions) => dispatch(SetDeleteStatus(status)),
         setModals: (modals: ModalOptions) => dispatch(SetModals(modals))
