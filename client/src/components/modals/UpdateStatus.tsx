@@ -22,7 +22,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ modals, status, statuses, s
     const hideModal = () => {
         setModals({
             ...modals,
-            showCreateStatus: false
+            showUpdateStatus: false
         })
     }
     return (
@@ -50,7 +50,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ modals, status, statuses, s
                     Cancel
                     </button>
                 <button type="submit" className="btn">
-                    Create
+                    Update
                 </button>
             </div>
         </div>
