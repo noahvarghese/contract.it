@@ -1,6 +1,13 @@
 import { Action } from "redux";
 import { State, InitialState } from "../types/state";
-import { SET_FILTERS, SET_LOCATION, SET_MODALS, SET_STATUSES, SHOW_DELETE_STATUS, SHOW_UPDATE_STATUS } from "../types/actions";
+import {
+    SET_FILTERS,
+    SET_LOCATION,
+    SET_MODALS,
+    SET_STATUSES,
+    SHOW_DELETE_STATUS,
+    SHOW_UPDATE_STATUS,
+} from "../constants";
 import { SetLocation } from "./map";
 import { SetFilters } from "./filters";
 import { SetModals } from "./modals";
