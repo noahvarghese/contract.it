@@ -1,6 +1,6 @@
 import React from "react";
-import Map from "./components/Map";
-import ControlsOverlay from "./components/ControlsOverlay";
+import Map from "./components/Overlay/Map";
+import ControlsOverlay from "./components/Overlay/ControlsOverlay";
 import { connect } from "react-redux";
 import { SetFilters } from "./store/actions/index";
 import { State } from "./store/types/state";
@@ -11,7 +11,7 @@ import { SetStatuses } from "./store/actions";
 import { CustomAction } from "./store/reducers";
 
 interface AppProps {
-    filters: FilterOptions[],
+    filters: FilterOptions[];
     setFilters: (filters: FilterOptions[]) => CustomAction;
     setStatuses: (statuses: StatusOptions[]) => CustomAction;
 }
@@ -34,11 +34,10 @@ const App: React.FC<AppProps> = ({ filters, setFilters, setStatuses }) => {
                             statuses.map((status) => FilterBuilder(status))
                         );
                     }
-                }
-                else {
+                } else {
                     console.error("NO FETCH");
                 }
-            })
+            });
         }
     });
 
@@ -53,10 +52,11 @@ const App: React.FC<AppProps> = ({ filters, setFilters, setStatuses }) => {
 export default connect(
     ({ mapOptions, filters }: State) => ({
         location: mapOptions.center,
-        filters
+        filters,
     }),
     (dispatch) => ({
         setFilters: (filters: FilterOptions[]) => dispatch(SetFilters(filters)),
-        setStatuses: (statuses: StatusOptions[]) => dispatch(SetStatuses(statuses))
+        setStatuses: (statuses: StatusOptions[]) =>
+            dispatch(SetStatuses(statuses)),
     })
 )(App);

@@ -1,5 +1,5 @@
 import React from "react";
-import "../../assets/css/Input.css";
+import "./Input.css";
 
 interface InputProps {
     id: string;
@@ -15,7 +15,7 @@ const Input: React.FC<InputProps> = ({
     name,
     type,
     currentValue,
-    list
+    list,
 }) => {
     return (
         <div className="inputContainer">
@@ -26,9 +26,11 @@ const Input: React.FC<InputProps> = ({
                 defaultValue={currentValue}
                 list={list}
                 required
-            // onChange={(e) => changeValue(Number(e.currentTarget.value))}
+                // onChange={(e) => changeValue(Number(e.currentTarget.value))}
             />
-            <label htmlFor={id}><span>{name}</span></label>
+            <label htmlFor={id}>
+                <span>{name}</span>
+            </label>
         </div>
     );
 };

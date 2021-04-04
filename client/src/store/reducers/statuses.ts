@@ -1,5 +1,5 @@
 import { State } from "../types/state";
-import { StatusOptions } from "../types/statuses";
+import { StatusBuilder, StatusOptions } from "../types/statuses";
 
 export const SetDeleteStatus = (state: State, status: StatusOptions): State => {
     return {
@@ -9,13 +9,13 @@ export const SetDeleteStatus = (state: State, status: StatusOptions): State => {
             showCreateStatus: false,
             showStatuses: false,
             showDeleteStatus: true,
-            showUpdateStatus: false
+            showUpdateStatus: false,
         },
         current: {
             ...state.current,
-            status
-        }
-    }
+            status,
+        },
+    };
 };
 
 export const SetUpdateStatus = (state: State, status: StatusOptions): State => {
@@ -26,18 +26,28 @@ export const SetUpdateStatus = (state: State, status: StatusOptions): State => {
             showCreateStatus: false,
             showStatuses: false,
             showDeleteStatus: false,
-            showUpdateStatus: true
+            showUpdateStatus: true,
         },
         current: {
             ...state.current,
-            status
-        }
-    }
-}
+            status,
+        },
+    };
+};
+
+export const UnsetCurrentStatus = (state: State): State => {
+    return {
+        ...state,
+        current: {
+            ...state.current,
+            status: StatusBuilder(),
+        },
+    };
+};
 
 export const SetStatuses = (state: State, statuses: StatusOptions[]): State => {
     return {
         ...state,
-        statuses
-    }
-}
+        statuses,
+    };
+};

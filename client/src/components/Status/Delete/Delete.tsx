@@ -1,21 +1,26 @@
-import React from 'react';
+import React from "react";
 import { connect } from "react-redux";
-import { SetDeleteStatus, SetModals } from '../../store/actions';
-import { CustomAction } from '../../store/reducers';
-import { ModalOptions } from '../../store/types/modals';
-import { State } from "../../store/types/state";
-import { StatusBuilder, StatusOptions } from '../../store/types/statuses';
-import "../../assets/css/Filter.css";
-import "../../assets/css/DeleteStatus.css";
+import { SetDeleteStatus, SetModals } from "../../../store/actions";
+import { CustomAction } from "../../../store/reducers";
+import { ModalOptions } from "../../../store/types/modals";
+import { State } from "../../../store/types/state";
+import { StatusBuilder, StatusOptions } from "../../../store/types/statuses";
+import "../../Filter/List/ListItem.css";
+import "./Delete.css";
 
 interface DeleteProps {
     status: StatusOptions;
     statuses: StatusOptions[];
     setDeleteStatus: (status: StatusOptions) => CustomAction;
-    setModals: (modals: ModalOptions) => CustomAction
+    setModals: (modals: ModalOptions) => CustomAction;
 }
 
-const DeleteStatus: React.FC<DeleteProps> = ({ status, statuses, setModals, setDeleteStatus }) => {
+const DeleteStatus: React.FC<DeleteProps> = ({
+    status,
+    statuses,
+    setModals,
+    setDeleteStatus,
+}) => {
     if (status.label === undefined) {
         status = statuses.find((st) => st.id === status.id)!;
     }
@@ -27,9 +32,9 @@ const DeleteStatus: React.FC<DeleteProps> = ({ status, statuses, setModals, setD
             showCreateStatus: false,
             showDeleteStatus: false,
             showStatuses: false,
-            showUpdateStatus: false
-        })
-    }
+            showUpdateStatus: false,
+        });
+    };
 
     return (
         <div className="card modal" id="DeleteStatus">
@@ -54,13 +59,14 @@ const DeleteStatus: React.FC<DeleteProps> = ({ status, statuses, setModals, setD
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default connect(
     ({ current: { status }, statuses }: State) => ({ status, statuses }),
     (dispatch) => ({
-        setDeleteStatus: (status: StatusOptions) => dispatch(SetDeleteStatus(status)),
-        setModals: (modals: ModalOptions) => dispatch(SetModals(modals))
+        setDeleteStatus: (status: StatusOptions) =>
+            dispatch(SetDeleteStatus(status)),
+        setModals: (modals: ModalOptions) => dispatch(SetModals(modals)),
     })
 )(DeleteStatus);

@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../store/types/state";
-import { FilterOptions } from '../../store/types/filters';
-import Delete from "../../assets/img/delete.png";
-import Edit from "../../assets/img/edit.png";
-import "../../assets/css/FilterCrud.css";
-import { CustomAction } from '../../store/reducers';
-import { StatusBuilder, StatusOptions } from '../../store/types/statuses';
-import { SetDeleteStatus, SetUpdateStatus } from '../../store/actions';
+import { State } from "../../../store/types/state";
+import { FilterOptions } from "../../../store/types/filters";
+import { CustomAction } from "../../../store/reducers";
+import { StatusBuilder, StatusOptions } from "../../../store/types/statuses";
+import { SetDeleteStatus, SetUpdateStatus } from "../../../store/actions";
+import Delete from "../../../assets/img/delete.png";
+import Edit from "../../../assets/img/edit.png";
+import "./ListItem.css";
 
 interface FilterCrudProps {
     filter: FilterOptions;
@@ -15,7 +15,11 @@ interface FilterCrudProps {
     ShowUpdate: (status: StatusOptions) => CustomAction;
 }
 
-const FilterCrud: React.FC<FilterCrudProps> = ({ filter, ShowDelete, ShowUpdate }) => {
+const FilterCrud: React.FC<FilterCrudProps> = ({
+    filter,
+    ShowDelete,
+    ShowUpdate,
+}) => {
     const showDelete = () => {
         const id = filter.id;
         ShowDelete(StatusBuilder({ id }));
@@ -24,7 +28,7 @@ const FilterCrud: React.FC<FilterCrudProps> = ({ filter, ShowDelete, ShowUpdate 
     const showUpdate = () => {
         const id = filter.id;
         ShowUpdate(StatusBuilder({ id }));
-    }
+    };
 
     return (
         <div className="FilterCrud" data-id={filter.id}>
@@ -43,15 +47,17 @@ const FilterCrud: React.FC<FilterCrudProps> = ({ filter, ShowDelete, ShowUpdate 
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default connect(
     ({ current: { status } }: State) => ({
-        status
+        status,
     }),
     (dispatch) => ({
-        ShowDelete: (status: StatusOptions): CustomAction => dispatch(SetDeleteStatus(status)),
-        ShowUpdate: (status: StatusOptions): CustomAction => dispatch(SetUpdateStatus(status))
+        ShowDelete: (status: StatusOptions): CustomAction =>
+            dispatch(SetDeleteStatus(status)),
+        ShowUpdate: (status: StatusOptions): CustomAction =>
+            dispatch(SetUpdateStatus(status)),
     })
 )(FilterCrud);

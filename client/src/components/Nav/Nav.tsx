@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 import { connect } from "react-redux";
-import { State } from "../store/types/state";
-import { ModalOptions } from "../store/types/modals";
-import SearchBar from "./cards/SearchBar";
-import "../assets/css/Nav.css";
-import { SetModals } from '../store/actions';
+import { State } from "../../store/types/state";
+import { ModalOptions } from "../../store/types/modals";
+import { SetModals } from "../../store/actions";
+import SearchBar from "./Search/Search";
+import "./Nav.css";
 
 interface NavProps {
     modals: ModalOptions;
@@ -12,7 +12,6 @@ interface NavProps {
 }
 
 const NavBar: React.FC<NavProps> = ({ modals, setCreateModal }) => {
-
     const showCreateModal = () => {
         setCreateModal({ ...modals, showCreateCustomer: true });
     };
@@ -24,10 +23,12 @@ const NavBar: React.FC<NavProps> = ({ modals, setCreateModal }) => {
                 Create
             </button>
         </div>
-    )
-}
+    );
+};
 
 export default connect(
     ({ modals }: State) => ({ modals }),
-    (dispatch) => ({ setCreateModal: (modals: ModalOptions) => dispatch(SetModals(modals)) })
+    (dispatch) => ({
+        setCreateModal: (modals: ModalOptions) => dispatch(SetModals(modals)),
+    })
 )(NavBar);

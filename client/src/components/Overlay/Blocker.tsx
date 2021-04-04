@@ -1,5 +1,5 @@
-import React from 'react';
-import "../../assets/css/Blocker.css";
+import React from "react";
+import "./Blocker.css";
 
 const Blocker = () => {
     React.useEffect(() => {
@@ -10,11 +10,7 @@ const Blocker = () => {
 
     document.body.style.position = "sticky";
 
-    return (
-        <div className="Blocker">
+    return <div className="Blocker"></div>;
+};
 
-        </div>
-    )
-}
-
-export default Blocker
+export default Blocker;

@@ -1,17 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { LoadBingApi, Microsoft } from "../lib/maps";
-import { State } from "../store/types/state";
-import { InitialMapState, MapOptions } from "../store/types/map";
-import { geoLocation } from "../lib/geolocation";
-import { SetLocation } from "../store/actions";
-import "../assets/css/Map.css";
-import { ModalOptions } from "../store/types/modals";
+import { State } from "../../store/types/state";
+import { InitialMapState, MapOptions } from "../../store/types/map";
+import { SetLocation } from "../../store/actions";
+import { ModalOptions } from "../../store/types/modals";
+import { LoadBingApi, Microsoft } from "../../lib/maps";
+import { geoLocation } from "../../lib/geolocation";
+import "./Map.css";
 
 interface MapProps {
     mapOptions: MapOptions;
     modals: ModalOptions;
-    setLocation: (location: { latitude: number; longitude: number; }) => any;
+    setLocation: (location: { latitude: number; longitude: number }) => any;
 }
 
 const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
@@ -38,14 +38,18 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
                     const map = new Microsoft.Maps.Map(node);
                     if (mapOptions.center === InitialMapState.center) {
                         try {
-                            const location = await new Promise<{ latitude: number; longitude: number; }>((resolve, reject) => {
-                                geoLocation().then(newLocation => resolve(newLocation)).catch((e) => reject(e));
+                            const location = await new Promise<{
+                                latitude: number;
+                                longitude: number;
+                            }>((resolve, reject) => {
+                                geoLocation()
+                                    .then((newLocation) => resolve(newLocation))
+                                    .catch((e) => reject(e));
                             });
-                            setLocation(location)
+                            setLocation(location);
                         } catch (e) {
                             console.error(e);
                         }
-
                     }
                     map.setOptions(mapOptions);
                 } catch (e) {
@@ -56,12 +60,19 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
         [mapOptions, setMapRef, setLocation]
     );
 
-    return <div id="Map" ref={mapRefChange} className={classNames.join(", ")}></div>;
+    return (
+        <div
+            id="Map"
+            ref={mapRefChange}
+            className={classNames.join(", ")}
+        ></div>
+    );
 };
 
 export default connect(
     ({ mapOptions, modals }: State) => ({ mapOptions, modals }),
     (dispatch) => ({
-        setLocation: (location: { latitude: number; longitude: number; }) => dispatch(SetLocation(location))
+        setLocation: (location: { latitude: number; longitude: number }) =>
+            dispatch(SetLocation(location)),
     })
 )(Map);

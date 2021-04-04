@@ -43,3 +43,7 @@ label > span.label {
 .labelContainer {
     margin-top: 4rem;
 }
+
+.imgContainer {
+    max-width: 50px;
+}
