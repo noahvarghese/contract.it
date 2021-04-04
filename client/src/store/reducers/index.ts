@@ -1,22 +1,9 @@
-import { Action } from "redux";
-import { State, InitialState } from "../types/state";
-import {
-    SET_FILTERS,
-    SET_LOCATION,
-    SET_MODALS,
-    SET_STATUSES,
-    SHOW_DELETE_STATUS,
-    SHOW_UPDATE_STATUS,
-} from "../constants";
+import { State, InitialState } from "../../types/State";
+import { SET_LOCATION, SET_MODAL_FILTER } from "../constants";
 import { SetLocation } from "./map";
 import { SetFilters } from "./filters";
-import { SetModals } from "./modals";
 import { SetStatuses, SetDeleteStatus, SetUpdateStatus } from "./statuses";
-
-export interface CustomAction extends Action {
-    type: string;
-    payload: any;
-}
+import { CustomAction } from "../../types/CustomAction";
 
 export const reducer = (
     state: State = InitialState,
@@ -25,17 +12,20 @@ export const reducer = (
     switch (type) {
         case SET_LOCATION:
             return SetLocation(state, payload);
-        case SET_FILTERS:
-            return SetFilters(state, payload);
-        case SET_MODALS:
-            return SetModals(state, payload);
-        case SHOW_DELETE_STATUS:
-            return SetDeleteStatus(state, payload);
-        case SHOW_UPDATE_STATUS:
-            return SetUpdateStatus(state, payload);
-        case SET_STATUSES:
-            return SetStatuses(state, payload);
         default:
             return state;
     }
+};
+
+export const createReducer = (initialState: any, handlers: object) => {
+    return (state: any = initialState, action: CustomAction) => {
+        if (handlers.hasOwnProperty(action.type)) {
+            return (handlers[action.type as keyof object] as any)(
+                state,
+                action
+            );
+        } else {
+            return state;
+        }
+    };
 };

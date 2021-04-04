@@ -1,5 +1,5 @@
-import { ImageOptions } from "./image";
-import { EmptyStatus, StatusOptions } from "./statuses";
+import { ImageOptions } from "./Image";
+import { EmptyStatus, StatusOptions } from "./Status";
 
 export interface JobOptions {
     id: number | undefined;
@@ -32,7 +32,7 @@ export const EmptyJob = (): JobOptions => ({
     updatedOn: undefined,
     deletedOn: undefined,
     status: EmptyStatus(),
-    images: []
+    images: [],
 });
 
 export const JobBuilder = (options?: any): JobOptions =>

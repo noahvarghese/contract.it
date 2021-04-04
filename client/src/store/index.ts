@@ -1,6 +1,7 @@
 import { createStore } from "redux";
-import { reducer, CustomAction } from "./reducers";
-import { State } from "./types/state";
+import { reducer } from "./reducers";
+import { State } from "../types/State";
+import { CustomAction } from "../types/CustomAction";
 
 export const store = createStore<State, CustomAction, unknown, unknown>(
     reducer,

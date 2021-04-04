@@ -7,6 +7,7 @@ export interface StatusOptions {
     createdOn: Date | undefined;
     updatedOn: Date | undefined;
     deletedOn: Date | undefined;
+    checked: boolean | undefined;
 }
 
 export const EmptyStatus = (): StatusOptions => ({
@@ -15,12 +16,16 @@ export const EmptyStatus = (): StatusOptions => ({
     image: undefined,
     createdOn: undefined,
     updatedOn: undefined,
-    deletedOn: undefined
+    deletedOn: undefined,
+    checked: undefined,
 });
 
 export const StatusBuilder = (options?: any): StatusOptions => {
     if (options !== undefined) {
-        if (options.image !== undefined && options.image.split("/").length === 0) {
+        if (
+            options.image !== undefined &&
+            options.image.split("/").length === 0
+        ) {
             options.image = statusImageLink(options.image);
         }
     }

@@ -1,4 +1,4 @@
-import { JobOptions } from "./jobs";
+import { JobOptions } from "./Jobs";
 
 export interface ImageOptions {
     id: number | undefined;
@@ -9,7 +9,7 @@ export interface ImageOptions {
 export const EmptyImage = (): ImageOptions => ({
     id: undefined,
     file: undefined,
-    text: undefined
+    text: undefined,
 });
 
 export const ImageBuilder = (options?: any): JobOptions =>

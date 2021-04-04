@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../store/types/state";
-import { InitialMapState, MapOptions } from "../../store/types/map";
+import { State } from "../../types/State";
+import { InitialMapState, MapOptions } from "../../store/Map";
 import { SetLocation } from "../../store/actions";
-import { ModalOptions } from "../../store/types/modals";
-import { LoadBingApi, Microsoft } from "../../lib/maps";
-import { geoLocation } from "../../lib/geolocation";
+import { ModalOptions } from "../../store/reducers/Modals";
+import { LoadBingApi, Microsoft } from "../../lib/Maps";
+import { geoLocation } from "../../lib/GeoLocation";
 import "./Map.css";
 
 interface MapProps {
