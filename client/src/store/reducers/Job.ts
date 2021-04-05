@@ -31,7 +31,7 @@ const editJob = (state: JobOptions[], action: CustomAction) =>
     );
 
 export const jobReducer = createReducer([], {
-    ADD_STATUS: addJob,
-    DELETE_STATUS: deleteJob,
-    EDIT_STATUS: editJob,
+    ADD_JOB: addJob,
+    DELETE_JOB: deleteJob,
+    EDIT_JOB: editJob,
 });

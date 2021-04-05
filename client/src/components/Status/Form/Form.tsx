@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useEffect,
     useMemo,
+    MouseEvent
 } from "react";
 import { connect } from "react-redux";
 import Input from "../../elements/Input";
@@ -12,12 +13,14 @@ import "./Form.css";
 import { CustomAction } from "../../../types/CustomAction";
 import { StatusBuilder, StatusOptions } from "../../../types/Status";
 import { State } from "../../../types/State";
+import permalink, { statusImageLink } from "../../../lib/Permalink";
 
 interface StatusFormProps {
     showDefault: () => CustomAction;
     setCurrentStatus: (status: StatusOptions) => CustomAction;
     statusList: StatusOptions[];
     status: StatusOptions;
+    setStatusList: (statusList: StatusOptions[]) => CustomAction;
 }
 
 const StatusForm: React.FC<StatusFormProps> = ({
@@ -25,7 +28,9 @@ const StatusForm: React.FC<StatusFormProps> = ({
     setCurrentStatus,
     status,
     statusList,
+    setStatusList
 }) => {
+    const [formRef, setFormRef] = useState<HTMLFormElement | null>(null);
     const [fileRef, setFileRef] = useState<HTMLInputElement | null>(null);
     const [imageRef, setImageRef] = useState<HTMLImageElement | null>(null);
 
@@ -48,14 +53,40 @@ const StatusForm: React.FC<StatusFormProps> = ({
         showDefault();
     }
 
-    const submit = () => {
-        let method = "POST";
+    const submit = async (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
 
-        if (status.id) {
-            method = "PUT";
+        if (formRef) {
+            let body = new FormData();
+            for (const el of Array.from(formRef.elements)) {
+                if (el.tagName === "INPUT") {
+                    if (el.getAttribute("type") !== "file") {
+                        body.append(el.getAttribute("name")!, (el as any).value);
+                    } else {
+                        body.append(el.getAttribute("name")!, (el as any).files![0]);
+                    }
+                }
+            }
+
+            const url = `${permalink}/api/statuses/${status.id ?? ""}`;
+            const method = status.id ? "PUT" : "POST";
+            console.log(url, method, body);
+
+            const result = await fetch(url, { method, body });
+
+            if (result.status === 200) {
+                const data = await fetch(`${permalink}/api/statuses`, { method: "GET" }).then(res => res.json());
+                if (Array.isArray(data)) {
+                    const statuses = data.map((status: StatusOptions) => {
+                        status.image = statusImageLink(status.image!);
+                        return StatusBuilder(status);
+                    });
+                    setStatusList(statuses);
+                }
+            }
+
+            // fetch request
         }
-
-        // fetch request
 
         hideModal();
     }
@@ -111,54 +142,59 @@ const StatusForm: React.FC<StatusFormProps> = ({
         setImageRef,
     ]);
 
+    const formRefChanged = useCallback((node) => setFormRef(node), [setFormRef]);
+
     return (
         <div className="card modal" id="CreateStatus">
-            <div className="headerContainer">
-                <h1>{data.action} Status</h1>
-            </div>
-            <Input
-                id="statusLabel"
-                name="Status"
-                type="string"
-                currentValue={data.label}
-            />
-            <div className="labelContainer">
-                <label htmlFor="file" id="fileLabel">
-                    <span className="label">Image</span>
-                    <div id="dragAndDrop">
-                        <div className="imgContainer">
-                            <img
-                                src={data.image}
-                                alt="file"
-                                ref={imageRefChanged}
+            <form ref={formRefChanged}>
+                <div className="headerContainer">
+                    <h1>{data.action} Status</h1>
+                </div>
+                <Input
+                    id="label"
+                    name="Status"
+                    type="string"
+                    currentValue={data.label}
+                />
+                <div className="labelContainer">
+                    <label htmlFor="image" id="fileLabel">
+                        <span className="label">Image</span>
+                        <div id="dragAndDrop">
+                            <div className="imgContainer">
+                                <img
+                                    src={data.image}
+                                    alt="file"
+                                    ref={imageRefChanged}
+                                />
+                            </div>
+                            <div id="fileInputLabel">
+                                <span>Drag and Drop here</span>
+                                <span>or</span>
+                                <span>Browse Files</span>
+                            </div>
+                            <input
+                                type="file"
+                                name="image"
+                                id="image"
+                                accept="image/png, image/jpeg"
+                                // onDrag={onDrag}
+                                onDrop={onDrag}
+                                onChange={setImagePreview}
+                                ref={fileRefChanged}
+                                required
                             />
                         </div>
-                        <div id="fileInputLabel">
-                            <span>Drag and Drop here</span>
-                            <span>or</span>
-                            <span>Browse Files</span>
-                        </div>
-                        <input
-                            type="file"
-                            name="file"
-                            id="file"
-                            accept="image/png, image/jpeg"
-                            // onDrag={onDrag}
-                            onDrop={onDrag}
-                            onChange={setImagePreview}
-                            ref={fileRefChanged}
-                        />
-                    </div>
-                </label>
-            </div>
-            <div className="btnContainer">
-                <button type="reset" className="btn" onClick={hideModal}>
-                    Cancel
+                    </label>
+                </div>
+                <div className="btnContainer">
+                    <button type="reset" className="btn" onClick={hideModal}>
+                        Cancel
                 </button>
-                <button type="submit" className="btn" onClick={submit}>
-                    {data.action}
-                </button>
-            </div>
+                    <button type="submit" className="btn" onClick={submit}>
+                        {data.action}
+                    </button>
+                </div>
+            </form>
         </div>
     );
 };
@@ -174,5 +210,7 @@ export default connect(
             dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
         setCurrentStatus: (status: StatusOptions) =>
             dispatch({ type: "SET_CURRENT_STATUS", payload: status }),
+        setStatusList: (statusList: StatusOptions[]) =>
+            dispatch({ type: "REPLACE_STATUS_LIST", payload: statusList })
     })
 )(StatusForm);

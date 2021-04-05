@@ -1,5 +1,6 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { connect } from "react-redux";
+import permalink from "../../../lib/Permalink";
 import { CustomAction } from "../../../types/CustomAction";
 import { State } from "../../../types/State";
 import { StatusOptions } from "../../../types/Status";
@@ -27,34 +28,38 @@ const DeleteStatus: React.FC<DeleteProps> = ({
         setModals();
     };
 
-    const deleteStatus = () => {
-        // fetch request to go here
-        setDeleteStatus(status);
+    const deleteStatus = async (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        const result = await fetch(`${permalink}/api/statuses/${status.id}`, { method: "DELETE" });
+        // need to check for success
         setModals();
+        setDeleteStatus(status);
     };
 
     return (
         <div className="card modal" id="DeleteStatus">
-            <div className="headerContainer">
-                <h1>Delete Status</h1>
-            </div>
-            <div className="disclaimer">Are you sure you want to delete:</div>
-            <div className="Filter">
-                <div id="filter" className="content">
-                    <div className="imgContainer">
-                        <img src={status.image} alt={status.label} />
-                    </div>
-                    <span>{status.label}</span>
+            <form>
+                <div className="headerContainer">
+                    <h1>Delete Status</h1>
                 </div>
-            </div>
-            <div className="btnContainer">
-                <button type="reset" className="btn" onClick={hideModal}>
-                    Cancel
+                <div className="disclaimer">Are you sure you want to delete:</div>
+                <div className="Filter">
+                    <div id="filter" className="content">
+                        <div className="imgContainer">
+                            <img src={status.image} alt={status.label} />
+                        </div>
+                        <span>{status.label}</span>
+                    </div>
+                </div>
+                <div className="btnContainer">
+                    <button type="reset" className="btn" onClick={hideModal}>
+                        Cancel
                 </button>
-                <button type="submit" className="btn" onClick={deleteStatus}>
-                    Delete
+                    <button type="submit" className="btn" onClick={deleteStatus}>
+                        Delete
                 </button>
-            </div>
+                </div>
+            </form>
         </div>
     );
 };

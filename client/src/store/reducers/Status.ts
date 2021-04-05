@@ -7,6 +7,8 @@ import {
 } from "../../lib/Functions";
 import { StatusOptions } from "../../types/Status";
 
+export const replaceStatusList = (_: StatusOptions[], action: CustomAction) => action.payload;
+
 export const addStatus = (
     state: StatusOptions[],
     action: CustomAction
@@ -39,6 +41,7 @@ export const toggleStatus = (
     );
 
 export const statusReducer = createReducer([], {
+    REPLACE_STATUS_LIST: replaceStatusList,
     ADD_STATUS: addStatus,
     DELETE_STATUS: deleteStatus,
     EDIT_STATUS: editStatus,

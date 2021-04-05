@@ -3,6 +3,7 @@ import { UploadedFile } from "express-fileupload";
 import * as fs from "fs";
 import * as path from "path";
 import { getRepository } from "typeorm";
+import Job from "../../models/Job";
 import Status from "../../models/Status";
 import Logs, { LogLevels } from "../../util/Logs";
 
@@ -34,6 +35,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
     const StatusManager = getRepository(Status);
+    console.log(req.files)
     if (req.files) {
         let file: UploadedFile;
 
@@ -43,13 +45,13 @@ router.post("/", async (req: Request, res: Response) => {
             file = req.files.image;
         }
 
-        const filePath = path.join(rootPath, file.name);
+        // const filePath = path.join(rootPath, file.name);
         const fullPath = path.join(basePath, file.name);
         file.mv(fullPath);
 
         const status: Status[] = StatusManager.create({
             ...req.body,
-            file: filePath,
+            image: file.name,
         });
 
         if (status) {
@@ -81,14 +83,9 @@ router.put("/:id", async (req: Request, res: Response) => {
         })
     )[0];
 
-    if (status) {
-        if (!req.body.job_id) {
-            res.status(400);
-            res.send({ message: "No Job linked." });
-            return;
-        }
 
-        let filePath;
+    if (status) {
+        let fileName;
 
         if (req.files) {
             let file: UploadedFile;
@@ -99,24 +96,25 @@ router.put("/:id", async (req: Request, res: Response) => {
                 file = req.files.image;
             }
 
-            filePath = path.join(rootPath, file.name);
-
             if (status.image.includes(file.name) === false) {
-                fs.unlinkSync(path.join(parentPath, status.image));
+                fs.unlinkSync(path.join(parentPath, rootPath, status.image));
             }
 
             file.mv(path.join(basePath, file.name));
+            fileName = file.name;
         }
 
-        const newImageProperties = {
-            label: req.body.text === status.label ? status.label : req.body.text,
-            image: filePath ? filePath : status.image,
+        const newStatusProperties = {
+            label: req.body.label === status.label ? status.label : req.body.label,
+            image: fileName ? fileName : status.image,
         };
 
-        const result = await StatusManager.update(
-            req.params.id,
-            newImageProperties
-        );
+        status.label = newStatusProperties.label;
+        status.image = newStatusProperties.image;
+
+        const result = await StatusManager.save({
+            ...status
+        })
 
         if (result) {
             res.sendStatus(200);
@@ -128,13 +126,32 @@ router.put("/:id", async (req: Request, res: Response) => {
 
 router.delete("/:id", async (req: Request, res: Response) => {
     const StatusManager = getRepository(Status);
-    const [_, length] = await StatusManager.findAndCount();
+    const JobManager = getRepository(Job);
+
+    const jobs = await JobManager.count({ where: { status: req.params.id } });
+
+    if (jobs > 0) {
+        res.status(400);
+        res.send({ message: "Unable to delete status as there are jobs that still have this status. Please move all jobs to another status before deleteing" })
+        return;
+    }
+
+    const [statuses, length] = await StatusManager.findAndCount();
     if (length === 1) {
         res.status(400);
         res.send({
             message: "Cannot delete the last status, must havea at least one.",
         });
+        return;
+    } else if (length < 1) {
+        res.status(400);
+        res.send({
+            message: "No status found."
+        });
+        return;
     }
+
+    fs.unlinkSync(path.join(parentPath, rootPath, statuses[0].image));
     const response = await StatusManager.delete(req.params.id);
     if (response) {
         res.sendStatus(200);
