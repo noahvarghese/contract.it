@@ -10,17 +10,19 @@ import Input from "../../elements/Input";
 import File from "../../../assets/img/file.png";
 import "./Form.css";
 import { CustomAction } from "../../../types/CustomAction";
-import { StatusOptions } from "../../../types/Status";
+import { StatusBuilder, StatusOptions } from "../../../types/Status";
 import { State } from "../../../types/State";
 
 interface StatusFormProps {
     showDefault: () => CustomAction;
+    setCurrentStatus: (status: StatusOptions) => CustomAction;
     statusList: StatusOptions[];
     status: StatusOptions;
 }
 
 const StatusForm: React.FC<StatusFormProps> = ({
     showDefault,
+    setCurrentStatus,
     status,
     statusList,
 }) => {
@@ -38,6 +40,26 @@ const StatusForm: React.FC<StatusFormProps> = ({
         []
     );
 
+    const hideModal = () => {
+        if (status.id) {
+            // unset status
+            setCurrentStatus(StatusBuilder())
+        }
+        showDefault();
+    }
+
+    const submit = () => {
+        let method = "POST";
+
+        if (status.id) {
+            method = "PUT";
+        }
+
+        // fetch request
+
+        hideModal();
+    }
+
     useEffect(() => {
         if (currentStatus) {
             data.image = currentStatus.image!;
@@ -45,7 +67,7 @@ const StatusForm: React.FC<StatusFormProps> = ({
             data.action = "Update";
         }
 
-        return () => {};
+        return () => { };
     });
 
     const setImagePreview = (): void => {
@@ -130,10 +152,10 @@ const StatusForm: React.FC<StatusFormProps> = ({
                 </label>
             </div>
             <div className="btnContainer">
-                <button type="reset" className="btn" onClick={showDefault}>
+                <button type="reset" className="btn" onClick={hideModal}>
                     Cancel
                 </button>
-                <button type="submit" className="btn">
+                <button type="submit" className="btn" onClick={submit}>
                     {data.action}
                 </button>
             </div>

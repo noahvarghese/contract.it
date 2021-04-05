@@ -17,7 +17,7 @@ export const EmptyStatus = (): StatusOptions => ({
     createdOn: undefined,
     updatedOn: undefined,
     deletedOn: undefined,
-    checked: false,
+    checked: true,
 });
 
 export const StatusBuilder = (options?: any): StatusOptions => {
