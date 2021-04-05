@@ -6,25 +6,21 @@ import React, {
     useMemo,
 } from "react";
 import { connect } from "react-redux";
-import { State } from "../../../store/types/state";
-import { ModalOptions } from "../../../store/types/modals";
-import { SetModals } from "../../../store/actions";
-import { CustomAction } from "../../../store/reducers";
-import { StatusOptions } from "../../../store/types/statuses";
 import Input from "../../elements/Input";
 import File from "../../../assets/img/file.png";
 import "./Form.css";
+import { CustomAction } from "../../../types/CustomAction";
+import { StatusOptions } from "../../../types/Status";
+import { State } from "../../../types/State";
 
 interface StatusFormProps {
-    modals: ModalOptions;
-    setModals: (modals: ModalOptions) => CustomAction;
+    showDefault: () => CustomAction;
     statusList: StatusOptions[];
     status: StatusOptions;
 }
 
 const StatusForm: React.FC<StatusFormProps> = ({
-    modals,
-    setModals,
+    showDefault,
     status,
     statusList,
 }) => {
@@ -75,14 +71,6 @@ const StatusForm: React.FC<StatusFormProps> = ({
                 }
             }
         }
-    };
-
-    const hideModal = () => {
-        setModals({
-            ...modals,
-            showCreateStatus: false,
-            showUpdateStatus: false,
-        });
     };
 
     const onDrag = (e: DragEvent) => {
@@ -142,7 +130,7 @@ const StatusForm: React.FC<StatusFormProps> = ({
                 </label>
             </div>
             <div className="btnContainer">
-                <button type="reset" className="btn" onClick={hideModal}>
+                <button type="reset" className="btn" onClick={showDefault}>
                     Cancel
                 </button>
                 <button type="submit" className="btn">
@@ -154,13 +142,15 @@ const StatusForm: React.FC<StatusFormProps> = ({
 };
 
 export default connect(
-    ({ modals, statuses, current: { status } }: State) => ({
+    ({ modals, statusList, current: { status } }: State) => ({
         modals,
-        statusList: statuses,
+        statusList,
         status,
     }),
     (dispatch) => ({
-        setModals: (modals: ModalOptions) => dispatch(SetModals(modals)),
-        setCurrentStatus: (status: StatusOptions) => dispatch(Set),
+        showDefault: () =>
+            dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
+        setCurrentStatus: (status: StatusOptions) =>
+            dispatch({ type: "SET_CURRENT_STATUS", payload: status }),
     })
 )(StatusForm);

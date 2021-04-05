@@ -46,7 +46,7 @@ export default class Job implements JobAttributes {
     @CreateDateColumn()
     public readonly createdOn!: Date;
     @UpdateDateColumn()
-    public readonly updateOn!: Date;
+    public readonly updatedOn!: Date;
     @DeleteDateColumn()
     public readonly deletedOn!: Date;
     @ManyToOne(() => Status, (status) => status.jobs)

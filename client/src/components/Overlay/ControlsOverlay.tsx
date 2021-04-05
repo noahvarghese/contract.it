@@ -1,80 +1,65 @@
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../store/types/state";
-import { ModalOptions } from "../../store/types/modals";
-import NavBar from "../Nav/Nav";
-import FilterList from "../Filter/List/List";
-import JobForm from "../Job/Form/Form";
+import { State } from "../../types/State";
 import Blocker from "./Blocker";
+import Nav from "../Nav/Nav";
+import JobForm from "../Job/Form/Form";
+import FilterList from "../Filter/List/List";
 import StatusList from "../Status/List/List";
 import StatusForm from "../Status/Form/Form";
 import DeleteStatus from "../Status/Delete/Delete";
 import "./ControlsOverlay.css";
 
 interface ControlsProps {
-    modals: ModalOptions;
+    modals: any;
 }
 
 const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
-    let showMap = true;
-
-    const keys = Object.keys(modals);
-
-    for (const key of keys) {
-        if (modals[key as keyof ModalOptions] === true) {
-            showMap = false;
-            break;
-        }
-    }
-
     let elements;
 
-    if (showMap) {
-        elements = (
-            <>
-                <NavBar />
-                <FilterList />
-            </>
-        );
-    } else {
-        if (modals.showCreateCustomer) {
+    switch (modals) {
+        case "DEFAULT":
+            elements = (
+                <>
+                    <Nav />
+                    <FilterList />
+                </>
+            );
+            break;
+        case "SHOW_JOB_FORM":
             elements = (
                 <>
                     <Blocker />
                     <JobForm />
                 </>
             );
-        } else if (modals.showStatuses) {
-            elements = (
-                <>
-                    <Blocker />
-                    <StatusList />
-                </>
-            );
-        } else if (modals.showCreateStatus || modals.showUpdateStatus) {
+            break;
+        case "SHOW_STATUS_FORM":
             elements = (
                 <>
                     <Blocker />
                     <StatusForm />
                 </>
             );
-        } else if (modals.showDeleteStatus) {
+            break;
+        case "SHOW_DELETE_STATUS":
             elements = (
                 <>
                     <Blocker />
                     <DeleteStatus />
                 </>
             );
-            // } else if (modals.showUpdateStatus) {
-            //     elements = (
-            //         <>
-            //             <Blocker />
-            //             <UpdateStatus />
-            //         </>
-            //     );
-        } else {
+            break;
+        case "SHOW_STATUS_LIST":
+            elements = (
+                <>
+                    <Blocker />
+                    <StatusList />
+                </>
+            );
+            break;
+        default:
             elements = <Blocker />;
-        }
     }
 
     return <div id="ControlsOverlay">{elements}</div>;

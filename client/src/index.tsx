@@ -6,7 +6,7 @@ import "./assets/css/fade.css";
 import "./assets/css/index.css";
 import "./assets/css/modal.css";
 // import "./tailwind.output.css";
-import App from "./App";
+import App from "./components/App/App";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import reportWebVitals from "./reportWebVitals";

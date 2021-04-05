@@ -1,42 +1,43 @@
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../../store/types/state";
-import { FilterOptions } from "../../../store/types/filters";
-import { CustomAction } from "../../../store/reducers";
-import { StatusBuilder, StatusOptions } from "../../../store/types/statuses";
-import { SetDeleteStatus, SetUpdateStatus } from "../../../store/actions";
 import Delete from "../../../assets/img/delete.png";
 import Edit from "../../../assets/img/edit.png";
+import { CustomAction } from "../../../types/CustomAction";
+import { StatusBuilder, StatusOptions } from "../../../types/Status";
 import "./ListItem.css";
 
-interface FilterCrudProps {
-    filter: FilterOptions;
-    ShowDelete: (status: StatusOptions) => CustomAction;
-    ShowUpdate: (status: StatusOptions) => CustomAction;
+interface ListItemProps {
+    status: StatusOptions;
+    ShowDelete: () => CustomAction;
+    ShowUpdate: () => CustomAction;
+    SetCurrentStatus: (status: StatusOptions) => CustomAction;
 }
 
-const FilterCrud: React.FC<FilterCrudProps> = ({
-    filter,
+const ListItem: React.FC<ListItemProps> = ({
+    status,
     ShowDelete,
     ShowUpdate,
+    SetCurrentStatus,
 }) => {
     const showDelete = () => {
-        const id = filter.id;
-        ShowDelete(StatusBuilder({ id }));
+        const id = status.id;
+        ShowDelete();
+        SetCurrentStatus(StatusBuilder({ id }));
     };
 
     const showUpdate = () => {
-        const id = filter.id;
-        ShowUpdate(StatusBuilder({ id }));
+        const id = status.id;
+        ShowUpdate();
+        SetCurrentStatus(StatusBuilder({ id }));
     };
 
     return (
-        <div className="FilterCrud" data-id={filter.id}>
+        <div className="FilterCrud" data-id={status.id}>
             <div className="content">
                 <div className="imgContainer">
-                    <img src={filter.image} alt={filter.label} />
+                    <img src={status.image} alt={status.label} />
                 </div>
-                <span>{filter.label}</span>
+                <span>{status.label}</span>
             </div>
             <div className="btnContainer">
                 <button type="button" onClick={showUpdate}>
@@ -51,13 +52,16 @@ const FilterCrud: React.FC<FilterCrudProps> = ({
 };
 
 export default connect(
-    ({ current: { status } }: State) => ({
-        status,
-    }),
+    () => ({}),
+    // ({ current: { status } }: State) => ({
+    //     status,
+    // }),
     (dispatch) => ({
-        ShowDelete: (status: StatusOptions): CustomAction =>
-            dispatch(SetDeleteStatus(status)),
-        ShowUpdate: (status: StatusOptions): CustomAction =>
-            dispatch(SetUpdateStatus(status)),
+        ShowDelete: (): CustomAction =>
+            dispatch({ type: "SHOW_DELETE_STATUS", payload: undefined }),
+        ShowUpdate: (): CustomAction =>
+            dispatch({ type: "SHOW_STATUS_FORM", payload: undefined }),
+        SetCurrentStatus: (status: StatusOptions): CustomAction =>
+            dispatch({ type: "SET_CURRENT_STATUS", payload: status }),
     })
-)(FilterCrud);
+)(ListItem);

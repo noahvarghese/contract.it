@@ -1,13 +1,13 @@
-import { statusImageLink } from "../../lib/permalink";
+import { statusImageLink } from "../lib/Permalink";
 
 export interface StatusOptions {
-    id: number | undefined;
-    label: string | undefined;
-    image: string | undefined;
+    checked: boolean;
     createdOn: Date | undefined;
+    deletedOn: Date | undefined | null;
+    id: number | undefined;
+    image: string | undefined;
+    label: string | undefined;
     updatedOn: Date | undefined;
-    deletedOn: Date | undefined;
-    checked: boolean | undefined;
 }
 
 export const EmptyStatus = (): StatusOptions => ({
@@ -17,7 +17,7 @@ export const EmptyStatus = (): StatusOptions => ({
     createdOn: undefined,
     updatedOn: undefined,
     deletedOn: undefined,
-    checked: undefined,
+    checked: false,
 });
 
 export const StatusBuilder = (options?: any): StatusOptions => {

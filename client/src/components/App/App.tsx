@@ -1,25 +1,21 @@
 import React from "react";
-import Map from "./components/Overlay/Map";
-import ControlsOverlay from "./components/Overlay/ControlsOverlay";
+import Map from "../Overlay/Map";
+// import ControlsOverlay from "../Overlay/ControlsOverlay";
 import { connect } from "react-redux";
-import { SetFilters } from "./store/actions/index";
-import { State } from "./store/types/state";
-import { FilterBuilder, FilterOptions } from "./store/types/filters";
-import { statusApiLink, statusImageLink } from "./lib/permalink";
-import { StatusBuilder, StatusOptions } from "./store/types/statuses";
-import { SetStatuses } from "./store/actions";
-import { CustomAction } from "./store/reducers";
+import { State } from "../../types/State";
+import { statusApiLink, statusImageLink } from "../../lib/Permalink";
+import { StatusBuilder, StatusOptions } from "../../types/Status";
+import { CustomAction } from "../../types/CustomAction";
+import ControlsOverlay from "../Overlay/ControlsOverlay";
 
 interface AppProps {
-    filters: FilterOptions[];
-    setFilters: (filters: FilterOptions[]) => CustomAction;
+    statusList: StatusOptions[];
     setStatuses: (statuses: StatusOptions[]) => CustomAction;
 }
 
-const App: React.FC<AppProps> = ({ filters, setFilters, setStatuses }) => {
+const App: React.FC<AppProps> = ({ statusList, setStatuses }) => {
     React.useEffect(() => {
-        // console.log(filters)
-        if (filters.length === 0) {
+        if (statusList.length === 0) {
             fetch(statusApiLink, { method: "GET" }).then(async (res) => {
                 if (res.status === 200) {
                     const data = await res.json();
@@ -30,16 +26,13 @@ const App: React.FC<AppProps> = ({ filters, setFilters, setStatuses }) => {
                             return StatusBuilder(status);
                         });
                         setStatuses(statuses);
-                        setFilters(
-                            statuses.map((status) => FilterBuilder(status))
-                        );
                     }
                 } else {
                     console.error("NO FETCH");
                 }
             });
         }
-    });
+    }, [setStatuses, statusList]);
 
     return (
         <div id="App">
@@ -50,13 +43,12 @@ const App: React.FC<AppProps> = ({ filters, setFilters, setStatuses }) => {
 };
 
 export default connect(
-    ({ mapOptions, filters }: State) => ({
-        location: mapOptions.center,
-        filters,
+    ({ mapOptions: { center }, statusList }: State) => ({
+        location: center,
+        statusList,
     }),
     (dispatch) => ({
-        setFilters: (filters: FilterOptions[]) => dispatch(SetFilters(filters)),
-        setStatuses: (statuses: StatusOptions[]) =>
-            dispatch(SetStatuses(statuses)),
+        setStatuses: (statusList: StatusOptions[]) =>
+            dispatch({ type: "ADD_STATUS", payload: statusList }),
     })
 )(App);

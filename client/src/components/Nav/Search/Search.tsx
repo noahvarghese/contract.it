@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import permalink from "../../../lib/permalink";
+import permalink from "../../../lib/Permalink";
 import SearchIcon from "../../../assets/img/search.png";
 import CancelIcon from "../../../assets/img/cancel.png";
 import "./Search.css";

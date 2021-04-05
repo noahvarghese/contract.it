@@ -1,57 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../../store/types/state";
-import { SetModals } from "../../../store/actions";
-import { FilterOptions } from "../../../store/types/filters";
-import { ModalOptions } from "../../../store/types/modals";
-import { CustomAction } from "../../../store/reducers";
 import StatusListItem from "./ListItem";
 import "./List.css";
+import { StatusOptions } from "../../../types/Status";
+import { CustomAction } from "../../../types/CustomAction";
+import { State } from "../../../types/State";
 
 interface StatusListProps {
-    filters: FilterOptions[];
-    modals: ModalOptions;
-    setModals: (modals: ModalOptions) => CustomAction;
+    statusList: StatusOptions[];
+    showDefault: () => CustomAction;
+    showCreateStatus: () => CustomAction;
 }
 
 const StatusList: React.FC<StatusListProps> = ({
-    filters,
-    modals,
-    setModals,
+    statusList,
+    showDefault,
+    showCreateStatus,
 }) => {
-    const hideModal = () => {
-        setModals({
-            ...modals,
-            showStatuses: false,
-        });
-    };
-
-    const showCreateStatusModal = () => {
-        setModals({
-            ...modals,
-            showStatuses: false,
-            showCreateStatus: true,
-        });
-    };
-
     return (
         <div id="Statuses" className="card modal">
             <div className="headerContainer">
                 <h1>Statuses</h1>
             </div>
             <div className="statuses">
-                {filters.map((filter) => (
-                    <StatusListItem filter={filter} key={filter.id} />
+                {statusList.map((filter) => (
+                    <StatusListItem status={filter} key={filter.id} />
                 ))}
             </div>
             <div className="btnContainer">
-                <button type="reset" className="btn" onClick={hideModal}>
+                <button type="reset" className="btn" onClick={showDefault}>
                     Cancel
                 </button>
                 <button
                     type="submit"
                     className="btn"
-                    onClick={showCreateStatusModal}
+                    onClick={showCreateStatus}
                 >
                     Create
                 </button>
@@ -61,13 +44,14 @@ const StatusList: React.FC<StatusListProps> = ({
 };
 
 export default connect(
-    ({ filters, modals }: State) => {
-        return {
-            filters,
-            modals,
-        };
-    },
+    ({ statusList, modals }: State) => ({
+        statusList,
+        modals,
+    }),
     (dispatch) => ({
-        setModals: (modals: ModalOptions) => dispatch(SetModals(modals)),
+        showDefault: () =>
+            dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
+        showCreateStatus: () =>
+            dispatch({ type: "SHOW_STATUS_FORM", payload: undefined }),
     })
 )(StatusList);

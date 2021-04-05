@@ -1,39 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
-import { SetDeleteStatus, SetModals } from "../../../store/actions";
-import { CustomAction } from "../../../store/reducers";
-import { ModalOptions } from "../../../store/types/modals";
-import { State } from "../../../store/types/state";
-import { StatusBuilder, StatusOptions } from "../../../store/types/statuses";
+import { CustomAction } from "../../../types/CustomAction";
+import { State } from "../../../types/State";
+import { StatusBuilder, StatusOptions } from "../../../types/Status";
 import "../../Filter/List/ListItem.css";
 import "./Delete.css";
 
 interface DeleteProps {
     status: StatusOptions;
-    statuses: StatusOptions[];
+    statusList: StatusOptions[];
     setDeleteStatus: (status: StatusOptions) => CustomAction;
-    setModals: (modals: ModalOptions) => CustomAction;
+    setModals: () => CustomAction;
 }
 
 const DeleteStatus: React.FC<DeleteProps> = ({
     status,
-    statuses,
+    statusList,
     setModals,
     setDeleteStatus,
 }) => {
     if (status.label === undefined) {
-        status = statuses.find((st) => st.id === status.id)!;
+        status = statusList.find((st) => st.id === status.id)!;
     }
 
     const hideModal = () => {
-        setDeleteStatus(StatusBuilder());
-        setModals({
-            showCreateCustomer: false,
-            showCreateStatus: false,
-            showDeleteStatus: false,
-            showStatuses: false,
-            showUpdateStatus: false,
-        });
+        setModals();
+    };
+
+    const deleteStatus = () => {
+        // fetch request to go here
+        setDeleteStatus(status);
+        setModals();
     };
 
     return (
@@ -54,7 +51,7 @@ const DeleteStatus: React.FC<DeleteProps> = ({
                 <button type="reset" className="btn" onClick={hideModal}>
                     Cancel
                 </button>
-                <button type="submit" className="btn">
+                <button type="submit" className="btn" onClick={deleteStatus}>
                     Delete
                 </button>
             </div>
@@ -63,10 +60,10 @@ const DeleteStatus: React.FC<DeleteProps> = ({
 };
 
 export default connect(
-    ({ current: { status }, statuses }: State) => ({ status, statuses }),
+    ({ current: { status }, statusList }: State) => ({ status, statusList }),
     (dispatch) => ({
         setDeleteStatus: (status: StatusOptions) =>
-            dispatch(SetDeleteStatus(status)),
-        setModals: (modals: ModalOptions) => dispatch(SetModals(modals)),
+            dispatch({ type: "DELETE_STATUS", payload: status }),
+        setModals: () => dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
     })
 )(DeleteStatus);

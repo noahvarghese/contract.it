@@ -26,7 +26,7 @@ export default class Status implements StatusAttributes {
     @CreateDateColumn()
     public readonly createdOn!: Date;
     @UpdateDateColumn()
-    public readonly updateOn!: Date;
+    public readonly updatedOn!: Date;
     @DeleteDateColumn()
     public readonly deletedOn!: Date;
     @OneToMany(() => Job, (job) => job.status)

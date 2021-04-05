@@ -1,27 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
 import { State } from "../../types/State";
-import { InitialMapState, MapOptions } from "../../store/Map";
-import { SetLocation } from "../../store/actions";
-import { ModalOptions } from "../../store/reducers/Modals";
+import { InitialMapState, MapOptions } from "../../types/Map";
 import { LoadBingApi, Microsoft } from "../../lib/Maps";
 import { geoLocation } from "../../lib/GeoLocation";
 import "./Map.css";
 
 interface MapProps {
+    modals: string;
     mapOptions: MapOptions;
-    modals: ModalOptions;
     setLocation: (location: { latitude: number; longitude: number }) => any;
 }
 
 const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
-    const classNames = [];
+    const classNames: any[] = [];
 
-    for (const key of Object.keys(modals)) {
-        if (modals[key as keyof ModalOptions] === true) {
-            classNames.push("blur");
-            break;
-        }
+    if (modals !== "DEFAULT") {
+        classNames.push("blur");
     }
 
     // We only care about the setter
@@ -73,6 +68,6 @@ export default connect(
     ({ mapOptions, modals }: State) => ({ mapOptions, modals }),
     (dispatch) => ({
         setLocation: (location: { latitude: number; longitude: number }) =>
-            dispatch(SetLocation(location)),
+            dispatch({ type: "SET_LOCATION", payload: location }),
     })
 )(Map);

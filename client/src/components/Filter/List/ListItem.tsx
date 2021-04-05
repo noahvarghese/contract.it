@@ -1,24 +1,24 @@
 import React from "react";
-import { FilterOptions } from "../../../store/types/filters";
+import { StatusOptions } from "../../../types/Status";
 import "./ListItem.css";
 
 interface FilterListItemProps {
-    filter: FilterOptions;
+    status: StatusOptions;
 }
 
-const FilterListItem: React.FC<FilterListItemProps> = ({ filter }) => {
+const FilterListItem: React.FC<FilterListItemProps> = ({ status }) => {
     return (
         <div className="Filter">
             <div className="content">
                 <div className="imgContainer">
-                    <img src={filter.image} alt={filter.label} />
+                    <img src={status.image} alt={status.label} />
                 </div>
-                <span>{filter.label}</span>
+                <span>{status.label}</span>
             </div>
             <input
                 type="checkbox"
                 className="filterCheckbox"
-                defaultChecked={filter.checked}
+                defaultChecked={status.checked}
             />
         </div>
     );

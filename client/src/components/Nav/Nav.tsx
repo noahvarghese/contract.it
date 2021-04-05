@@ -1,25 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../store/types/state";
-import { ModalOptions } from "../../store/types/modals";
-import { SetModals } from "../../store/actions";
 import SearchBar from "./Search/Search";
 import "./Nav.css";
+import { CustomAction } from "../../types/CustomAction";
 
 interface NavProps {
-    modals: ModalOptions;
-    setCreateModal: (modals: ModalOptions) => any;
+    showCreateJob: () => CustomAction;
 }
 
-const NavBar: React.FC<NavProps> = ({ modals, setCreateModal }) => {
-    const showCreateModal = () => {
-        setCreateModal({ ...modals, showCreateCustomer: true });
-    };
-
+const NavBar: React.FC<NavProps> = ({ showCreateJob }) => {
     return (
         <div id="Nav">
             <SearchBar />
-            <button type="button" id="create" onClick={showCreateModal}>
+            <button type="button" id="create" onClick={showCreateJob}>
                 Create
             </button>
         </div>
@@ -27,8 +20,9 @@ const NavBar: React.FC<NavProps> = ({ modals, setCreateModal }) => {
 };
 
 export default connect(
-    ({ modals }: State) => ({ modals }),
+    (_) => ({}),
     (dispatch) => ({
-        setCreateModal: (modals: ModalOptions) => dispatch(SetModals(modals)),
+        showCreateJob: () =>
+            dispatch({ type: "SHOW_JOB_FORM", payload: undefined }),
     })
 )(NavBar);

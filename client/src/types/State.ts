@@ -7,22 +7,22 @@ import React from "react";
 
 export interface State {
     mapOptions: MapOptions;
-    modals: React.FC | undefined;
+    modals: string;
     current: {
         job: JobOptions;
         status: StatusOptions;
     };
-    statuses: StatusOptions[];
-    jobs: JobOptions[];
+    statusList: StatusOptions[];
+    jobList: JobOptions[];
 }
 
 export const InitialState: State = {
     mapOptions: InitialMapState,
-    modals: undefined,
+    modals: "DEFAULT",
     current: {
         job: JobBuilder(),
         status: StatusBuilder(),
     },
-    statuses: [],
-    jobs: [],
+    statusList: [],
+    jobList: [],
 };

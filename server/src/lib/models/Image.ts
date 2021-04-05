@@ -25,7 +25,7 @@ export default class Image implements ImageAttributes {
     @CreateDateColumn()
     public readonly createdOn!: Date;
     @UpdateDateColumn()
-    public readonly updateOn!: Date;
+    public readonly updatedOn!: Date;
     @DeleteDateColumn()
     public readonly deletedOn!: Date;
     @ManyToOne(() => Job, (job) => job.images)
