@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { CustomAction } from "../../../types/CustomAction";
 import { State } from "../../../types/State";
-import { StatusBuilder, StatusOptions } from "../../../types/Status";
+import { StatusOptions } from "../../../types/Status";
 import "../../Filter/List/ListItem.css";
 import "./Delete.css";
 
