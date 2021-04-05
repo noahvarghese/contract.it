@@ -35,7 +35,6 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
     const StatusManager = getRepository(Status);
-    console.log(req.files)
     if (req.files) {
         let file: UploadedFile;
 
@@ -150,8 +149,9 @@ router.delete("/:id", async (req: Request, res: Response) => {
         });
         return;
     }
+    console.log(statuses)
 
-    fs.unlinkSync(path.join(parentPath, rootPath, statuses[0].image));
+    fs.unlinkSync(path.join(parentPath, rootPath, statuses.find((st) => st.id === Number(req.params.id))!.image));
     const response = await StatusManager.delete(req.params.id);
     if (response) {
         res.sendStatus(200);
