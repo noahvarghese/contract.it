@@ -7,6 +7,8 @@ import {
 } from "../../lib/Functions";
 import { JobOptions } from "../../types/Jobs";
 
+const replaceJobs = (_: JobOptions, action: CustomAction): JobOptions[] => action.payload;
+
 const addJob = () => (
     state: JobOptions[],
     action: CustomAction
@@ -31,6 +33,7 @@ const editJob = (state: JobOptions[], action: CustomAction) =>
     );
 
 export const jobReducer = createReducer([], {
+    REPLACE_JOBS: replaceJobs,
     ADD_JOB: addJob,
     DELETE_JOB: deleteJob,
     EDIT_JOB: editJob,

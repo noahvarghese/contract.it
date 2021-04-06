@@ -7,13 +7,14 @@ import React, {
     MouseEvent
 } from "react";
 import { connect } from "react-redux";
-import Input from "../../elements/Input";
+import Input from "../../Input/Input";
 import File from "../../../assets/img/file.png";
 import "./Form.css";
 import { CustomAction } from "../../../types/CustomAction";
 import { StatusBuilder, StatusOptions } from "../../../types/Status";
 import { State } from "../../../types/State";
 import permalink, { statusImageLink } from "../../../lib/Permalink";
+import { getFormData } from "../../../lib/Functions";
 
 interface StatusFormProps {
     showDefault: () => CustomAction;
@@ -57,17 +58,7 @@ const StatusForm: React.FC<StatusFormProps> = ({
         e.preventDefault();
 
         if (formRef) {
-            let body = new FormData();
-            for (const el of Array.from(formRef.elements)) {
-                if (el.tagName === "INPUT") {
-                    if (el.getAttribute("type") !== "file") {
-                        body.append(el.getAttribute("name")!, (el as any).value);
-                    } else {
-                        body.append(el.getAttribute("name")!, (el as any).files![0]);
-                    }
-                }
-            }
-
+            const body = getFormData(formRef);
             const url = `${permalink}/api/statuses/${status.id ?? ""}`;
             const method = status.id ? "PUT" : "POST";
             console.log(url, method, body);

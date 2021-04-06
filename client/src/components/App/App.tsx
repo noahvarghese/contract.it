@@ -49,6 +49,6 @@ export default connect(
     }),
     (dispatch) => ({
         setStatuses: (statusList: StatusOptions[]) =>
-            dispatch({ type: "ADD_STATUS", payload: statusList }),
+            dispatch({ type: "REPLACE_STATUS_LIST", payload: statusList }),
     })
 )(App);

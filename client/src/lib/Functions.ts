@@ -37,3 +37,21 @@ export const createReducer = (initialState: any, handlers: object) => {
         }
     };
 };
+
+export const getFormData = (form: HTMLFormElement | null) => {
+    const body = new FormData();
+    if (form) {
+        for (const el of Array.from(form.elements)) {
+            if (el instanceof HTMLElement) {
+                if (el.tagName === "INPUT") {
+                    if (el.getAttribute("type") !== "file") {
+                        body.append(el.getAttribute("name")!, (el as any).value);
+                    } else {
+                        body.append(el.getAttribute("name")!, (el as any).files![0]);
+                    }
+                }
+            }
+        }
+    }
+    return body;
+}

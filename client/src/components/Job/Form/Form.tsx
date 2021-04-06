@@ -1,21 +1,44 @@
-import React from "react";
+import React, { MouseEvent, useState } from "react";
 import { connect } from "react-redux";
+import { getFormData } from "../../../lib/Functions";
+import { getJobs } from "../../../lib/Data";
+import permalink from "../../../lib/Permalink";
+import { CustomAction } from "../../../types/CustomAction";
+import { JobOptions } from "../../../types/Jobs";
 import { State } from "../../../types/State";
 import { StatusOptions } from "../../../types/Status";
-import Input from "../../elements/Input";
+import Input from "../../Input/Input";
 
 interface JobFormProps {
+    job: JobOptions;
     statusList: StatusOptions[];
-    hideCreateModal: () => any;
+    hideJobForm: () => CustomAction;
+    replaceJobs: (jobs: JobOptions[]) => CustomAction
 }
 
-const JobForm: React.FC<JobFormProps> = ({ statusList, hideCreateModal }) => {
+const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm, replaceJobs }) => {
+    const [formRef, setFormRef] = useState<HTMLFormElement | null>(null);
+
+    const submit = async (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        const url = `${permalink}/api/jobs/${job.id ? job.id : ""}`;
+        const method = job.id ? "PUT" : "POST";
+        const body = getFormData(formRef);
+        const result = await fetch(url, { method, body });
+        if (result.status === 200) {
+
+            replaceJobs(await getJobs());
+            hideJobForm();
+        }
+        console.log(result);
+    }
     return (
         <div id="Create" className="card modal">
             <div className="headerContainer">
-                <h1>Create Customer</h1>
+                <h1>{job.id ? "Update" : "Create"} Customer</h1>
             </div>
-            <form>
+            <form ref={setFormRef}>
                 <Input
                     id="CustomerName"
                     name="Customer Name"
@@ -62,12 +85,12 @@ const JobForm: React.FC<JobFormProps> = ({ statusList, hideCreateModal }) => {
                     <button
                         type="reset"
                         className="btn"
-                        onClick={hideCreateModal}
+                        onClick={hideJobForm}
                     >
                         Cancel
                     </button>
-                    <button type="submit" className="btn">
-                        Create
+                    <button type="submit" className="btn" onClick={submit}>
+                        {job.id ? "Update" : "Create"}
                     </button>
                 </div>
             </form>
@@ -76,9 +99,10 @@ const JobForm: React.FC<JobFormProps> = ({ statusList, hideCreateModal }) => {
 };
 
 export default connect(
-    ({ statusList }: State) => ({ statusList }),
+    ({ statusList, current: { job } }: State) => ({ statusList, job }),
     (dispatch) => ({
-        hideCreateModal: () =>
+        hideJobForm: () =>
             dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
+        replaceJobs: (jobs: JobOptions[]) => dispatch({ type: "REPLACE_JOBS", payload: jobs })
     })
 )(JobForm);
