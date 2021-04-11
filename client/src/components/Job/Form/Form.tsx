@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { getFormData } from "../../../lib/Functions";
 import { getJobs } from "../../../lib/Data";
 import permalink from "../../../lib/Permalink";
@@ -13,11 +13,11 @@ interface JobFormProps {
     job: JobOptions;
     statusList: StatusOptions[];
     hideJobForm: () => CustomAction;
-    replaceJobs: (jobs: JobOptions[]) => CustomAction
 }
 
-const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm, replaceJobs }) => {
+const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
     const [formRef, setFormRef] = useState<HTMLFormElement | null>(null);
+    const dispatch = useDispatch();
 
     const submit = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -27,11 +27,9 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm, replace
         const body = getFormData(formRef);
         const result = await fetch(url, { method, body });
         if (result.status === 200) {
-
-            replaceJobs(await getJobs());
+            dispatch(getJobs());
             hideJobForm();
         }
-        console.log(result);
     }
     return (
         <div id="Create" className="card modal">
@@ -40,7 +38,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm, replace
             </div>
             <form ref={setFormRef}>
                 <Input
-                    id="CustomerName"
+                    id="name"
                     name="Customer Name"
                     type="string"
                     currentValue={undefined}
@@ -103,6 +101,5 @@ export default connect(
     (dispatch) => ({
         hideJobForm: () =>
             dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
-        replaceJobs: (jobs: JobOptions[]) => dispatch({ type: "REPLACE_JOBS", payload: jobs })
     })
 )(JobForm);

@@ -3,8 +3,7 @@ import { EmptyStatus, StatusOptions } from "./Status";
 
 export interface JobOptions {
     id: number | undefined;
-    firstName: string | undefined;
-    lastName: string | undefined;
+    name: string | undefined;
     email: string | undefined;
     phone: string | undefined;
     address: string | undefined;
@@ -20,8 +19,7 @@ export interface JobOptions {
 
 export const EmptyJob = (): JobOptions => ({
     id: undefined,
-    firstName: undefined,
-    lastName: undefined,
+    name: undefined,
     email: undefined,
     phone: undefined,
     address: undefined,

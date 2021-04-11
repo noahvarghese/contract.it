@@ -1,15 +1,14 @@
-import { CombinedState, createStore } from "redux";
+import { applyMiddleware, CombinedState, createStore, StoreEnhancer } from "redux";
+import thunkMiddleware from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { reducer } from "./reducers";
-import { State } from "../types/State";
-import { CustomAction } from "../types/CustomAction";
 
-export const store = createStore<
-    CombinedState<State>,
-    CustomAction,
-    unknown,
-    unknown
->(
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
+
+export const store = createStore(
     reducer,
-    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-        (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+    composedEnhancer
 );
+
+export type RootState = ReturnType<typeof store.getState>
+export const AppDispatch = typeof store.dispatch;

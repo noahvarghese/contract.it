@@ -13,14 +13,14 @@ import Image from "./Image";
 import Status from "./Status";
 
 interface JobAttributes {
-    firstName: string;
-    lastName: string;
+    name: string;
     email: string;
     phone: string;
     address: string;
     city: string;
     province: string;
     country: string;
+    statusId: number;
 }
 
 @Entity()
@@ -28,9 +28,7 @@ export default class Job implements JobAttributes {
     @PrimaryGeneratedColumn()
     public id!: number;
     @Column()
-    public firstName!: string;
-    @Column()
-    public lastName!: string;
+    public name!: string;
     @Column()
     public email!: string;
     @Column()
@@ -49,6 +47,8 @@ export default class Job implements JobAttributes {
     public readonly updatedOn!: Date;
     @DeleteDateColumn()
     public readonly deletedOn!: Date;
+    @Column()
+    public statusId!: number;
     @ManyToOne(() => Status, (status) => status.jobs)
     public status!: Status;
     @OneToMany(() => Image, (image) => image.job)

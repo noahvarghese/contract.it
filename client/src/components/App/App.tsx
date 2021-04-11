@@ -1,38 +1,26 @@
 import React from "react";
 import Map from "../Overlay/Map";
 // import ControlsOverlay from "../Overlay/ControlsOverlay";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { State } from "../../types/State";
-import { statusApiLink, statusImageLink } from "../../lib/Permalink";
-import { StatusBuilder, StatusOptions } from "../../types/Status";
+import { StatusOptions } from "../../types/Status";
 import { CustomAction } from "../../types/CustomAction";
 import ControlsOverlay from "../Overlay/ControlsOverlay";
+import { getStatuses, getJobs } from "../../lib/Data";
 
 interface AppProps {
-    statusList: StatusOptions[];
-    setStatuses: (statuses: StatusOptions[]) => CustomAction;
+    // statusList: StatusOptions[];
+    // setStatuses: () => CustomAction;
+    // setJobs: () => CustomAction
 }
 
-const App: React.FC<AppProps> = ({ statusList, setStatuses }) => {
-    React.useEffect(() => {
-        if (statusList.length === 0) {
-            fetch(statusApiLink, { method: "GET" }).then(async (res) => {
-                if (res.status === 200) {
-                    const data = await res.json();
+const App: React.FC<AppProps> = () => {
+    const dispatch = useDispatch();
 
-                    if (Array.isArray(data)) {
-                        const statuses = data.map((status: StatusOptions) => {
-                            status.image = statusImageLink(status.image!);
-                            return StatusBuilder(status);
-                        });
-                        setStatuses(statuses);
-                    }
-                } else {
-                    console.error("NO FETCH");
-                }
-            });
-        }
-    }, [setStatuses, statusList]);
+    React.useEffect(() => {
+        dispatch(getJobs());
+        dispatch(getStatuses());
+    }, []);
 
     return (
         <div id="App">
@@ -48,7 +36,8 @@ export default connect(
         statusList,
     }),
     (dispatch) => ({
-        setStatuses: (statusList: StatusOptions[]) =>
-            dispatch({ type: "REPLACE_STATUS_LIST", payload: statusList }),
+        // setStatuses: () =>
+        //     dispatch({ type: "REPLACE_STATUS_LIST", payload: getStatuses() }),
+        // setJobs: () => dispatch({ type: "REPLACE_JOBS", payload: getJobs() })
     })
 )(App);
