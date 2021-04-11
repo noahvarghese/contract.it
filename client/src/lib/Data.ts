@@ -3,6 +3,7 @@ import { JobBuilder, JobOptions } from "../types/Jobs";
 import { StatusBuilder, StatusOptions } from "../types/Status";
 import { State } from "../types/State";
 import { CustomAction } from "../types/CustomAction";
+import { InitialMapState, Location } from "../types/Map";
 
 export const getJobs = () => async (dispatch: (action: CustomAction) => unknown, _: State) => {
     let jobs: JobOptions[] = []
@@ -32,3 +33,24 @@ export const getStatuses = () => async (dispatch: (action: CustomAction) => unkn
 
     dispatch({ type: "REPLACE_STATUS_LIST", payload: statuses });
 };
+
+export const getLatLong = async (job: JobOptions): Promise<Location> => {
+    const address = encodeURIComponent(`${job.address} ${job.city} ${job.province} ${job.country}`);
+
+    // const apiLink = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}`;
+    const apiLink = encodeURI(`http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=${job.country}&adminDistrict=${job.province}&locality=${job.city}&addressLine=${job.address}&key=${InitialMapState.credentials}`);
+
+    const result = await fetch(apiLink);
+
+    if (result.status === 200) {
+        const data = await result.json();
+        const location: Location = {
+            latitude: data.resourceSets[0].resources[0].point.coordinates[0],
+            longitude: data.resourceSets[0].resources[0].point.coordinates[1]
+        }
+        console.log(location);
+        return location;
+    }
+
+    return { latitude: -1, longitude: -1 };
+}

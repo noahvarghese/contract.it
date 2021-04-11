@@ -5,14 +5,18 @@ import { InitialMapState, MapOptions } from "../../types/Map";
 import { LoadBingApi, Microsoft } from "../../lib/Maps";
 import { geoLocation } from "../../lib/GeoLocation";
 import "./Map.css";
+import { JobOptions } from "../../types/Jobs";
+import { getLatLong } from "../../lib/Data";
+import { statusImageLink } from "../../lib/Permalink";
 
 interface MapProps {
     modals: string;
+    jobs: JobOptions[];
     mapOptions: MapOptions;
     setLocation: (location: { latitude: number; longitude: number }) => any;
 }
 
-const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
+const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
     const classNames: any[] = [];
 
     if (modals !== "DEFAULT") {
@@ -47,12 +51,23 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
                         }
                     }
                     map.setOptions(mapOptions);
+
+                    for (const job of jobs) {
+                        const location = await getLatLong(job);
+
+                        const pin = new Microsoft.Maps.Pushpin(location, {
+                            icon: statusImageLink(job.status.image!),
+                            point: new Microsoft.Maps.Point(12, 39)
+                        });
+
+                        map.entities.push(pin);
+                    }
                 } catch (e) {
                     console.error(e);
                 }
             }
         },
-        [mapOptions, setMapRef, setLocation]
+        [mapOptions, setMapRef, setLocation, jobs]
     );
 
     return (
@@ -65,7 +80,7 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals }) => {
 };
 
 export default connect(
-    ({ mapOptions, modals }: State) => ({ mapOptions, modals }),
+    ({ mapOptions, modals, jobList }: State) => ({ mapOptions, modals, jobs: jobList }),
     (dispatch) => ({
         setLocation: (location: { latitude: number; longitude: number }) =>
             dispatch({ type: "SET_LOCATION", payload: location }),

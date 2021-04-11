@@ -6,12 +6,14 @@ export interface MapColor {
     strokeColor?: string;
 }
 
+export interface Location {
+    latitude: number;
+    longitude: number;
+}
+
 export interface MapOptions {
     credentials: string;
-    center: {
-        latitude: number;
-        longitude: number;
-    };
+    center: Location;
     clientWidth: string;
     showDashboard: boolean;
     customMapStyle: {

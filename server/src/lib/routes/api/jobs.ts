@@ -11,14 +11,10 @@ router.get("/", async (req: Request, res: Response) => {
     const StatusManager = getRepository(Status);
 
     const jobs: Job[] = await JobManager.find();
-    console.log(jobs);
 
     for (let job of jobs) {
         job.status = (await StatusManager.find({ where: { id: job.statusId } }))[0];
     }
-
-
-    // console.log(returnData)
 
     res.status(200);
     res.send(jobs);
@@ -48,9 +44,9 @@ router.post("/", async (req: Request, res: Response) => {
 
     if (status !== null) {
         const province = "ON";
-        const country = "Canada";
+        const country = "CA";
 
-        const job: Job[] = JobManager.create({ ...req.body, status: status.id, province, country });
+        const job: Job[] = JobManager.create({ ...req.body, statusId: status.id, province, country });
 
         if (job) {
             try {
