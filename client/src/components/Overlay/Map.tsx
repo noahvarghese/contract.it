@@ -28,6 +28,7 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
         async (node) => {
             if (node !== null) {
                 const map = await LoadBingApi(mapOptions, node);
+                console.log(map);
                 await LoadPushpins(map, jobs);
             }
             setMapRef(node);
