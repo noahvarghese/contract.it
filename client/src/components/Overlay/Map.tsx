@@ -1,13 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { State } from "../../types/State";
-import { InitialMapState, MapOptions } from "../../types/Map";
-import { LoadBingApi, Microsoft } from "../../lib/Maps";
-import { geoLocation } from "../../lib/GeoLocation";
+import { Location, MapOptions } from "../../types/Map";
+import { LoadBingApi, LoadPushpins } from "../../lib/Maps";
 import "./Map.css";
 import { JobOptions } from "../../types/Jobs";
-import { getLatLong } from "../../lib/Data";
-import { statusImageLink } from "../../lib/Permalink";
 
 interface MapProps {
     modals: string;
@@ -29,45 +26,13 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
 
     const mapRefChange = React.useCallback(
         async (node) => {
-            setMapRef(node);
             if (node !== null) {
-                await LoadBingApi(mapOptions.credentials);
-
-                try {
-                    const map = new Microsoft.Maps.Map(node);
-                    if (mapOptions.center === InitialMapState.center) {
-                        try {
-                            const location = await new Promise<{
-                                latitude: number;
-                                longitude: number;
-                            }>((resolve, reject) => {
-                                geoLocation()
-                                    .then((newLocation) => resolve(newLocation))
-                                    .catch((e) => reject(e));
-                            });
-                            setLocation(location);
-                        } catch (e) {
-                            console.error(e);
-                        }
-                    }
-                    map.setOptions(mapOptions);
-
-                    for (const job of jobs) {
-                        const location = await getLatLong(job);
-
-                        const pin = new Microsoft.Maps.Pushpin(location, {
-                            icon: statusImageLink(job.status.image!),
-                            point: new Microsoft.Maps.Point(12, 39)
-                        });
-
-                        map.entities.push(pin);
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
+                const map = await LoadBingApi(mapOptions, node);
+                await LoadPushpins(map, jobs);
             }
+            setMapRef(node);
         },
-        [mapOptions, setMapRef, setLocation, jobs]
+        [mapOptions, setMapRef, jobs]
     );
 
     return (
@@ -82,7 +47,7 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
 export default connect(
     ({ mapOptions, modals, jobList }: State) => ({ mapOptions, modals, jobs: jobList }),
     (dispatch) => ({
-        setLocation: (location: { latitude: number; longitude: number }) =>
+        setLocation: (location: Location) =>
             dispatch({ type: "SET_LOCATION", payload: location }),
     })
 )(Map);

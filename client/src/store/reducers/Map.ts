@@ -1,12 +1,13 @@
 import { createReducer } from "../../lib/Functions";
+import { CustomAction } from "../../types/CustomAction";
 import { InitialMapState, MapOptions } from "../../types/Map";
 
 export const SetLocation = (
     state: MapOptions,
-    location: { latitude: number; longitude: number }
+    action: CustomAction
 ): MapOptions => ({
     ...state,
-    center: location,
+    center: action.payload,
 });
 
 export const mapReducer = createReducer(InitialMapState, {

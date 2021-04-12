@@ -3,24 +3,17 @@ import Map from "../Overlay/Map";
 // import ControlsOverlay from "../Overlay/ControlsOverlay";
 import { connect, useDispatch } from "react-redux";
 import { State } from "../../types/State";
-import { StatusOptions } from "../../types/Status";
-import { CustomAction } from "../../types/CustomAction";
 import ControlsOverlay from "../Overlay/ControlsOverlay";
-import { getStatuses, getJobs } from "../../lib/Data";
+import { getStatuses, getJobs, getLocation } from "../../lib/Data";
 
-interface AppProps {
-    // statusList: StatusOptions[];
-    // setStatuses: () => CustomAction;
-    // setJobs: () => CustomAction
-}
-
-const App: React.FC<AppProps> = () => {
+const App: React.FC = () => {
     const dispatch = useDispatch();
 
     React.useEffect(() => {
+        dispatch(getLocation());
         dispatch(getJobs());
         dispatch(getStatuses());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div id="App">
@@ -35,9 +28,5 @@ export default connect(
         location: center,
         statusList,
     }),
-    (dispatch) => ({
-        // setStatuses: () =>
-        //     dispatch({ type: "REPLACE_STATUS_LIST", payload: getStatuses() }),
-        // setJobs: () => dispatch({ type: "REPLACE_JOBS", payload: getJobs() })
-    })
+    (_) => ({})
 )(App);

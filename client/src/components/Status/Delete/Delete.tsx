@@ -30,7 +30,7 @@ const DeleteStatus: React.FC<DeleteProps> = ({
 
     const deleteStatus = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const result = await fetch(`${permalink}/api/statuses/${status.id}`, { method: "DELETE" });
+        await fetch(`${permalink}/api/statuses/${status.id}`, { method: "DELETE" });
         // need to check for success
         setModals();
         setDeleteStatus(status);
