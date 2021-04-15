@@ -1,4 +1,3 @@
-import { getLatLong } from "../lib/Data";
 import { ImageOptions } from "./Image";
 import { Location } from "./Map";
 import { EmptyStatus, StatusOptions } from "./Status";

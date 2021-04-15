@@ -15,7 +15,11 @@ export const getJobs = () => async (
 
     if (jobsResult.status === 200) {
         const data = await jobsResult.json();
-        jobs = data.map((job: any) => JobBuilder(job));
+        // jobs = data.map((job: any) => JobBuilder(job));
+        for (const job of data) {
+            const location = await getLatLong(job);
+            jobs.push(JobBuilder(Object.assign(job, { location })));
+        }
     }
 
     dispatch({ type: "REPLACE_JOBS", payload: jobs });
