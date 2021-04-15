@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { State } from "../../types/State";
 import { Location, MapOptions } from "../../types/Map";
-import { LoadBingApi, LoadPushpins } from "../../lib/Maps";
+import { InitInfobox, LoadBingApi, LoadPushpins } from "../../lib/Maps";
 import "./Map.css";
 import { JobOptions } from "../../types/Jobs";
 import Logs, { LogLevels } from "../../lib/Logs";
@@ -30,7 +30,8 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
             if (node !== null) {
                 const map = await LoadBingApi(mapOptions, node);
                 Logs.addLog(map, LogLevels.DEBUG);
-                await LoadPushpins(map, jobs);
+                const infobox = await InitInfobox(map);
+                await LoadPushpins(map, infobox, jobs);
             }
             setMapRef(node);
         },

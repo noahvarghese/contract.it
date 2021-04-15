@@ -8,8 +8,8 @@ export enum LogLevels {
     WARN = 2,
     DEBUG = 3,
     LOG = 4,
-    SQL = 6,
     METRICS = 5,
+    MAP = 6,
 }
 
 interface LogData {
@@ -59,9 +59,9 @@ export default class Logs {
                     prefix: "[ LOG ]: ",
                     consoleFunction: console.log,
                 });
-            case LogLevels.SQL:
+            case LogLevels.MAP:
                 return createLogData({
-                    prefix: "[ SQL ]: ",
+                    prefix: "[ MAP ]: ",
                     consoleFunction: console.info,
                 });
             case LogLevels.METRICS:
@@ -82,7 +82,6 @@ export default class Logs {
                 const { prefix, consoleFunction }: LogData = Logs.getLogData(
                     logLevel
                 );
-                console.log(prefix, message, logLevel);
 
                 consoleFunction(prefix, message);
             } catch (e) {
