@@ -1,4 +1,6 @@
+import { getLatLong } from "../lib/Data";
 import { ImageOptions } from "./Image";
+import { Location } from "./Map";
 import { EmptyStatus, StatusOptions } from "./Status";
 
 export interface JobOptions {
@@ -15,6 +17,7 @@ export interface JobOptions {
     deletedOn: Date | undefined;
     status: StatusOptions;
     images: ImageOptions[];
+    location: Location;
 }
 
 export const EmptyJob = (): JobOptions => ({
@@ -31,7 +34,12 @@ export const EmptyJob = (): JobOptions => ({
     deletedOn: undefined,
     status: EmptyStatus(),
     images: [],
+    location: {
+        latitude: undefined,
+        longitude: undefined,
+    },
 });
 
-export const JobBuilder = (options?: any): JobOptions =>
-    Object.assign(EmptyJob(), options);
+export const JobBuilder = (options?: any): JobOptions => {
+    return Object.assign(EmptyJob(), options);
+};

@@ -6,8 +6,11 @@ import { CustomAction } from "../types/CustomAction";
 import { InitialMapState, Location } from "../types/Map";
 import { geoLocation } from "./GeoLocation";
 
-export const getJobs = () => async (dispatch: (action: CustomAction) => unknown, _: State) => {
-    let jobs: JobOptions[] = []
+export const getJobs = () => async (
+    dispatch: (action: CustomAction) => unknown,
+    _: State
+) => {
+    let jobs: JobOptions[] = [];
     const jobsResult = await fetch(jobApiLink, { method: "GET" });
 
     if (jobsResult.status === 200) {
@@ -18,7 +21,10 @@ export const getJobs = () => async (dispatch: (action: CustomAction) => unknown,
     dispatch({ type: "REPLACE_JOBS", payload: jobs });
 };
 
-export const getStatuses = () => async (dispatch: (action: CustomAction) => unknown, _: State) => {
+export const getStatuses = () => async (
+    dispatch: (action: CustomAction) => unknown,
+    _: State
+) => {
     let statuses: StatusOptions[] = [];
 
     const statusResult = await fetch(statusApiLink, { method: "GET" });
@@ -35,8 +41,10 @@ export const getStatuses = () => async (dispatch: (action: CustomAction) => unkn
     dispatch({ type: "REPLACE_STATUS_LIST", payload: statuses });
 };
 
-export const getLocation = () => async (dispatch: (action: CustomAction) => unknown, _: State) => {
-
+export const getLocation = () => async (
+    dispatch: (action: CustomAction) => unknown,
+    _: State
+) => {
     const location = await new Promise<Location>((resolve, reject) => {
         geoLocation()
             .then((newLocation) => resolve(newLocation))
@@ -50,7 +58,9 @@ export const getLatLong = async (job: JobOptions): Promise<Location> => {
     // const address = encodeURIComponent(`${job.address} ${job.city} ${job.province} ${job.country}`);
 
     // const apiLink = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}`;
-    const apiLink = encodeURI(`http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=${job.country}&adminDistrict=${job.province}&locality=${job.city}&addressLine=${job.address}&key=${InitialMapState.credentials}`);
+    const apiLink = encodeURI(
+        `http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=${job.country}&adminDistrict=${job.province}&locality=${job.city}&addressLine=${job.address}&key=${InitialMapState.credentials}`
+    );
 
     const result = await fetch(apiLink);
 
@@ -58,10 +68,10 @@ export const getLatLong = async (job: JobOptions): Promise<Location> => {
         const data = await result.json();
         const location: Location = {
             latitude: data.resourceSets[0].resources[0].point.coordinates[0],
-            longitude: data.resourceSets[0].resources[0].point.coordinates[1]
-        }
+            longitude: data.resourceSets[0].resources[0].point.coordinates[1],
+        };
         return location;
     }
 
     return { latitude: -1, longitude: -1 };
-}
+};

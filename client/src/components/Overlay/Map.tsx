@@ -5,6 +5,7 @@ import { Location, MapOptions } from "../../types/Map";
 import { LoadBingApi, LoadPushpins } from "../../lib/Maps";
 import "./Map.css";
 import { JobOptions } from "../../types/Jobs";
+import Logs, { LogLevels } from "../../lib/Logs";
 
 interface MapProps {
     modals: string;
@@ -28,7 +29,7 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
         async (node) => {
             if (node !== null) {
                 const map = await LoadBingApi(mapOptions, node);
-                console.log(map);
+                Logs.addLog(map, LogLevels.DEBUG);
                 await LoadPushpins(map, jobs);
             }
             setMapRef(node);
@@ -46,7 +47,11 @@ const Map: React.FC<MapProps> = ({ setLocation, mapOptions, modals, jobs }) => {
 };
 
 export default connect(
-    ({ mapOptions, modals, jobList }: State) => ({ mapOptions, modals, jobs: jobList }),
+    ({ mapOptions, modals, jobList }: State) => ({
+        mapOptions,
+        modals,
+        jobs: jobList,
+    }),
     (dispatch) => ({
         setLocation: (location: Location) =>
             dispatch({ type: "SET_LOCATION", payload: location }),
