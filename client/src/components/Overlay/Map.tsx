@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { State } from "../../types/State";
 import { MapOptions } from "../../types/MapOptions";
 import "./Map.css";
-import { JobOptions } from "../../types/Jobs";
+import { EmptyJob, JobOptions } from "../../types/Jobs";
 import Logs, { LogLevels } from "../../lib/Logs";
 import { CustomAction } from "../../types/CustomAction";
 import { Map as MapObj } from "../../types/Map";
@@ -18,7 +18,9 @@ interface MapProps {
     mapOptions: MapOptions;
     map: MapObj;
     modals: string;
-    // setMap: (map: any) => CustomAction;
+    setJob: (job: JobOptions) => CustomAction;
+    showDeleteJob: () => CustomAction;
+    showEditJob: () => CustomAction;
     setMicrosoft: (microsoft: any) => CustomAction;
 }
 
@@ -27,13 +29,16 @@ const Map: React.FC<MapProps> = ({
     map,
     mapOptions,
     modals,
-    // setMap,
+    setJob,
+    showDeleteJob,
+    showEditJob,
     setMicrosoft,
 }) => {
     const [classes, setClasses] = React.useState<string[]>([]);
+    // Use to load the map into the correct div
     const [mapRef, setMapRef] = React.useState<HTMLDivElement | null>(null);
+    // Holds the map object that is rendered in the div
     const [microsoftMap, setMap] = React.useState<any>(undefined);
-    // const mapRef = createRef<HTMLDivElement>();
 
     useEffect(() => {
         const newClasses = [];
@@ -45,6 +50,14 @@ const Map: React.FC<MapProps> = ({
         setClasses(newClasses);
     }, [modals]);
 
+    // Responsible for loading the map into the div
+    // And passing the map object to use
+
+    /*
+     * We do not use Redux to store the map object
+     * as Redux stores the data serialized (as a string)
+     * the map object is too large and causes redux to crash
+     */
     useEffect(() => {
         if (mapRef !== null) {
             (async () => {
@@ -83,12 +96,15 @@ const Map: React.FC<MapProps> = ({
                 setMap(response.map);
             })();
         }
+        // Do not add any other dependencies otherwise it does not render
     }, [mapRef]);
 
     useEffect(() => {
-        // Logs.addLog(microsoftMap, LogLevels.DEBUG);
+        Logs.addLog(microsoftMap, LogLevels.DEBUG);
+        Logs.addLog(map.Microsoft, LogLevels.DEBUG);
         if (map.Microsoft && microsoftMap) {
             (async () => {
+                // Only use one infobox and replace data each time
                 const infobox = new map.Microsoft.Maps.Infobox(
                     microsoftMap.getCenter(),
                     {
@@ -98,15 +114,20 @@ const Map: React.FC<MapProps> = ({
 
                 infobox.setMap(microsoftMap);
 
+                // hide any infoboxes when the map is clicked
                 map.Microsoft.Maps.Events.addHandler(
                     microsoftMap,
                     "click",
+
                     (_: MouseEvent<any>) =>
                         infobox.setOptions({
                             ...infobox.getOptions(),
                             visible: false,
                         })
                 );
+
+                // handle infobox events
+                // can only set event on infobox object
 
                 map.Microsoft.Maps.Events.addHandler(
                     infobox,
@@ -117,12 +138,26 @@ const Map: React.FC<MapProps> = ({
                         switch (className) {
                             // Handle showing images
                             case "imageBtn":
+                                infobox.setOptions({
+                                    ...infobox.getOptions(),
+                                    visible: false,
+                                });
                                 break;
                             // Handle delete modal
                             case "deleteBtn":
+                                infobox.setOptions({
+                                    ...infobox.getOptions(),
+                                    visible: false,
+                                });
+                                showDeleteJob();
                                 break;
                             // Handle edit modal
                             case "editBtn":
+                                infobox.setOptions({
+                                    ...infobox.getOptions(),
+                                    visible: false,
+                                });
+                                showEditJob();
                                 break;
                             // Handle close
                             case "closeBtn":
@@ -136,6 +171,8 @@ const Map: React.FC<MapProps> = ({
                         }
                     }
                 );
+
+                // Load pins
 
                 for (const job of jobs) {
                     const location = await getLatLong(job);
@@ -164,6 +201,7 @@ const Map: React.FC<MapProps> = ({
                         (e: MouseEvent<any>) => {
                             Logs.addLog(infobox, LogLevels.DEBUG);
                             const { metadata } = e.target as any;
+                            setJob(jobs.find((job) => job.id === metadata.id)!);
                             Logs.addLog(metadata, LogLevels.DEBUG);
 
                             infobox.setOptions({
@@ -180,17 +218,12 @@ const Map: React.FC<MapProps> = ({
                 }
             })();
         }
+        // Don't add any more dependencies as this casuses errors to log to the console
+        // I think this is due to rerenders as the erros show after a refresh
     }, [map, map.Microsoft, microsoftMap, jobs]);
 
     return (
         <div className="MapContainer">
-            {/* <script
-                type="text/javascript"
-                id="bingApiReady"
-                src="https://www.bing.com/api/maps/mapcontrol?callback=bingApiReady&key=Aut56ZrxAg0xWy9Gj_b6W__VMnAUKH80gZWvk8xs51BO07Srr02hgoueliZXjVQk"
-                async
-                defer
-            ></script> */}
             <div id="Map" ref={setMapRef} className={classes.join(", ")}></div>
         </div>
     );
@@ -205,6 +238,12 @@ export default connect(
     }),
     (dispatch) => ({
         // setMap: (map: any) => dispatch({ type: "SET_MAP", payload: map }),
+        setJob: (job: JobOptions) =>
+            dispatch({ type: "SET_CURRENT_JOB", payload: job }),
+        showDeleteJob: () =>
+            dispatch({ type: "SHOW_DELETE_JOB", payload: undefined }),
+        showEditJob: () =>
+            dispatch({ type: "SHOW_JOB_FORM", payload: undefined }),
         setMicrosoft: (microsoft: any) =>
             dispatch({ type: "SET_MICROSOFT", payload: microsoft }),
     })

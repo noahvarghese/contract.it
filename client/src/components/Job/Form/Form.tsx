@@ -30,7 +30,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
             dispatch(getJobs());
             hideJobForm();
         }
-    }
+    };
     return (
         <div id="Create" className="card modal">
             <div className="headerContainer">
@@ -41,38 +41,38 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
                     id="name"
                     name="Customer Name"
                     type="string"
-                    currentValue={undefined}
+                    currentValue={job.name}
                 />
                 <Input
                     id="email"
                     name="Email"
                     type="email"
-                    currentValue={undefined}
+                    currentValue={job.email}
                 />
                 <Input
                     id="address"
                     name="Address"
                     type="address"
-                    currentValue={undefined}
+                    currentValue={job.address}
                 />
                 <Input
                     id="city"
                     name="City"
                     type="string"
-                    currentValue={undefined}
+                    currentValue={job.city}
                 />
                 <Input
                     id="phone"
                     name="Phone"
                     type="tel"
-                    currentValue={undefined}
+                    currentValue={job.phone}
                 />
                 <Input
                     id="status"
                     name="Status"
                     type="tel"
                     list="filters"
-                    currentValue={undefined}
+                    currentValue={job.status.label}
                 />
                 <datalist id="filters">
                     {statusList.map((filter) => (
@@ -80,11 +80,7 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
                     ))}
                 </datalist>
                 <div className="btnContainer">
-                    <button
-                        type="reset"
-                        className="btn"
-                        onClick={hideJobForm}
-                    >
+                    <button type="reset" className="btn" onClick={hideJobForm}>
                         Cancel
                     </button>
                     <button type="submit" className="btn" onClick={submit}>

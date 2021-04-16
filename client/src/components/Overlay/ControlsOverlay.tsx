@@ -4,6 +4,7 @@ import { State } from "../../types/State";
 import Blocker from "./Blocker";
 import Nav from "../Nav/Nav";
 import JobForm from "../Job/Form/Form";
+import DeleteJob from "../Job/Delete/Delete";
 import FilterList from "../Filter/List/List";
 import StatusList from "../Status/List/List";
 import StatusForm from "../Status/Form/Form";
@@ -39,6 +40,14 @@ const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
                 <>
                     <Blocker />
                     <StatusForm />
+                </>
+            );
+            break;
+        case "SHOW_DELETE_JOB":
+            elements = (
+                <>
+                    <Blocker />
+                    <DeleteJob />
                 </>
             );
             break;
