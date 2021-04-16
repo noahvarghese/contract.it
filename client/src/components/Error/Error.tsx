@@ -16,7 +16,7 @@ const Error: React.FC<ErrorProps> = ({ error, resetModals, setError }) => {
         setError("");
     };
     return (
-        <div className="card modal">
+        <div className="Error card modal">
             <h1>Error</h1>
             <p>{error}</p>
             <div className="btnContainer">

@@ -1,17 +1,12 @@
-import React, { MouseEvent, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { State } from "../../types/State";
 import { MapOptions } from "../../types/MapOptions";
 import "./Map.css";
 import { JobOptions } from "../../types/Jobs";
-import Logs, { LogLevels } from "../../lib/Logs";
 import { CustomAction } from "../../types/CustomAction";
-import { getLatLong } from "../../lib/Data";
-import { statusImageLink } from "../../lib/Permalink";
-import { Infobox } from "./Infobox";
+import { InitMap, LoadInfobox, UpdateMap } from "../../lib/Map";
 import { StatusOptions } from "../../types/Status";
-
-declare let window: any;
 
 interface MapProps {
     jobs: JobOptions[];
@@ -41,6 +36,8 @@ const Map: React.FC<MapProps> = ({
     const [mapRef, setMapRef] = React.useState<HTMLDivElement | null>(null);
     // Holds the map object that is rendered in the div
     const [microsoftMap, setMap] = React.useState<any>(undefined);
+    const [infobox, setInfobox] = React.useState<any>(undefined);
+    const [mapLoaded, setMapLoaded] = React.useState(false);
 
     useEffect(() => {
         const newClasses = [];
@@ -62,254 +59,98 @@ const Map: React.FC<MapProps> = ({
      */
     useEffect(() => {
         if (mapRef !== null) {
-            (async () => {
-                const response = await new Promise<{
-                    map: AnalyserNode;
-                    Microsoft: any;
-                }>((resolve, reject) => {
-                    window.bingApiReady = async () => {
-                        try {
-                            const newMap = new window.Microsoft.Maps.Map(
-                                mapRef
-                            );
-
-                            newMap.setOptions(mapOptions);
-
-                            resolve({
-                                map: newMap,
-                                Microsoft: window.Microsoft,
-                            });
-                        } catch (e) {
-                            console.error(e);
-                        }
-                    };
-
-                    const script = document.createElement("script");
-                    script.type = "text/javascript";
-                    script.async = true;
-                    script.defer = true;
-                    script.id = "bingApiReady";
-                    script.src =
-                        "https://www.bing.com/api/maps/mapcontrol?callback=bingApiReady&key=Aut56ZrxAg0xWy9Gj_b6W__VMnAUKH80gZWvk8xs51BO07Srr02hgoueliZXjVQk";
-                    script.onerror = (e) => {
-                        reject(e);
-                    };
-                    document.body.appendChild(script);
-                });
-
-                Logs.addLog(response, LogLevels.DEBUG);
-                // Logs.addLog(response, LogLevels.DEBUG);
-                setMicrosoft(response.Microsoft);
-                setMap(response.map);
-            })();
+            if (!mapLoaded) {
+                InitMap(mapRef, mapOptions, setMicrosoft, setMap);
+                setMapLoaded(true);
+            } else {
+                if (!infobox && Microsoft && microsoftMap) {
+                    const newInfobox = LoadInfobox(Microsoft, microsoftMap, [
+                        showDeleteJob,
+                        showEditJob,
+                    ]);
+                    setInfobox(newInfobox);
+                }
+            }
         }
         // Do not add any other dependencies otherwise it does not render
-    }, [mapRef]);
+    }, [
+        mapRef,
+        Microsoft,
+        microsoftMap,
+        mapLoaded,
+        showDeleteJob,
+        showEditJob,
+        setInfobox,
+        setMapLoaded,
+        mapOptions,
+        setMicrosoft,
+        infobox,
+    ]);
 
     useEffect(() => {
-        Logs.addLog(microsoftMap, LogLevels.DEBUG);
-        Logs.addLog(Microsoft, LogLevels.DEBUG);
         if (Microsoft !== null && microsoftMap) {
-            (async () => {
-                // Only use one infobox and replace data each time
-                const infobox = new Microsoft.Maps.Infobox(
-                    microsoftMap.getCenter(),
-                    {
-                        visible: false,
-                    }
-                );
-
-                infobox.setMap(microsoftMap);
-
-                // hide any infoboxes when the map is clicked
-                Microsoft.Maps.Events.addHandler(
+            if (infobox) {
+                UpdateMap(
                     microsoftMap,
-                    "click",
-
-                    (_: MouseEvent<any>) =>
-                        infobox.setOptions({
-                            ...infobox.getOptions(),
-                            visible: false,
-                        })
-                );
-
-                // handle infobox events
-                // can only set event on infobox object
-
-                Microsoft.Maps.Events.addHandler(
+                    Microsoft,
                     infobox,
-                    "click",
-                    (e: MouseEvent<any>) => {
-                        const { className } = (e as any).originalEvent.target;
-                        Logs.addLog(className, LogLevels.DEBUG);
-                        switch (className) {
-                            // Handle showing images
-                            case "imageBtn":
-                                infobox.setOptions({
-                                    ...infobox.getOptions(),
-                                    visible: false,
-                                });
-                                break;
-                            // Handle delete modal
-                            case "deleteBtn":
-                                infobox.setOptions({
-                                    ...infobox.getOptions(),
-                                    visible: false,
-                                });
-                                showDeleteJob();
-                                break;
-                            // Handle edit modal
-                            case "editBtn":
-                                infobox.setOptions({
-                                    ...infobox.getOptions(),
-                                    visible: false,
-                                });
-                                showEditJob();
-                                break;
-                            // Handle close
-                            case "closeBtn":
-                                infobox.setOptions({
-                                    ...infobox.getOptions(),
-                                    visible: false,
-                                });
-                                break;
-                            default:
-                                return;
-                        }
-                    }
+                    jobs,
+                    statuses,
+                    setJob
                 );
-
-                // Load pins
-
-                for (const job of jobs) {
-                    const location = await getLatLong(job);
-
-                    const pin = new Microsoft.Maps.Pushpin(location, {
-                        icon: statusImageLink(job.status.image!),
-                        point: new Microsoft.Maps.Point(12, 39),
-                    });
-
-                    pin.metadata = {
-                        id: job.id,
-                        name: job.name,
-                        email: job.email,
-                        phone: job.phone,
-                        address: `${job.address} ${job.city}, ${job.province} ${job.country}`,
-                        status: {
-                            ...job.status,
-                            image: statusImageLink(job.status.image!),
-                        },
-                        location: job.location,
-                    };
-
-                    Microsoft.Maps.Events.addHandler(
-                        pin,
-                        "click",
-                        (e: MouseEvent<any>) => {
-                            Logs.addLog(infobox, LogLevels.DEBUG);
-                            const { metadata } = e.target as any;
-                            setJob(jobs.find((job) => job.id === metadata.id)!);
-                            Logs.addLog(metadata, LogLevels.DEBUG);
-
-                            infobox.setOptions({
-                                visible: true,
-                                htmlContent: Infobox(metadata),
-                                // location: metadata.location,
-                                location: (e.target as any).getLocation(),
-                            });
-                            Logs.addLog(metadata, LogLevels.DEBUG);
-                        }
-                    );
-
-                    microsoftMap.entities.push(pin);
-                }
-            })();
+            }
         }
         // Don't add any more dependencies as this casuses errors to log to the console
         // I think this is due to rerenders as the erros show after a refresh
-    }, [Microsoft, microsoftMap, jobs]);
+    }, [
+        Microsoft,
+        microsoftMap,
+        jobs,
+        showDeleteJob,
+        showEditJob,
+        setJob,
+        infobox,
+        statuses,
+    ]);
 
-    useEffect(() => {
-        (async () => {
-            if (microsoftMap && Microsoft !== null) {
-                for (let i = 0; i < microsoftMap.entities.getLength(); i++) {
-                    let pin = microsoftMap.entities.get(i);
-                    if (pin) {
-                        const job = jobs.find(
-                            (job) => job.id === (pin as any).metadata.id
-                        );
-                        if (job) {
-                            const newValues = {
-                                id: job.id,
-                                name: job.name,
-                                email: job.email,
-                                phone: job.phone,
-                                address: `${job.address} ${job.city}, ${job.province} ${job.country}`,
-                                status: {
-                                    ...job.status,
-                                    image: statusImageLink(job.status.image!),
-                                },
-                                location: job.location,
-                            };
+    // useEffect(() => {
+    //     if (microsoftMap) {
+    //         (async () => {
+    //             microsoftMap.entities.clear();
 
-                            if (
-                                newValues.status.label !==
-                                (pin as any).metadata.status.label
-                            ) {
-                                microsoftMap.entities.remove(pin);
-                                const location = await getLatLong(job);
-                                pin = new Microsoft.Maps.Pushpin(location, {
-                                    icon: statusImageLink(job.status.image!),
-                                    point: new Microsoft.Maps.Point(12, 39),
-                                });
-                            }
+    //             for (const job of jobs) {
+    //                 const status = statuses.find(
+    //                     (status) => status.id === job.status.id
+    //                 );
 
-                            if (newValues !== (pin as any).metadata) {
-                                (pin as any).metadata = newValues;
-                            }
-                        }
-                    }
-                }
-            }
-        })();
-    }, [Microsoft, microsoftMap, jobs]);
+    //                 if (status) {
+    //                     if (status.checked) {
+    //                         const location = await getLatLong(job);
 
-    useEffect(() => {
-        (async () => {
-            microsoftMap.entities.clear();
+    //                         const pin = new Microsoft.Maps.Pushpin(location, {
+    //                             icon: statusImageLink(job.status.image!),
+    //                             point: new Microsoft.Maps.Point(12, 39),
+    //                         });
 
-            for (const job of jobs) {
-                const status = statuses.find(
-                    (status) => status.id === job.status.id
-                );
-
-                if (status) {
-                    if (status.checked) {
-                        const location = await getLatLong(job);
-
-                        const pin = new Microsoft.Maps.Pushpin(location, {
-                            icon: statusImageLink(job.status.image!),
-                            point: new Microsoft.Maps.Point(12, 39),
-                        });
-
-                        pin.metadata = {
-                            id: job.id,
-                            name: job.name,
-                            email: job.email,
-                            phone: job.phone,
-                            address: `${job.address} ${job.city}, ${job.province} ${job.country}`,
-                            status: {
-                                ...job.status,
-                                image: statusImageLink(job.status.image!),
-                            },
-                            location: job.location,
-                        };
-                        microsoftMap.entities.push(pin);
-                    }
-                }
-            }
-        })();
-    }, [Microsoft, microsoftMap, statuses]);
+    //                         pin.metadata = {
+    //                             id: job.id,
+    //                             name: job.name,
+    //                             email: job.email,
+    //                             phone: job.phone,
+    //                             address: `${job.address} ${job.city}, ${job.province} ${job.country}`,
+    //                             status: {
+    //                                 ...job.status,
+    //                                 image: statusImageLink(job.status.image!),
+    //                             },
+    //                             location: job.location,
+    //                         };
+    //                         microsoftMap.entities.push(pin);
+    //                     }
+    //                 }
+    //             }
+    //         })();
+    //     }
+    // }, [Microsoft, microsoftMap, statuses]);
 
     return (
         <div className="MapContainer">

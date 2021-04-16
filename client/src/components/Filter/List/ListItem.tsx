@@ -1,12 +1,24 @@
 import React from "react";
+import { connect } from "react-redux";
+import { CustomAction } from "../../../types/CustomAction";
 import { StatusOptions } from "../../../types/Status";
 import "./ListItem.css";
 
 interface FilterListItemProps {
     status: StatusOptions;
+    editStatus: (status: StatusOptions) => CustomAction;
 }
 
-const FilterListItem: React.FC<FilterListItemProps> = ({ status }) => {
+const FilterListItem: React.FC<FilterListItemProps> = ({
+    status,
+    editStatus,
+}) => {
+    const toggleChecked = () => {
+        editStatus({
+            ...status,
+            checked: !status.checked,
+        });
+    };
     return (
         <div className="Filter">
             <div className="content">
@@ -19,9 +31,16 @@ const FilterListItem: React.FC<FilterListItemProps> = ({ status }) => {
                 type="checkbox"
                 className="filterCheckbox"
                 defaultChecked={status.checked}
+                onChange={toggleChecked}
             />
         </div>
     );
 };
 
-export default FilterListItem;
+export default connect(
+    (_) => ({}),
+    (dispatch) => ({
+        editStatus: (status: StatusOptions) =>
+            dispatch({ type: "EDIT_STATUS", payload: status }),
+    })
+)(FilterListItem);

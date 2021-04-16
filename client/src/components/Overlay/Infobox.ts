@@ -1,6 +1,5 @@
 import Image from "../../assets/img/image.png";
 import Close from "../../assets/img/delete.png";
-import Logs, { LogLevels } from "../../lib/Logs";
 import "./Infobox.css";
 
 interface InfoboxProps {
@@ -15,8 +14,6 @@ interface InfoboxProps {
 }
 
 export const Infobox = (props: InfoboxProps): string => {
-    Logs.addLog("HELLO", LogLevels.DEBUG);
-    Logs.addLog(props, LogLevels.DEBUG);
     const { name, address, phone, email, status } = props;
     const phoneLink = `tel:${phone}`;
     const emailLink = `mailto${email}`;
