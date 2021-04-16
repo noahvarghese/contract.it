@@ -113,45 +113,6 @@ const Map: React.FC<MapProps> = ({
         statuses,
     ]);
 
-    // useEffect(() => {
-    //     if (microsoftMap) {
-    //         (async () => {
-    //             microsoftMap.entities.clear();
-
-    //             for (const job of jobs) {
-    //                 const status = statuses.find(
-    //                     (status) => status.id === job.status.id
-    //                 );
-
-    //                 if (status) {
-    //                     if (status.checked) {
-    //                         const location = await getLatLong(job);
-
-    //                         const pin = new Microsoft.Maps.Pushpin(location, {
-    //                             icon: statusImageLink(job.status.image!),
-    //                             point: new Microsoft.Maps.Point(12, 39),
-    //                         });
-
-    //                         pin.metadata = {
-    //                             id: job.id,
-    //                             name: job.name,
-    //                             email: job.email,
-    //                             phone: job.phone,
-    //                             address: `${job.address} ${job.city}, ${job.province} ${job.country}`,
-    //                             status: {
-    //                                 ...job.status,
-    //                                 image: statusImageLink(job.status.image!),
-    //                             },
-    //                             location: job.location,
-    //                         };
-    //                         microsoftMap.entities.push(pin);
-    //                     }
-    //                 }
-    //             }
-    //         })();
-    //     }
-    // }, [Microsoft, microsoftMap, statuses]);
-
     return (
         <div className="MapContainer">
             <div id="Map" ref={setMapRef} className={classes.join(", ")}></div>

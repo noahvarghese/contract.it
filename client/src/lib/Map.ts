@@ -250,7 +250,12 @@ export const UpdateMap = (
                 await UpdatePin(pin, job, map, Microsoft);
             } else {
                 // else create new pin
-                await CreatePushpin(job, Microsoft, map, infobox, setJob);
+                const status = statuses.find(
+                    (status) => status.id === job.status.id
+                );
+                if (status?.checked) {
+                    await CreatePushpin(job, Microsoft, map, infobox, setJob);
+                }
             }
         }
     })();
