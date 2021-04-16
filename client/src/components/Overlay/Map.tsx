@@ -18,6 +18,7 @@ interface MapProps {
     showDeleteJob: () => CustomAction;
     showEditJob: () => CustomAction;
     setMicrosoft: (microsoft: any) => CustomAction;
+    showMobileInfobox: () => CustomAction;
 }
 
 const Map: React.FC<MapProps> = ({
@@ -30,6 +31,7 @@ const Map: React.FC<MapProps> = ({
     showDeleteJob,
     showEditJob,
     setMicrosoft,
+    showMobileInfobox,
 }) => {
     const [classes, setClasses] = React.useState<string[]>([]);
     // Use to load the map into the correct div
@@ -96,7 +98,8 @@ const Map: React.FC<MapProps> = ({
                     infobox,
                     jobs,
                     statuses,
-                    setJob
+                    setJob,
+                    showMobileInfobox
                 );
             }
         }
@@ -111,6 +114,7 @@ const Map: React.FC<MapProps> = ({
         setJob,
         infobox,
         statuses,
+        showMobileInfobox,
     ]);
 
     return (
@@ -138,5 +142,7 @@ export default connect(
             dispatch({ type: "SHOW_JOB_FORM", payload: undefined }),
         setMicrosoft: (microsoft: any) =>
             dispatch({ type: "SET_MICROSOFT", payload: microsoft }),
+        showMobileInfobox: () =>
+            dispatch({ type: "SHOW_MOBILE_INFOBOX", payload: undefined }),
     })
 )(Map);

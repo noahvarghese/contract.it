@@ -5,6 +5,7 @@ import { JobOptions } from "../types/Jobs";
 import { MapOptions } from "../types/MapOptions";
 import { StatusOptions } from "../types/Status";
 import { getLatLong } from "./Data";
+import Logs, { LogLevels } from "./Logs";
 import { statusImageLink } from "./Permalink";
 
 declare let window: any;
@@ -116,6 +117,12 @@ export const LoadInfobox = (
                     visible: false,
                 });
                 break;
+            case "backBtn":
+                infobox.setOptions({
+                    ...infobox.getOptions(),
+                    visible: false,
+                });
+                break;
             default:
                 return;
         }
@@ -128,7 +135,8 @@ export const CreatePushpin = async (
     Microsoft: any,
     map: any,
     infobox: any,
-    setJob: (job: JobOptions) => CustomAction
+    setJob: (job: JobOptions) => CustomAction,
+    showMobileInfobox: () => CustomAction
 ) => {
     const location = await getLatLong(job);
 
@@ -150,16 +158,23 @@ export const CreatePushpin = async (
         location: job.location,
     };
 
+    Microsoft.Maps.Events.addHandler(pin, "click", (e: MouseEvent<any>) => {});
+
     Microsoft.Maps.Events.addHandler(pin, "click", (e: MouseEvent<any>) => {
         const { metadata } = e.target as any;
         setJob(job);
-
-        infobox.setOptions({
-            visible: true,
-            htmlContent: Infobox(metadata),
-            // location: metadata.location,
-            location: (e.target as any).getLocation(),
-        });
+        Logs.addLog(window.innerWidth, LogLevels.DEBUG);
+        if (window.innerWidth > 1243) {
+            infobox.setOptions({
+                visible: true,
+                htmlContent: Infobox(metadata),
+                // location: metadata.location,
+                location: (e.target as any).getLocation(),
+            });
+        } else {
+            //show mobileInfo
+            showMobileInfobox();
+        }
     });
 
     map.entities.push(pin);
@@ -221,7 +236,8 @@ export const UpdateMap = (
     infobox: any,
     jobs: JobOptions[],
     statuses: StatusOptions[],
-    setJob: (job: JobOptions) => CustomAction
+    setJob: (job: JobOptions) => CustomAction,
+    showMobileInfobox: () => CustomAction
 ) => {
     (async () => {
         const entitiesCount = map.entities.getLength();
@@ -254,7 +270,14 @@ export const UpdateMap = (
                     (status) => status.id === job.status.id
                 );
                 if (status?.checked) {
-                    await CreatePushpin(job, Microsoft, map, infobox, setJob);
+                    await CreatePushpin(
+                        job,
+                        Microsoft,
+                        map,
+                        infobox,
+                        setJob,
+                        showMobileInfobox
+                    );
                 }
             }
         }

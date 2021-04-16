@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { CustomAction } from "../../types/CustomAction";
 import { State } from "../../types/State";
 import MobileNav from "../Nav/MobileNav";
+import MobileInfobox from "./MobileInfobox";
 import "./MobileOverlay.css";
 
 interface MobileOverlayProps {
@@ -34,6 +35,9 @@ const MobileOverlay: React.FC<MobileOverlayProps> = ({
         // case "SHOW_ERROR":
         //     elements = <MobileError />;
         //     break;
+        case "SHOW_MOBILE_INFOBOX":
+            elements = <MobileInfobox />;
+            break;
         default:
             elements = (
                 <>

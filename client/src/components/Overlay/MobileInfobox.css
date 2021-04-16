@@ -1,0 +1,82 @@
+.MobileInfobox {
+    height: calc(100vh - 2rem);
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.MobileInfobox > .container {
+    align-self: center;
+}
+
+.MobileInfobox > .container > .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: min-content;
+    margin-bottom: 2rem;
+}
+
+.MobileInfobox > .container > .header > h1 {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    width: min-content;
+    position: relative;
+}
+
+.MobileInfobox > .container > .header > h1:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    content: " ";
+    width: 100%;
+    padding-right: 2rem;
+
+    border-bottom: 2px solid var(--primary-btn);
+}
+
+.MobileInfobox > button {
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 2rem;
+}
+
+.MobileInfobox > .container > .contents {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    gap: 1.5rem 0;
+}
+.MobileInfobox > .container > .contents > .status {
+    display: flex;
+    align-items: center;
+    gap: 0 2rem;
+}
+
+.MobileInfobox > .btnContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem 0;
+}
+
+.MobileInfobox > .btnContainer > button {
+    width: 100%;
+    height: 3rem;
+}
+
+.MobileInfobox > .btnContainer > button#cameraBtn {
+    background-color: #777777;
+}
+
+.MobileInfobox > .btnContainer > button.btn#imageBtn {
+    background-color: var(--last-btn);
+}
+
+.MobileInfobox > .btnContainer > button#editBtn {
+    background-color: var(--primary-btn);
+}
