@@ -1,11 +1,13 @@
-import { InitialMapState, MapOptions } from "./Map";
+import { InitialMapOptionsState, MapOptions } from "./MapOptions";
 import { JobOptions, JobBuilder } from "./Jobs";
 import { StatusOptions, StatusBuilder } from "./Status";
 import React from "react";
+import { InitialMap, Map } from "./Map";
 
 // No factories in this class as this is a singleton
 
 export interface State {
+    MicrosoftMaps: Map;
     mapOptions: MapOptions;
     modals: string;
     current: {
@@ -17,7 +19,8 @@ export interface State {
 }
 
 export const InitialState: State = {
-    mapOptions: InitialMapState,
+    MicrosoftMaps: InitialMap,
+    mapOptions: InitialMapOptionsState,
     modals: "DEFAULT",
     current: {
         job: JobBuilder(),

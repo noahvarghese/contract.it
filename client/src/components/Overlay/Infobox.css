@@ -1,4 +1,4 @@
-.infobox {
+.Infobox {
     max-width: 95%;
     width: 20em;
     background-color: white;
@@ -8,7 +8,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.infobox > .contents {
+.Infobox > .contents {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -16,17 +16,26 @@
     margin-bottom: 3rem;
 }
 
-.infobox > .header > h1 {
+.Infobox > .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: min-content;
+    margin-bottom: 2rem;
+}
+
+.Infobox > .header > h1 {
     margin: 0;
     padding: 0;
     padding-bottom: 0.5rem;
-    margin-bottom: 2rem;
     font-size: 1.5rem;
     width: min-content;
     position: relative;
 }
 
-.infobox > .header > h1:after {
+.Infobox > .header > h1:after {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -37,36 +46,54 @@
     border-bottom: 1px solid var(--primary-btn);
 }
 
-.infobox > .btnContainer {
+.Infobox > .btnContainer {
     display: grid;
     grid-template-columns: 40% 20% 40%;
     grid-template-rows: 40% 20% 40%;
     height: 7rem;
 }
 
-.infobox > .btnContainer > button {
+.Infobox button {
     color: white;
+    background-color: white;
     padding: 0.5rem 1rem;
     /* width: 7rem; */
     border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
     transition: all 0.1s ease-in;
 }
 
-.infobox > .btnContainer > button:hover {
+.Infobox > .btnContainer > button {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.Infobox > .btnContainer > button:hover {
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
 }
 
-.infobox > .btnContainer > .imageBtn {
+.Infobox .links > a {
+    color: black;
+    text-decoration: none;
+    transition: all 0.3s ease-in;
+}
+
+.Infobox .links:hover > a {
+    color: var(--primary-btn);
+}
+
+.Infobox > .btnContainer > .imageBtn {
     grid-column-start: 1;
     grid-column-end: 4;
-    border: 2px solid black;
+    border: 3px solid black;
     color: black;
+    height: max-content;
+    padding: 0;
+    background-color: white;
     /* background-color: var(--primary-btn); */
 }
 
-.infobox > .btnContainer > .deleteBtn {
+.Infobox > .btnContainer > .deleteBtn {
     grid-row-start: 3;
     grid-row-end: 4;
     grid-column-start: 1;
@@ -74,7 +101,7 @@
     background-color: var(--secondary-btn);
 }
 
-.infobox > .btnContainer > .editBtn {
+.Infobox > .btnContainer > .editBtn {
     grid-row-start: 3;
     grid-row-end: 4;
     grid-column-start: 3;
@@ -82,12 +109,7 @@
     background-color: var(--last-btn);
 }
 
-.infobox a {
-    text-decoration: none;
-    color: black;
-}
-
-.infobox .status {
+.Infobox .status {
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -1,15 +1,10 @@
 import { createReducer } from "../../lib/Functions";
 import { CustomAction } from "../../types/CustomAction";
-import { InitialMapState, MapOptions } from "../../types/Map";
+import { InitialMap, Map } from "../../types/Map";
 
-export const SetLocation = (
-    state: MapOptions,
-    action: CustomAction
-): MapOptions => ({
-    ...state,
-    center: action.payload,
+export const SetMicrosoft = (state: Map, action: CustomAction): Map => ({...state, Microsoft: action.payload});
+
+export const mapReducer = createReducer(InitialMap, {
+    SET_MICROSOFT: SetMicrosoft
 });
 
-export const mapReducer = createReducer(InitialMapState, {
-    SET_LOCATION: SetLocation,
-});

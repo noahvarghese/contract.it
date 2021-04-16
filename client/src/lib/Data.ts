@@ -3,7 +3,7 @@ import { JobBuilder, JobOptions } from "../types/Jobs";
 import { StatusBuilder, StatusOptions } from "../types/Status";
 import { State } from "../types/State";
 import { CustomAction } from "../types/CustomAction";
-import { InitialMapState, Location } from "../types/Map";
+import { InitialMapOptionsState, Location } from "../types/MapOptions";
 import { geoLocation } from "./GeoLocation";
 
 export const getJobs = () => async (
@@ -63,7 +63,7 @@ export const getLatLong = async (job: JobOptions): Promise<Location> => {
 
     // const apiLink = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}`;
     const apiLink = encodeURI(
-        `http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=${job.country}&adminDistrict=${job.province}&locality=${job.city}&addressLine=${job.address}&key=${InitialMapState.credentials}`
+        `http://dev.virtualearth.net/REST/v1/Locations?CountryRegion=${job.country}&adminDistrict=${job.province}&locality=${job.city}&addressLine=${job.address}&key=${InitialMapOptionsState.credentials}`
     );
 
     const result = await fetch(apiLink);

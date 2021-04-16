@@ -5,7 +5,6 @@ import "./assets/css/card.css";
 import "./assets/css/fade.css";
 import "./assets/css/index.css";
 import "./assets/css/modal.css";
-import "./assets/css/infobox.css";
 // import "./tailwind.output.css";
 import App from "./components/App/App";
 import { Provider } from "react-redux";

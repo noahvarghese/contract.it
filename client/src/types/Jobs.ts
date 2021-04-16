@@ -1,5 +1,5 @@
 import { ImageOptions } from "./Image";
-import { Location } from "./Map";
+import { Location } from "./MapOptions";
 import { EmptyStatus, StatusOptions } from "./Status";
 
 export interface JobOptions {
