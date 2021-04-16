@@ -59,7 +59,7 @@ router.post("/", async (req: Request, res: Response) => {
                 res.sendStatus(200);
                 return;
             } catch (_) {
-                Logs.addLog("Error creating Image.", LogLevels.ERROR);
+                Logs.addLog(LogLevels.ERROR, "Error creating Image.");
                 res.status(500);
                 res.send({ message: "Error uploading image." });
                 return;
@@ -82,7 +82,6 @@ router.put("/:id", async (req: Request, res: Response) => {
         })
     )[0];
 
-
     if (status) {
         let fileName;
 
@@ -104,7 +103,8 @@ router.put("/:id", async (req: Request, res: Response) => {
         }
 
         const newStatusProperties = {
-            label: req.body.label === status.label ? status.label : req.body.label,
+            label:
+                req.body.label === status.label ? status.label : req.body.label,
             image: fileName ? fileName : status.image,
         };
 
@@ -112,8 +112,8 @@ router.put("/:id", async (req: Request, res: Response) => {
         status.image = newStatusProperties.image;
 
         const result = await StatusManager.save({
-            ...status
-        })
+            ...status,
+        });
 
         if (result) {
             res.sendStatus(200);
@@ -127,11 +127,14 @@ router.delete("/:id", async (req: Request, res: Response) => {
     const StatusManager = getRepository(Status);
     const JobManager = getRepository(Job);
 
-    const jobs = await JobManager.count({ where: { status: req.params.id } });
+    const jobs = await JobManager.count({ where: { statusId: req.params.id } });
 
     if (jobs > 0) {
         res.status(400);
-        res.send({ message: "Unable to delete status as there are jobs that still have this status. Please move all jobs to another status before deleteing" })
+        res.send({
+            message:
+                "Unable to delete status as there are jobs that still have this status. Please move all jobs to another status before deleteing",
+        });
         return;
     }
 
@@ -145,15 +148,19 @@ router.delete("/:id", async (req: Request, res: Response) => {
     } else if (length < 1) {
         res.status(400);
         res.send({
-            message: "No status found."
+            message: "No status found.",
         });
         return;
     }
-    console.log(statuses)
-
-    fs.unlinkSync(path.join(parentPath, rootPath, statuses.find((st) => st.id === Number(req.params.id))!.image));
     const response = await StatusManager.delete(req.params.id);
     if (response) {
+        fs.unlinkSync(
+            path.join(
+                parentPath,
+                rootPath,
+                statuses.find((st) => st.id === Number(req.params.id))!.image
+            )
+        );
         res.sendStatus(200);
         return;
     } else {

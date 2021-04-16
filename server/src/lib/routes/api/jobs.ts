@@ -13,7 +13,9 @@ router.get("/", async (req: Request, res: Response) => {
     const jobs: Job[] = await JobManager.find();
 
     for (let job of jobs) {
-        job.status = (await StatusManager.find({ where: { id: job.statusId } }))[0];
+        job.status = (
+            await StatusManager.find({ where: { id: job.statusId } })
+        )[0];
     }
 
     res.status(200);
@@ -39,14 +41,21 @@ router.post("/", async (req: Request, res: Response) => {
         return;
     }
 
-    const statusResult = await StatusManager.find({ where: { label: req.body.status } });
+    const statusResult = await StatusManager.find({
+        where: { label: req.body.status },
+    });
     const status = statusResult.length > 0 ? statusResult[0] : null;
 
     if (status !== null) {
         const province = "ON";
         const country = "CA";
 
-        const job: Job[] = JobManager.create({ ...req.body, statusId: status.id, province, country });
+        const job: Job[] = JobManager.create({
+            ...req.body,
+            statusId: status.id,
+            province,
+            country,
+        });
 
         if (job) {
             try {
@@ -54,30 +63,59 @@ router.post("/", async (req: Request, res: Response) => {
                 res.sendStatus(200);
                 return;
             } catch (e) {
-                Logs.addLog(e.message, LogLevels.ERROR);
-                // Logs.addLog("Error creating job.", LogLevels.ERROR);
+                Logs.addLog(LogLevels.ERROR, e.message);
                 res.sendStatus(400);
                 return;
             }
         }
         res.sendStatus(500);
-    }
-    else {
+    } else {
         res.sendStatus(400);
     }
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
+    const StatusManager = getRepository(Status);
     const JobManager = getRepository(Job);
-    if (!req.body.status_id) {
+
+    if (!req.body.status) {
         res.status(400);
         res.send({ message: "Status is required but missing." });
+        return;
     }
 
-    const result = await JobManager.update(req.params.id, req.body);
-    if (result) {
-        res.sendStatus(200);
-        return;
+    const statusResult = await StatusManager.find({
+        where: { label: req.body.status },
+    });
+    const status = statusResult.length > 0 ? statusResult[0] : null;
+
+    if (status !== null) {
+        try {
+            const province = "ON";
+            const country = "CA";
+
+            const { name, email, phone, address, city } = req.body;
+
+            const result = await JobManager.update(req.params.id, {
+                name,
+                email,
+                address,
+                city,
+                phone,
+                statusId: status.id,
+                country,
+                province,
+            });
+
+            if (result) {
+                res.sendStatus(200);
+                return;
+            }
+        } catch (e) {
+            Logs.addLog(LogLevels.ERROR, e.message);
+            res.sendStatus(400);
+            return;
+        }
     }
 
     res.sendStatus(400);

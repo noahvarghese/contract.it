@@ -13,13 +13,13 @@ export enum LogLevels {
 
 interface LogData {
     prefix: string;
-    consoleFunction: (message: string) => void;
+    consoleFunction: (message?: any, ...optionalParams: any[]) => void;
 }
 
 const emptyLogData = (): LogData => ({
     prefix: "",
     // tslint:disable-next-line: no-empty
-    consoleFunction: (): void => {},
+    consoleFunction: (message?: any, ...optionalParams: any[]): void => {},
 });
 
 const createLogData = <T extends Partial<LogData>>(
@@ -70,14 +70,18 @@ export default class Logs {
         }
     };
 
-    static addLog = (message: string | any, logLevel: LogLevels) => {
+    static addLog = (
+        logLevel: LogLevels,
+        message?: string | any,
+        ...optionalParams: any[]
+    ) => {
         if (logLevel <= Logs.logLevel) {
             try {
                 const { prefix, consoleFunction }: LogData = Logs.getLogData(
                     logLevel
                 );
 
-                consoleFunction(prefix + message);
+                consoleFunction(prefix + message, ...optionalParams);
             } catch (e) {
                 console.error(e.message);
             }

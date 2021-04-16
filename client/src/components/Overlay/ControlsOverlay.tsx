@@ -9,6 +9,7 @@ import FilterList from "../Filter/List/List";
 import StatusList from "../Status/List/List";
 import StatusForm from "../Status/Form/Form";
 import DeleteStatus from "../Status/Delete/Delete";
+import Error from "../Error/Error";
 import "./ControlsOverlay.css";
 
 interface ControlsProps {
@@ -64,6 +65,14 @@ const ControlsOverlay: React.FC<ControlsProps> = ({ modals }) => {
                 <>
                     <Blocker />
                     <StatusList />
+                </>
+            );
+            break;
+        case "SHOW_ERROR":
+            elements = (
+                <>
+                    <Blocker />
+                    <Error />
                 </>
             );
             break;

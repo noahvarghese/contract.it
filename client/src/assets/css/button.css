@@ -21,3 +21,8 @@ button.btn[type="reset"] {
     background-color: var(--secondary-btn);
     border-color: var(--secondary-btn);
 }
+
+button.btn[type="button"] {
+    background-color: var(--secondary-btn);
+    border-color: var(--secondary-btn);
+}

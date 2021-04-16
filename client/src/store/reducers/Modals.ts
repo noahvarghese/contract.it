@@ -11,6 +11,7 @@ export const showDeleteStatus = (_: State, __: CustomAction) =>
     "SHOW_DELETE_STATUS";
 export const showStatusList = (_: State, __: CustomAction) =>
     "SHOW_STATUS_LIST";
+export const showError = (_: State, __: CustomAction) => "SHOW_ERROR";
 
 export const modalReducer = createReducer(showDefault(), {
     SHOW_DEFAULT: showDefault,
@@ -19,4 +20,5 @@ export const modalReducer = createReducer(showDefault(), {
     SHOW_STATUS_FORM: showStatusForm,
     SHOW_DELETE_STATUS: showDeleteStatus,
     SHOW_STATUS_LIST: showStatusList,
+    SHOW_ERROR: showError,
 });

@@ -64,7 +64,7 @@ router.post("/", async (req: Request, res: Response) => {
                 res.sendStatus(200);
                 return;
             } catch (_) {
-                Logs.addLog("Error creating Image.", LogLevels.ERROR);
+                Logs.addLog(LogLevels.ERROR, "Error creating Image.");
                 res.status(500);
                 res.send({ message: "Error uploading image." });
                 return;

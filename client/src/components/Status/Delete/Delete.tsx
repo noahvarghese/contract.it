@@ -12,6 +12,8 @@ interface DeleteProps {
     statusList: StatusOptions[];
     setDeleteStatus: (status: StatusOptions) => CustomAction;
     setModals: () => CustomAction;
+    setError: (errorMessage: string) => CustomAction;
+    showError: () => CustomAction;
 }
 
 const DeleteStatus: React.FC<DeleteProps> = ({
@@ -19,6 +21,8 @@ const DeleteStatus: React.FC<DeleteProps> = ({
     statusList,
     setModals,
     setDeleteStatus,
+    setError,
+    showError,
 }) => {
     if (status.label === undefined) {
         status = statusList.find((st) => st.id === status.id)!;
@@ -30,10 +34,18 @@ const DeleteStatus: React.FC<DeleteProps> = ({
 
     const deleteStatus = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        await fetch(`${permalink}/api/statuses/${status.id}`, { method: "DELETE" });
-        // need to check for success
-        setModals();
-        setDeleteStatus(status);
+        const response = await fetch(`${permalink}/api/statuses/${status.id}`, {
+            method: "DELETE",
+        });
+        if (response.status === 200) {
+            // need to check for success
+            setModals();
+            setDeleteStatus(status);
+        } else {
+            const errorMessage = (await response.json()).message;
+            setError(errorMessage);
+            showError();
+        }
     };
 
     return (
@@ -42,7 +54,9 @@ const DeleteStatus: React.FC<DeleteProps> = ({
                 <div className="headerContainer">
                     <h1>Delete Status</h1>
                 </div>
-                <div className="disclaimer">Are you sure you want to delete:</div>
+                <div className="disclaimer">
+                    Are you sure you want to delete:
+                </div>
                 <div className="Filter">
                     <div id="filter" className="content">
                         <div className="imgContainer">
@@ -54,10 +68,14 @@ const DeleteStatus: React.FC<DeleteProps> = ({
                 <div className="btnContainer">
                     <button type="reset" className="btn" onClick={hideModal}>
                         Cancel
-                </button>
-                    <button type="submit" className="btn" onClick={deleteStatus}>
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn"
+                        onClick={deleteStatus}
+                    >
                         Delete
-                </button>
+                    </button>
                 </div>
             </form>
         </div>
@@ -70,5 +88,8 @@ export default connect(
         setDeleteStatus: (status: StatusOptions) =>
             dispatch({ type: "DELETE_STATUS", payload: status }),
         setModals: () => dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
+        showError: () => dispatch({ type: "SHOW_ERROR", payload: undefined }),
+        setError: (errorMessage: string) =>
+            dispatch({ type: "SET_ERROR", payload: errorMessage }),
     })
 )(DeleteStatus);

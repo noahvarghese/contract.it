@@ -14,9 +14,9 @@ const app = express();
     /* Database */
     try {
         await createConnection(postgresConnectionOptions);
-        Logs.addLog("Database connected.", LogLevels.EVENT);
+        Logs.addLog(LogLevels.EVENT, "Database connected.");
     } catch (_) {
-        Logs.addLog("Error connecting to database.", LogLevels.ERROR);
+        Logs.addLog(LogLevels.ERROR, "Error connecting to database.");
         return;
     }
 
@@ -39,6 +39,6 @@ const app = express();
     app.use("/", router);
 
     app.listen(config.port, () => {
-        Logs.addLog(`Server started on port: ${config.port}`, LogLevels.EVENT);
+        Logs.addLog(LogLevels.EVENT, `Server started on port: ${config.port}`);
     });
 })();
