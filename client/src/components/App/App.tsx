@@ -34,13 +34,13 @@ const App: React.FC = () => {
 
     return (
         <div id="App">
+            <Map />
             <MediaQuery minWidth={1224}>
                 <ControlsOverlay />
             </MediaQuery>
             <MediaQuery maxWidth={1223}>
                 <MobileOverlay />
             </MediaQuery>
-            <Map />
         </div>
     );
 };

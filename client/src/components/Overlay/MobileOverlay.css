@@ -1,10 +1,23 @@
 .MobileOverlay {
-    display: inline-grid;
+    display: grid;
     position: absolute;
     top: 0;
     left: 0;
     grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
     z-index: 2;
     width: 100vw;
     height: 100vh;
+}
+
+.MobileOverlay > button#create {
+    grid-row: 3;
+    grid-column: 1;
+    max-height: 6rem;
+    height: 4rem;
+    min-height: 4rem;
+    margin: 1rem;
+    max-width: 95%;
+    min-width: 75%;
+    width: 95%;
 }

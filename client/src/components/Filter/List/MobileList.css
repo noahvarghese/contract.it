@@ -1,0 +1,24 @@
+#MobileFilterDisplay {
+    min-height: 0;
+    max-height: 0;
+    height: auto;
+    width: clamp(46ch, 50%, 70ch);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    padding: 0 2rem;
+}
+
+#MobileFilterDisplay.show {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    max-height: 100vh;
+}
+
+#MobileFilterDisplay #filters button {
+    height: 3rem;
+    margin-bottom: 1.5rem;
+}

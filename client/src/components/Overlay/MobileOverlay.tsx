@@ -1,14 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
+import { CustomAction } from "../../types/CustomAction";
 import { State } from "../../types/State";
 import MobileNav from "../Nav/MobileNav";
 import "./MobileOverlay.css";
 
 interface MobileOverlayProps {
     modals: any;
+    showCreateJob: () => CustomAction;
 }
 
-const MobileOverlay: React.FC<MobileOverlayProps> = ({ modals }) => {
+const MobileOverlay: React.FC<MobileOverlayProps> = ({
+    modals,
+    showCreateJob,
+}) => {
     let elements;
     switch (modals) {
         // case "SHOW_JOB_FORM":
@@ -30,7 +35,14 @@ const MobileOverlay: React.FC<MobileOverlayProps> = ({ modals }) => {
         //     elements = <MobileError />;
         //     break;
         default:
-            elements = <MobileNav />;
+            elements = (
+                <>
+                    <MobileNav />
+                    <button type="button" id="create" onClick={showCreateJob}>
+                        Create
+                    </button>
+                </>
+            );
             break;
     }
     return <div className="MobileOverlay">{elements}</div>;
@@ -38,5 +50,8 @@ const MobileOverlay: React.FC<MobileOverlayProps> = ({ modals }) => {
 
 export default connect(
     ({ modals }: State) => ({ modals }),
-    (_) => ({})
+    (dispatch) => ({
+        showCreateJob: () =>
+            dispatch({ type: "SHOW_JOB_FORM", payload: undefined }),
+    })
 )(MobileOverlay);

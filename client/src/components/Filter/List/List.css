@@ -41,7 +41,7 @@ button#filterToggle.show > img {
     transform: rotate(0deg);
 }
 
-#filters {
+#FilterDisplay #filters {
     visibility: 0;
     max-height: 0;
     margin: 0;
@@ -49,7 +49,7 @@ button#filterToggle.show > img {
     transition: all 0.3s ease-in-out;
 }
 
-#filters.show {
+#FilterDisplay #filters.show {
     margin: 0 0 2rem 0;
     display: flex;
     visibility: visible;
