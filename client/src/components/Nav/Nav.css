@@ -1,7 +1,14 @@
-#Nav {
-    padding: 1rem 0;
-    display: grid;
+.Nav {
     width: 100%;
+    padding: 1rem 0;
+}
+
+#MobileNav {
+    background-color: var(--secondary-btn);
+}
+
+#Nav {
+    display: grid;
     grid-template-columns: 25% 50% 25%;
     grid-column-gap: 1rem;
     grid-row: 1;
@@ -16,7 +23,7 @@ button#create {
     z-index: 1;
     font-weight: bold;
     color: white;
-    box-shadow: 2px 5px 8px rgba(0,0,0,0.5);
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     height: 100%;
     justify-self: center;
@@ -24,5 +31,5 @@ button#create {
 }
 
 button#create:active {
-    box-shadow: 1px 2px 4px rgba(0,0,0,0.8);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
 }

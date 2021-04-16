@@ -1,11 +1,16 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import permalink from "../../../lib/Permalink";
 import SearchIcon from "../../../assets/img/search.png";
 import CancelIcon from "../../../assets/img/cancel.png";
 import "./Search.css";
 
-const SearchBar = () => {
+interface SearchBarProps {
+    mobile?: boolean;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ mobile }) => {
     const [results, setResults] = useState<any[] | null>(null);
+    const classes = `card ${mobile ? "mobile" : "desktop"}`;
 
     const searchChanged = async (e: ChangeEvent<HTMLInputElement>) => {
         const body = JSON.stringify({ search: e.currentTarget.value });
@@ -35,7 +40,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div id="Search" className="card">
+        <div id="Search" className={classes}>
             <div id="SearchBar">
                 <input
                     type="text"
@@ -49,7 +54,6 @@ const SearchBar = () => {
                     <img src={CancelIcon} alt="Cancel" />
                 </button>
                 <button className="search" id="searchIcon">
-                    {/* <img src={permalink + "/static/assets/img/search.png"} alt="Magnifying glass" /> */}
                     <img src={SearchIcon} alt="Magnifying glass" />
                 </button>
             </div>

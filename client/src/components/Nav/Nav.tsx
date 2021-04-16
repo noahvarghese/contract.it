@@ -10,7 +10,7 @@ interface NavProps {
 
 const NavBar: React.FC<NavProps> = ({ showCreateJob }) => {
     return (
-        <div id="Nav">
+        <div id="Nav" className="Nav">
             <SearchBar />
             <button type="button" id="create" onClick={showCreateJob}>
                 Create

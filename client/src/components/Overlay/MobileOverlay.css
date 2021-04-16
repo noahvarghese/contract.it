@@ -1,0 +1,10 @@
+.MobileOverlay {
+    display: inline-grid;
+    position: absolute;
+    top: 0;
+    left: 0;
+    grid-template-rows: auto 1fr auto;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+}

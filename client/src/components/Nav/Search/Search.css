@@ -1,6 +1,15 @@
-#Search {
-    width: 100%;
+#Search.mobile {
+    margin: 0 3rem;
+    width: calc(100% - 6rem);
+    align-self: center;
+}
+
+#Search.desktop {
     grid-column-start: 2;
+    width: 100%;
+}
+
+#Search {
     height: 3rem;
     border-radius: 5px;
 }
