@@ -1,3 +1,8 @@
+/*
+“StAuth10065: I Noah Varghese, 000753196 certify that this material is my original work. 
+No other person’s work has been used without due acknowledgement. 
+I have not made my work available to anyone else.”
+*/
 import { CustomAction } from "../types/CustomAction";
 
 export const updateObject = (current: any, updated: any) =>
@@ -45,13 +50,19 @@ export const getFormData = (form: HTMLFormElement | null) => {
             if (el instanceof HTMLElement) {
                 if (el.tagName === "INPUT") {
                     if (el.getAttribute("type") !== "file") {
-                        body.append(el.getAttribute("name")!, (el as any).value);
+                        body.append(
+                            el.getAttribute("name")!,
+                            (el as any).value
+                        );
                     } else {
-                        body.append(el.getAttribute("name")!, (el as any).files![0]);
+                        body.append(
+                            el.getAttribute("name")!,
+                            (el as any).files![0]
+                        );
                     }
                 }
             }
         }
     }
     return body;
-}
+};
