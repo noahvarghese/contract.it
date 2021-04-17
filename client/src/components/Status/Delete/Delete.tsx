@@ -14,6 +14,7 @@ interface DeleteProps {
     setModals: () => CustomAction;
     setError: (errorMessage: string) => CustomAction;
     showError: () => CustomAction;
+    mobile?: boolean;
 }
 
 const DeleteStatus: React.FC<DeleteProps> = ({
@@ -23,6 +24,7 @@ const DeleteStatus: React.FC<DeleteProps> = ({
     setDeleteStatus,
     setError,
     showError,
+    mobile,
 }) => {
     if (status.label === undefined) {
         status = statusList.find((st) => st.id === status.id)!;
@@ -48,8 +50,15 @@ const DeleteStatus: React.FC<DeleteProps> = ({
         }
     };
 
+    const classes = "card" + (mobile ? " mobile" : " modal");
+
     return (
-        <div className="card modal" id="DeleteStatus">
+        <div className={classes} id="DeleteStatus">
+            {mobile && (
+                <button type="reset" className="btn" onClick={hideModal}>
+                    Back
+                </button>
+            )}
             <form>
                 <div className="headerContainer">
                     <h1>Delete Status</h1>
@@ -65,19 +74,30 @@ const DeleteStatus: React.FC<DeleteProps> = ({
                         <span>{status.label}</span>
                     </div>
                 </div>
-                <div className="btnContainer">
-                    <button type="reset" className="btn" onClick={hideModal}>
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="btn"
-                        onClick={deleteStatus}
-                    >
-                        Delete
-                    </button>
-                </div>
+                {!mobile && (
+                    <div className="btnContainer">
+                        <button
+                            type="reset"
+                            className="btn"
+                            onClick={hideModal}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="btn"
+                            onClick={deleteStatus}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
             </form>
+            {mobile && (
+                <button type="submit" className="btn" onClick={deleteStatus}>
+                    Delete
+                </button>
+            )}
         </div>
     );
 };

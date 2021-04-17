@@ -8,15 +8,23 @@ interface ErrorProps {
     error: string;
     resetModals: () => CustomAction;
     setError: (errorMessage: string) => CustomAction;
+    mobile?: boolean;
 }
 
-const Error: React.FC<ErrorProps> = ({ error, resetModals, setError }) => {
+const Error: React.FC<ErrorProps> = ({
+    error,
+    resetModals,
+    setError,
+    mobile,
+}) => {
     const close = () => {
         resetModals();
         setError("");
     };
+
+    const classes = "Error card" + (mobile ? " mobile" : " modal");
     return (
-        <div className="Error card modal">
+        <div className={classes}>
             <h1>Error</h1>
             <p>{error}</p>
             <div className="btnContainer">

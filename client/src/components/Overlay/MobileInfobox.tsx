@@ -9,10 +9,16 @@ import { statusImageLink } from "../../lib/Permalink";
 interface InfoboxProps {
     job: JobOptions;
     resetModal: () => CustomAction;
+    showDelete: () => CustomAction;
     showEdit: () => CustomAction;
 }
 
-const Infobox: React.FC<InfoboxProps> = ({ job, resetModal, showEdit }) => {
+const Infobox: React.FC<InfoboxProps> = ({
+    job,
+    resetModal,
+    showDelete,
+    showEdit,
+}) => {
     const phoneLink = `tel:${job.phone}`;
     const emailLink = `mailto${job.email}`;
 
@@ -50,7 +56,12 @@ const Infobox: React.FC<InfoboxProps> = ({ job, resetModal, showEdit }) => {
                 <button type="button" className="imageBtn btn" id="imageBtn">
                     Images
                 </button>
-                <button type="button" className="deleteBtn btn" id="deleteBtn">
+                <button
+                    type="button"
+                    className="deleteBtn btn"
+                    id="deleteBtn"
+                    onClick={showDelete}
+                >
                     Delete
                 </button>
                 <button
@@ -70,6 +81,8 @@ export default connect(
     ({ current: { job } }: State) => ({ job }),
     (dispatch) => ({
         showEdit: () => dispatch({ type: "SHOW_JOB_FORM", payload: undefined }),
+        showDelete: () =>
+            dispatch({ type: "SHOW_DELETE_JOB", payload: undefined }),
         resetModal: () =>
             dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
     })

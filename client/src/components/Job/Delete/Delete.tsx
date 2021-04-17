@@ -9,28 +9,46 @@ interface DeleteProps {
     job: JobOptions;
     resetModals: () => CustomAction;
     setJob: () => CustomAction;
+    mobile?: boolean;
 }
 
-const Delete: React.FC<DeleteProps> = ({ job, resetModals, setJob }) => {
+const Delete: React.FC<DeleteProps> = ({
+    job,
+    resetModals,
+    setJob,
+    mobile,
+}) => {
+    const classes = "DeleteJob card" + (mobile ? " mobile" : " modal");
     const deleteJob = async () => {
         resetModals();
         setJob();
     };
     return (
-        <div className="DeleteJob card modal">
-            <h1>Delete</h1>
+        <div className={classes}>
+            {mobile && (
+                <button type="reset" className="btn" onClick={resetModals}>
+                    Back
+                </button>
+            )}
             <div className="container">
+                <h1>Delete</h1>
                 <p>Are you sure you want to delete customer:</p>
                 <p className="job">{job.name}</p>
             </div>
-            <div className="btnContainer">
-                <button type="reset" className="btn" onClick={resetModals}>
-                    Cancel
-                </button>
+            {mobile ? (
                 <button type="submit" className="btn" onClick={deleteJob}>
                     Delete
                 </button>
-            </div>
+            ) : (
+                <div className="btnContainer">
+                    <button type="reset" className="btn" onClick={resetModals}>
+                        Cancel
+                    </button>
+                    <button type="submit" className="btn" onClick={deleteJob}>
+                        Delete
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

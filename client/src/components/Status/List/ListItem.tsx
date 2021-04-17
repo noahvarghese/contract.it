@@ -11,6 +11,7 @@ interface ListItemProps {
     ShowDelete: () => CustomAction;
     ShowUpdate: () => CustomAction;
     SetCurrentStatus: (status: StatusOptions) => CustomAction;
+    mobile?: boolean;
 }
 
 const ListItem: React.FC<ListItemProps> = ({
@@ -18,6 +19,7 @@ const ListItem: React.FC<ListItemProps> = ({
     ShowDelete,
     ShowUpdate,
     SetCurrentStatus,
+    mobile,
 }) => {
     const showDelete = () => {
         const id = status.id;
@@ -31,8 +33,10 @@ const ListItem: React.FC<ListItemProps> = ({
         SetCurrentStatus(StatusBuilder({ id }));
     };
 
+    const classes = "FilterCrud" + (mobile && " mobile");
+
     return (
-        <div className="FilterCrud" data-id={status.id}>
+        <div className={classes} data-id={status.id}>
             <div className="content">
                 <div className="imgContainer">
                     <img src={status.image} alt={status.label} />

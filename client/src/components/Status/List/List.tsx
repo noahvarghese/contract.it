@@ -10,27 +10,38 @@ interface StatusListProps {
     statusList: StatusOptions[];
     showDefault: () => CustomAction;
     showCreateStatus: () => CustomAction;
+    mobile?: boolean;
 }
 
 const StatusList: React.FC<StatusListProps> = ({
     statusList,
     showDefault,
     showCreateStatus,
+    mobile,
 }) => {
+    const classes = "card" + (mobile ? " mobile" : " card");
     return (
-        <div id="Statuses" className="card modal">
-            <div className="headerContainer">
-                <h1>Statuses</h1>
-            </div>
-            <div className="statuses">
-                {statusList.map((filter) => (
-                    <StatusListItem status={filter} key={filter.id} />
-                ))}
-            </div>
-            <div className="btnContainer">
+        <div id="Statuses" className={classes}>
+            {mobile && (
                 <button type="reset" className="btn" onClick={showDefault}>
-                    Cancel
+                    Back
                 </button>
+            )}
+            <div className="container">
+                <div className="headerContainer">
+                    <h1>Statuses</h1>
+                </div>
+                <div className="statuses">
+                    {statusList.map((filter) => (
+                        <StatusListItem
+                            status={filter}
+                            key={filter.id}
+                            mobile={mobile}
+                        />
+                    ))}
+                </div>
+            </div>
+            {mobile ? (
                 <button
                     type="submit"
                     className="btn"
@@ -38,7 +49,20 @@ const StatusList: React.FC<StatusListProps> = ({
                 >
                     Create
                 </button>
-            </div>
+            ) : (
+                <div className="btnContainer">
+                    <button type="reset" className="btn" onClick={showDefault}>
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn"
+                        onClick={showCreateStatus}
+                    >
+                        Create
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

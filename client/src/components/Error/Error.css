@@ -3,3 +3,35 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.Error.mobile {
+    grid-row: 1/3;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Error.mobile button {
+    width: 100%;
+}
+
+.Error.mobile h1 {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    width: min-content;
+    position: relative;
+}
+
+.Error.mobile h1:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    content: " ";
+    width: 100%;
+    padding-right: 2rem;
+
+    border-bottom: 2px solid var(--primary-btn);
+}

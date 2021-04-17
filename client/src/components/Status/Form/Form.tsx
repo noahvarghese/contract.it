@@ -4,7 +4,7 @@ import React, {
     useCallback,
     useEffect,
     useMemo,
-    MouseEvent
+    MouseEvent,
 } from "react";
 import { connect } from "react-redux";
 import Input from "../../Input/Input";
@@ -22,6 +22,7 @@ interface StatusFormProps {
     statusList: StatusOptions[];
     status: StatusOptions;
     setStatusList: (statusList: StatusOptions[]) => CustomAction;
+    mobile?: boolean;
 }
 
 const StatusForm: React.FC<StatusFormProps> = ({
@@ -29,7 +30,8 @@ const StatusForm: React.FC<StatusFormProps> = ({
     setCurrentStatus,
     status,
     statusList,
-    setStatusList
+    setStatusList,
+    mobile,
 }) => {
     const [formRef, setFormRef] = useState<HTMLFormElement | null>(null);
     const [fileRef, setFileRef] = useState<HTMLInputElement | null>(null);
@@ -49,10 +51,10 @@ const StatusForm: React.FC<StatusFormProps> = ({
     const hideModal = () => {
         if (status.id) {
             // unset status
-            setCurrentStatus(StatusBuilder())
+            setCurrentStatus(StatusBuilder());
         }
         showDefault();
-    }
+    };
 
     const submit = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -66,7 +68,9 @@ const StatusForm: React.FC<StatusFormProps> = ({
             const result = await fetch(url, { method, body });
 
             if (result.status === 200) {
-                const data = await fetch(`${permalink}/api/statuses`, { method: "GET" }).then(res => res.json());
+                const data = await fetch(`${permalink}/api/statuses`, {
+                    method: "GET",
+                }).then((res) => res.json());
                 if (Array.isArray(data)) {
                     const statuses = data.map((status: StatusOptions) => {
                         status.image = statusImageLink(status.image!);
@@ -80,7 +84,7 @@ const StatusForm: React.FC<StatusFormProps> = ({
         }
 
         hideModal();
-    }
+    };
 
     useEffect(() => {
         if (currentStatus) {
@@ -89,7 +93,7 @@ const StatusForm: React.FC<StatusFormProps> = ({
             data.action = "Update";
         }
 
-        return () => { };
+        return () => {};
     });
 
     const setImagePreview = (): void => {
@@ -133,10 +137,19 @@ const StatusForm: React.FC<StatusFormProps> = ({
         setImageRef,
     ]);
 
-    const formRefChanged = useCallback((node) => setFormRef(node), [setFormRef]);
+    const formRefChanged = useCallback((node) => setFormRef(node), [
+        setFormRef,
+    ]);
+
+    const classes = "card" + (mobile ? " mobile" : " modal");
 
     return (
-        <div className="card modal" id="CreateStatus">
+        <div className={classes} id="CreateStatus">
+            {mobile && (
+                <button type="reset" className="btn" onClick={hideModal}>
+                    Back
+                </button>
+            )}
             <form ref={formRefChanged}>
                 <div className="headerContainer">
                     <h1>{data.action} Status</h1>
@@ -177,15 +190,26 @@ const StatusForm: React.FC<StatusFormProps> = ({
                         </div>
                     </label>
                 </div>
-                <div className="btnContainer">
-                    <button type="reset" className="btn" onClick={hideModal}>
-                        Cancel
-                </button>
-                    <button type="submit" className="btn" onClick={submit}>
-                        {data.action}
-                    </button>
-                </div>
+                {!mobile && (
+                    <div className="btnContainer">
+                        <button
+                            type="reset"
+                            className="btn"
+                            onClick={hideModal}
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" className="btn" onClick={submit}>
+                            {data.action}
+                        </button>
+                    </div>
+                )}
             </form>
+            {mobile && (
+                <button type="submit" className="btn" onClick={submit}>
+                    {data.action}
+                </button>
+            )}
         </div>
     );
 };
@@ -202,6 +226,6 @@ export default connect(
         setCurrentStatus: (status: StatusOptions) =>
             dispatch({ type: "SET_CURRENT_STATUS", payload: status }),
         setStatusList: (statusList: StatusOptions[]) =>
-            dispatch({ type: "REPLACE_STATUS_LIST", payload: statusList })
+            dispatch({ type: "REPLACE_STATUS_LIST", payload: statusList }),
     })
 )(StatusForm);

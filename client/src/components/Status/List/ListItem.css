@@ -45,6 +45,11 @@
     transition: opacity 0.3s ease;
 }
 
+.FilterCrud.mobile .btnContainer {
+    visibility: visible;
+    opacity: 1;
+}
+
 .FilterCrud:hover .btnContainer,
 .FilterCrud:active .btnContainer {
     visibility: visible;

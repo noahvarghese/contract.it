@@ -5,6 +5,11 @@ import { State } from "../../types/State";
 import MobileNav from "../Nav/MobileNav";
 import MobileInfobox from "./MobileInfobox";
 import MobileJobForm from "../Job/Form/Form";
+import MobileDeleteJob from "../Job/Delete/Delete";
+import MobileStatusForm from "../Status/Form/Form";
+import MobileStatusList from "../Status/List/List";
+import MobileDeleteStatus from "../Status/Delete/Delete";
+import MobileError from "../Error/Error";
 import "./MobileOverlay.css";
 
 interface MobileOverlayProps {
@@ -21,21 +26,21 @@ const MobileOverlay: React.FC<MobileOverlayProps> = ({
         case "SHOW_JOB_FORM":
             elements = <MobileJobForm mobile={true} />;
             break;
-        // case "SHOW_STATUS_FORM":
-        //     elements = <MobileStatusForm />;
-        //     break;
-        // case "SHOW_DELETE_JOB":
-        //     elements = <MobileDeleteJob />;
-        //     break;
-        // case "SHOW_DELETE_STATUS":
-        //     elements = <MobileDeleteStatus />;
-        //     break;
-        // case "SHOW_STATUS_LIST":
-        //     elements = <MobileStatusList />;
-        //     break;
-        // case "SHOW_ERROR":
-        //     elements = <MobileError />;
-        //     break;
+        case "SHOW_STATUS_FORM":
+            elements = <MobileStatusForm mobile={true} />;
+            break;
+        case "SHOW_DELETE_JOB":
+            elements = <MobileDeleteJob mobile={true} />;
+            break;
+        case "SHOW_DELETE_STATUS":
+            elements = <MobileDeleteStatus mobile={true} />;
+            break;
+        case "SHOW_STATUS_LIST":
+            elements = <MobileStatusList mobile={true} />;
+            break;
+        case "SHOW_ERROR":
+            elements = <MobileError mobile={true} />;
+            break;
         case "SHOW_MOBILE_INFOBOX":
             elements = <MobileInfobox />;
             break;
