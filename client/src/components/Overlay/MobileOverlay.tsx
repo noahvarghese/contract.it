@@ -4,6 +4,7 @@ import { CustomAction } from "../../types/CustomAction";
 import { State } from "../../types/State";
 import MobileNav from "../Nav/MobileNav";
 import MobileInfobox from "./MobileInfobox";
+import MobileJobForm from "../Job/Form/Form";
 import "./MobileOverlay.css";
 
 interface MobileOverlayProps {
@@ -17,9 +18,9 @@ const MobileOverlay: React.FC<MobileOverlayProps> = ({
 }) => {
     let elements;
     switch (modals) {
-        // case "SHOW_JOB_FORM":
-        //     elements = <MobileJobForm />;
-        //     break;
+        case "SHOW_JOB_FORM":
+            elements = <MobileJobForm mobile={true} />;
+            break;
         // case "SHOW_STATUS_FORM":
         //     elements = <MobileStatusForm />;
         //     break;

@@ -3,23 +3,22 @@ import { connect } from "react-redux";
 import { JobOptions } from "../../types/Jobs";
 import { State } from "../../types/State";
 import { CustomAction } from "../../types/CustomAction";
-import Image from "../../assets/img/image.png";
-import Close from "../../assets/img/delete.png";
 import "./MobileInfobox.css";
 import { statusImageLink } from "../../lib/Permalink";
 
 interface InfoboxProps {
     job: JobOptions;
     resetModal: () => CustomAction;
+    showEdit: () => CustomAction;
 }
 
-const Infobox: React.FC<InfoboxProps> = ({ job, resetModal }) => {
+const Infobox: React.FC<InfoboxProps> = ({ job, resetModal, showEdit }) => {
     const phoneLink = `tel:${job.phone}`;
     const emailLink = `mailto${job.email}`;
 
     return (
         <div className="MobileInfobox card">
-            <button type="button" className="btn">
+            <button type="button" className="btn" onClick={resetModal}>
                 Back
             </button>
             <div className="container">
@@ -54,7 +53,12 @@ const Infobox: React.FC<InfoboxProps> = ({ job, resetModal }) => {
                 <button type="button" className="deleteBtn btn" id="deleteBtn">
                     Delete
                 </button>
-                <button type="button" className="editBtn btn" id="editBtn">
+                <button
+                    type="button"
+                    className="editBtn btn"
+                    id="editBtn"
+                    onClick={showEdit}
+                >
                     Edit
                 </button>
             </div>
@@ -65,6 +69,7 @@ const Infobox: React.FC<InfoboxProps> = ({ job, resetModal }) => {
 export default connect(
     ({ current: { job } }: State) => ({ job }),
     (dispatch) => ({
+        showEdit: () => dispatch({ type: "SHOW_JOB_FORM", payload: undefined }),
         resetModal: () =>
             dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
     })

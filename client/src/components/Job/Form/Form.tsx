@@ -4,18 +4,28 @@ import { getFormData } from "../../../lib/Functions";
 import { getJobs } from "../../../lib/Data";
 import permalink from "../../../lib/Permalink";
 import { CustomAction } from "../../../types/CustomAction";
-import { JobOptions } from "../../../types/Jobs";
+import { EmptyJob, JobOptions } from "../../../types/Jobs";
 import { State } from "../../../types/State";
 import { StatusOptions } from "../../../types/Status";
 import Input from "../../Input/Input";
+import "./Form.css";
 
 interface JobFormProps {
     job: JobOptions;
     statusList: StatusOptions[];
     hideJobForm: () => CustomAction;
+    resetJob: () => CustomAction;
+    mobile?: boolean;
 }
 
-const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
+const JobForm: React.FC<JobFormProps> = ({
+    job,
+    statusList,
+    hideJobForm,
+    resetJob,
+    mobile,
+}) => {
+    const classes = "card" + (mobile ? " mobile" : " modal");
     const [formRef, setFormRef] = useState<HTMLFormElement | null>(null);
     const dispatch = useDispatch();
 
@@ -31,8 +41,19 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
             hideJobForm();
         }
     };
+
+    const cancelEdit = () => {
+        hideJobForm();
+        resetJob();
+    };
+
     return (
-        <div id="Create" className="card modal">
+        <div id="Create" className={classes}>
+            {mobile && (
+                <button type="button" className="btn" onClick={cancelEdit}>
+                    Back
+                </button>
+            )}
             <div className="headerContainer">
                 <h1>{job.id ? "Update" : "Create"} Customer</h1>
             </div>
@@ -79,15 +100,21 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
                         <option value={filter.label} key={filter.id} />
                     ))}
                 </datalist>
+            </form>
+            {mobile ? (
+                <button type="submit" className="btn" onClick={submit}>
+                    {job.id ? "Update" : "Create"}
+                </button>
+            ) : (
                 <div className="btnContainer">
-                    <button type="reset" className="btn" onClick={hideJobForm}>
+                    <button type="reset" className="btn" onClick={cancelEdit}>
                         Cancel
                     </button>
                     <button type="submit" className="btn" onClick={submit}>
                         {job.id ? "Update" : "Create"}
                     </button>
                 </div>
-            </form>
+            )}
         </div>
     );
 };
@@ -95,6 +122,8 @@ const JobForm: React.FC<JobFormProps> = ({ job, statusList, hideJobForm }) => {
 export default connect(
     ({ statusList, current: { job } }: State) => ({ statusList, job }),
     (dispatch) => ({
+        resetJob: () =>
+            dispatch({ type: "SET_CURRENT_JOB", payload: EmptyJob() }),
         hideJobForm: () =>
             dispatch({ type: "SHOW_DEFAULT", payload: undefined }),
     })
